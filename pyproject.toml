@@ -10,6 +10,8 @@ python = "^3.12"
 django = "^5.1.6"
 psycopg2-binary = "^2.9.10"
 django-unfold = "^0.50.0"
+dotenv = "^0.9.9"
+python-decouple = "^3.8"
 
 
 [build-system]
