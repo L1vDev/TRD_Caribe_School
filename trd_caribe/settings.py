@@ -159,6 +159,21 @@ UNFOLD = {
                          "icon": "dashboard", 
                          "link": reverse_lazy("admin:index"),
                     },
+                ],
+            },
+            {
+                "title": _("Usuarios & Grupos"),
+                "items": [
+                    {
+                        "title": _("Clientes"),
+                        "icon": "people",
+                        "link": reverse_lazy("admin:app_auth_user_changelist"),
+                    },
+                    {
+                        "title": _("Trabajadores"),
+                        "icon": "people",
+                        "link": reverse_lazy("admin:app_auth_worker_changelist"),
+                    },
                     {
                         "title": _("Grupos de Permisos"),
                         "icon": "group",
@@ -166,7 +181,7 @@ UNFOLD = {
                         "permission": lambda request: request.user.is_superuser,
                     },
                 ],
-            }          
+            },        
         ],
     },
     
