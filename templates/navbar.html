@@ -1,0 +1,102 @@
+{% load static %}
+<header class="relative z-10 mt-0" style="min-height: 50px;">
+  <nav class="navbar navbar-expand-lg main-header nav-pad text-center align-content-center align-items-center" style="background-color: rgb(78, 78, 78);" data-bs-theme="dark">
+      <a href="{% url 'index' %}" class="navbar-brand text-white hover:text-light d-flex">
+        <img src="{% static 'img/logo.png' %}" alt="TRD-Caribe" style="height: 40px;">
+        <h2 class="my-auto d-none d-sm-flex" style="margin-bottom:0"><b>TRD-Caribe</b></h2>
+      </a>
+      <div class="collapse navbar-collapse">
+        {# Category Filter Select#}
+        <div class="mx-2" style="max-width: 120px;">
+          <select class="form-select text-truncate custom-form" style="background-color: rgb(78, 78, 78);" id="floatingSelect">
+            <option value="all_categories" selected>Todass lass cateegiras</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+
+        {# Search Bar #}
+        <form class="d-flex input-group flex-grow-1" role="search">
+          <input class="form-control bg-white border border-0 text-black custom-form" style="max-width: 600px;" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn bg-white border border-0 text-black" type="submit"><i class="bi bi-search"></i></button>
+        </form>
+      </div>
+
+      <!-- Side Menu -->
+      <div style="background-color: white; max-width:320px" class="offcanvas-xxl offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header align-items-center align-content-center">
+          <img src="{% static 'img/logo.png' %}" alt="TRD-Caribe" style="height: 56px;">
+          <div>
+            <h5 class="offcanvas-title text-dark" id="offcanvasRightLabel">TRD-Caribe</h5>
+            <span class="offcanvas-title text-dark" id="offcanvasRightLabel">Tienda Virtual</span>
+          </div>
+          <button type="button" class="btn text-dark ms-auto me-2" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasRight" aria-label="Close"><i class="bi bi-chevron-right"></i></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="list-group ms-1">
+            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-envelope-fill ms-3 me-4"></i>Contactenos</a>
+            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-currency-dollar ms-3 me-4"></i>Mas Vendidos</a>
+            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-tag-fill ms-3 me-4"></i>Mas Vistos</a>
+            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-receipt ms-3 me-4"></i>Mis Compras</a>
+            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-box-arrow-right ms-3 me-4"></i>Cerrar Sesion</a>
+            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-file-earmark-text-fill ms-3 me-4"></i>Documentos Legales</a>
+            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-file-earmark-person-fill ms-3 me-4"></i>Manual de Usuario</a>
+          </div>
+          <hr class="text-dark"/>
+          <div class="list-group ms-1 text-dark">
+            <span class="d-flex list-group-item px-0 bg-white text-dark border border-0 h5">Contactenos a:</span>
+            <span class="d-flex list-group-item px-0 bg-white text-dark border border-0 h6"><i class="bi bi-telephone-fill mx-2"></i>+55 555555</span>
+            <span class="d-flex list-group-item px-0 bg-white text-dark border border-0 h6"><i class="bi bi-envelope-fill mx-2"></i>trdcaribe@gmail.com</span>
+          </div>
+          <div class="list-group ms-1 text-dark">
+            <span class="d-flex list-group-item px-0 bg-white text-dark border border-0 h5">Tu opinión cuenta</span>
+            <button class="btn btn-warning text-dark" style="width: fit-content;"><span class="h6">Dejar Comentario</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Left navbar links -->
+      <ul class="ms-auto d-flex align-items-center mb-0">
+        <li class="nav-item nav-link">
+          <a href="{% url 'index' %}" id="subline" class="btn menu-button"><i class="bi bi-house-door-fill h4"></i></a>
+        </li>
+        <li class="nav-item nav-link">
+          <a href="{% url 'index' %}" id="subline" class="btn menu-button"><i class="bi bi-heart-fill h4"></i></a>
+        </li>
+        <li class="nav-item nav-link">
+          <a href="{% url 'index' %}" id="subline" class="btn menu-button"><i class="bi bi-person-circle h4"></i></a>
+        </li>
+        <li class="nav-item nav-link">
+          <a href="{% url 'index' %}" id="subline" class="btn menu-button"><i class="bi bi-cart2 h4"></i></a>
+        </li>
+        <li class="nav-item nav-link">
+          <button class="btn menu-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-list h4"></i></button>
+        </li>
+      </ul>
+  </nav>
+
+  <!-- Nuevo contenedor para el selector y el formulario de búsqueda -->
+  <div class="p-2 d-lg-none under-nav" style="background-color: white;" data-bs-theme="dark">
+    <div class="container-fluid">
+      <div class="d-flex align-items-center gap-2">
+        <!-- Category Filter Select -->
+        <div class="mx-2" style="max-width: 120px;">
+          <select class="form-select text-truncate bg-white text-dark custom-form border border-0" id="floatingSelect">
+            <option value="all_categories" selected>Todas las categorías</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+
+        <!-- Search Bar -->
+        <form class="d-flex input-group flex-grow-1" role="search">
+          <input class="form-control custom-form bg-white border border-end-0" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-secondary border border-start-0" type="submit"><i class="bi bi-search"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+

@@ -1,0 +1,79 @@
+.menu-button:hover {
+    background-color: rgb(61, 61, 61);
+    color: rgb(243, 158, 0);
+    border-radius: 60px;
+}
+
+.custom-form:focus{
+    border: none !important;
+    box-shadow: 0 0 0 0 !important;
+}
+
+@media (min-width: 0px) {
+    .nav-pad {
+        height: 50px;
+        padding: 8px 10px;
+        box-shadow: none;
+    }
+    .under-nav{
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px -2px, rgba(0, 0, 0, 0.14) 0px 3px 4px 0px, rgba(0, 0, 0, 0.12) 0px 1px 8px 0px;
+    }
+    .menu-button{
+        border: none;
+        color: rgb(243, 158, 0);
+        padding: 5px 5px;
+        border-radius: 60px; 
+        transition: all 0.3s ease;
+    }
+    .custom-form{
+        font-size: 0.8rem !important;
+    }
+  }
+
+  @media (min-width: 400px){
+    .menu-button{
+        border: none;
+        color: rgb(243, 158, 0);
+        padding: 5px 8px;
+        border-radius: 60px; 
+        transition: all 0.3s ease;
+    }
+    .nav-pad {
+        height: 50px;
+        padding: 8px 16px;
+        box-shadow: none;
+    }
+    .custom-form{
+        font-size: 1rem !important;
+    }
+  }
+
+@media (min-width: 900px) {
+    .nav-pad {
+        padding: 8px 40px;
+    }
+  }
+
+@media (min-width: 992px) {
+    .nav-pad {
+        padding: 8px 40px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px -2px, rgba(0, 0, 0, 0.14) 0px 3px 4px 0px, rgba(0, 0, 0, 0.12) 0px 1px 8px 0px;
+    }
+  }
+
+@media (min-width: 1200px) {
+    .nav-pad{
+        min-height: 70px;
+    }
+}
+
+.custom-form::placeholder{
+    color: black !important;
+}
+
+.offcanva-list-item:hover{
+    background-color: rgb(255, 192, 86) !important;
+    border-radius: 8px;
+}
