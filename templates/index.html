@@ -1,11 +1,29 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
     <div class="row justify-content-center">
-        
+        <div id="carouselExampleAutoplaying" class="carousel carousel-dark slide" style="width: 90%; margin:auto;" data-bs-ride="carousel">
+            <div class="carousel-inner justify-content-center" style="border-radius: 30px;max-height: 250px;">
+              <div class="carousel-item active">
+                <img src="{% static 'img/7e4d8f77-aad6-4102-83e3-143416399f2b.jpg' %}" class="d-block mx-auto carousel-img"  alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="{% static 'img/ca756173-1ddf-4355-b50c-43a763ff46b0.jpg' %}" class="d-block mx-auto carousel-img" alt="...">
+              </div>
+            </div>
+            <button class="carousel-control-prev carousel-custom-btn" style="margin-left: 20px;" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next carousel-custom-btn" style="margin-right:20px;" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
     </div>
 </div>
-{% endblock %}
+{% endblock content %}

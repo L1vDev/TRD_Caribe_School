@@ -77,3 +77,17 @@
     background-color: rgb(255, 192, 86) !important;
     border-radius: 8px;
 }
+
+.carousel-custom-btn{
+    width: 80px;
+    height: 80px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.carousel-img{
+    height: 260px; 
+    width:100%;
+    object-fit:cover;
+    object-position: center center;
+}
