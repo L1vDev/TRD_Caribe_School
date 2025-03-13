@@ -5,7 +5,6 @@
 }
 
 .custom-form:focus{
-    border: none !important;
     box-shadow: 0 0 0 0 !important;
 }
 
@@ -30,6 +29,20 @@
     .custom-form{
         font-size: 0.8rem !important;
     }
+    .welcome{
+        margin: 24px 0px 0px;
+        font-family: Helvetica, sans-serif;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: rgb(45, 47, 98);
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+    .home-btn{
+        font-size: 0.8rem;
+        width: 140px;
+    }
   }
 
   @media (min-width: 400px){
@@ -48,12 +61,37 @@
     .custom-form{
         font-size: 1rem !important;
     }
+    .welcome{
+        margin: 24px 0px 0px;
+        font-family: Helvetica, sans-serif;
+        font-size: 1.4rem;
+        line-height: 1.5;
+        color: rgb(45, 47, 98);
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+    .home-btn{
+        font-size: 1rem;
+        width: 170px;
+    }
   }
 
 @media (min-width: 900px) {
     .nav-pad {
         padding: 8px 40px;
     }
+    .welcome{
+        margin: 24px 0px 0px;
+        font-family: Helvetica, sans-serif;
+        font-size: 1.8rem;
+        line-height: 1.5;
+        color: rgb(45, 47, 98);
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
   }
 
 @media (min-width: 992px) {
@@ -91,3 +129,4 @@
     object-fit:cover;
     object-position: center center;
 }
+
