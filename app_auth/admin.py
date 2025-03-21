@@ -28,6 +28,7 @@ class UsersAdmin(UserAdmin, ModelAdmin):
     list_display_links = ["email"]
     readonly_fields=["is_email_verified"]
     search_fields = ['email','first_name','last_name','dni_number']
+    ordering=["email"]
     fieldsets = (
         (
             _("Información personal"),
@@ -136,6 +137,7 @@ class WorkerAdmin(UserAdmin, ModelAdmin):
     search_help_text=_("Buscar Usuario")
     actions=["user_verify_action"]
     actions_detail=["user_verify_detail"]
+    ordering=["email"]
 
     def user_verify_action(self, request, queryset):
         queryset.update(is_email_verified=True)

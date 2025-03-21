@@ -4,11 +4,33 @@ import random
 from functools import lru_cache
 
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from app_auth.forms import RegisterForm
+from django.views.generic import CreateView
 
 def initial_view(request):
     return render(request,"index.html")
+
+def register_view(request):
+    return render(request,"auth/register.html")
+
+class RegisterView(CreateView):
+    template_name = 'auth/register.html'
+    form_class = RegisterForm
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        user = form.save()
+        print("Registered user")
+        return super().form_valid(form)
+
+def login_view(request):
+    return render(request,"auth/login.html")
+
+def product_detail(request):
+    return render(request,"store/products.html")
 
 def dashboard_callback(request, context):
     context.update(random_data())
