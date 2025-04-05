@@ -1,0 +1,180 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <form>
+                <div class="profile-picture d-flex justify-content-center align-items-center mx-auto mb-4 position-relative">
+                    <img id="profileImage" src="{% static 'img/logo.png' %}" alt="Profile Picture" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                    <label for="profilePictureInput" class="edit-badge rounded-circle d-flex justify-content-center align-items-center position-absolute" style="bottom: 0; right: 0; width: 30px; height: 30px; cursor: pointer;">
+                        <i class="bi bi-pencil-fill text-white" style="font-size: 12px;"></i>
+                    </label>
+                    <input type="file" id="profilePictureInput" class="d-none" accept="image/*">
+                </div>
+                <!-- Name -->
+                <div class="mb-3">
+                    <label for="nombre" class="form-label text-secondary small">Nombre(s)</label>
+                    <input type="text" class="form-control" id="nombre" value="Livan">
+                </div>
+                
+                <!-- Last Name -->
+                <div class="mb-3">
+                    <label for="apellidos" class="form-label text-secondary small">Apellidos</label>
+                    <input type="text" class="form-control" id="apellidos" value="Rodriguez">
+                </div>
+                
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label text-secondary small">Correo electrónico</label>
+                    <input type="email" class="form-control" id="email" value="liv.rguez.twitter@gmail.com">
+                </div>
+                
+                <!-- Phone -->
+                <div class="mb-3">
+                    <label for="telefono" class="form-label text-secondary small">Teléfono</label>
+                    <div class="input-group">
+                        <input type="tel" class="form-control" id="telefono" value="+53 52735874">
+                    </div>
+                </div>
+                
+                <!-- Address -->
+                <div class="mb-3">
+                    <label for="direccion" class="form-label text-secondary small">Dirección</label>
+                    <input type="text" class="form-control" id="direccion" value="Matanzas">
+                </div>
+                
+                <!-- Buttons -->
+                <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Cambiar Contraseña</button>
+                    <button class="btn btn-success" type="submit">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Cambiar Contraseña -->
+<!-- Modal Cambiar Contraseña -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Cambiar Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm">
+                    <!-- Contraseña Actual -->
+                    <div class="mb-3">
+                        <label for="currentPassword" class="form-label">Contraseña Actual</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="currentPassword" required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="currentPassword">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="invalid-feedback">Este campo no puede estar vacío.</div>
+                    </div>
+                    <!-- Nueva Contraseña -->
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">Nueva Contraseña</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="newPassword" required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="newPassword">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="invalid-feedback">Este campo no puede estar vacío.</div>
+                    </div>
+                    <!-- Confirmar Contraseña -->
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="confirmPassword">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="invalid-feedback">Este campo no puede estar vacío.</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="changePasswordButton">Cambiar Contraseña</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('profilePictureInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profileImage').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+<script>
+    // Validar campos vacíos y contraseñas coincidentes
+    document.getElementById('changePasswordButton').addEventListener('click', function () {
+        const currentPassword = document.getElementById('currentPassword');
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+        let isValid = true;
+
+        // Validar que los campos no estén vacíos
+        [currentPassword, newPassword, confirmPassword].forEach(field => {
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        if (!isValid) return;
+
+        // Validar que las contraseñas coincidan
+        if (newPassword.value !== confirmPassword.value) {
+            alert('La nueva contraseña y la confirmación no coinciden.');
+            return;
+        }
+
+        // Aquí puedes enviar los datos al servidor usando fetch o AJAX
+        console.log('Contraseña actual:', currentPassword.value);
+        console.log('Nueva contraseña:', newPassword.value);
+
+        // Cierra el modal después de procesar
+        const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+        modal.hide();
+
+        alert('Contraseña cambiada exitosamente.');
+    });
+
+    // Mostrar/Ocultar contraseñas
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function () {
+            const targetId = this.getAttribute('data-target');
+            const targetInput = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+
+            if (targetInput.type === 'password') {
+                targetInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                targetInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    });
+</script>
+
+{% endblock %}

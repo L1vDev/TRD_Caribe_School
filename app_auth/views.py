@@ -35,6 +35,9 @@ def product_detail(request):
 def cart(request):
     return render(request,"store/cart.html")
 
+def profile(request):
+    return render(request,"auth/profile.html")
+
 def dashboard_callback(request, context):
     context.update(random_data())
     return context

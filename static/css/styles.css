@@ -262,6 +262,7 @@
     background-color: #0b5ed7;
   }
 
+  /*cart.html*/
   .product-name {
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -310,3 +311,20 @@
       max-height: calc(100vh - 350px);
     }
   }
+
+  /* profile.html */
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+    background-color: #333;
+    border-radius: 50%;
+    position: relative;
+}
+.edit-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #fd7e14;
+    width: 24px;
+    height: 24px;
+}
