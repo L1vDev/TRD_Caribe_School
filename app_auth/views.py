@@ -32,6 +32,9 @@ def login_view(request):
 def product_detail(request):
     return render(request,"store/products.html")
 
+def cart(request):
+    return render(request,"store/cart.html")
+
 def dashboard_callback(request, context):
     context.update(random_data())
     return context

@@ -68,7 +68,13 @@
           <a href="{% url 'index' %}" id="subline" class="btn menu-button"><i class="bi bi-person-circle h4"></i></a>
         </li>
         <li class="nav-item nav-link">
-          <a href="{% url 'index' %}" id="subline" class="btn menu-button"><i class="bi bi-cart2 h4"></i></a>
+          <a type="button" class="btn menu-button position-relative">
+            <i class="bi bi-cart-fill h4"></i>
+            <span class="position-absolute start-90 translate-middle badge rounded-pill bg-danger" style="top:7px;font-size:0.7rem">
+              99+
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </a>
         </li>
         <li class="nav-item nav-link">
           <button class="btn menu-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-list h4"></i></button>

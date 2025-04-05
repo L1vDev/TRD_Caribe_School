@@ -167,6 +167,7 @@ UNFOLD = {
             },
             {
                 "title": _("Usuarios & Grupos"),
+                "collapsible": True,
                 "items": [
                     {
                         "title": _("Clientes"),
@@ -185,7 +186,7 @@ UNFOLD = {
                         "permission": lambda request: request.user.is_superuser,
                     },
                 ],
-            },        
+            }
         ],
     },
     

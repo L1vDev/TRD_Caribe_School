@@ -1,0 +1,485 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4 d-flex flex-column">
+    
+    <div class="row flex-grow-1 overflow-hidden">
+      <!-- Productos del carrito (izquierda) -->
+      <div class="col-md-8 order-md-1 order-2 overflow-auto h-100">
+        <div class="pe-md-3 pb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Productos</h2>
+            <div>
+              <button class="btn btn-danger btn-sm" id="deleteSelected" disabled>
+                <i class="bi bi-trash"></i> Eliminar seleccionados
+              </button>
+            </div>
+          </div>
+          
+          <!-- Producto 1 -->
+           <div class="products-container">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <div class="form-check">
+                    <input class="form-check-input product-checkbox" type="checkbox" value="">
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <img src="https://placehold.co/600x600" alt="Producto 1" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
+                </div>
+                <div class="col">
+                  <h5 class="product-name">Smartphone Samsung Galaxy A54 128GB Negro Libre</h5>
+                  <div class="row align-items-center mt-2">
+                    <div class="col-sm-6">
+                      <div class="input-group input-group-sm" style="max-width: 120px;">
+                        <button class="btn btn-outline-secondary decrease-qty" type="button">-</button>
+                        <input type="number" class="form-control text-center product-qty" value="1" min="1">
+                        <button class="btn btn-outline-secondary increase-qty" type="button">+</button>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 mt-2 mt-sm-0">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <span class="text-muted">Precio:</span>
+                          <span class="fw-bold product-price">299.99€</span>
+                        </div>
+                        <div>
+                          <span class="text-muted">Total:</span>
+                          <span class="fw-bold product-total">299.99€</span>
+                        </div>
+                      </div>
+                      <div class="mt-2 text-end">
+                        <button class="btn btn-danger btn-sm remove-product">
+                          <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Producto 2 -->
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <div class="form-check">
+                    <input class="form-check-input product-checkbox" type="checkbox" value="">
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <img src="https://placehold.co/600x600" alt="Producto 2" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
+                </div>
+                <div class="col">
+                  <h5 class="product-name">Auriculares Bluetooth Sony WH-1000XM5 con Cancelación de Ruido</h5>
+                  <div class="row align-items-center mt-2">
+                    <div class="col-sm-6">
+                      <div class="input-group input-group-sm" style="max-width: 120px;">
+                        <button class="btn btn-outline-secondary decrease-qty" type="button">-</button>
+                        <input type="number" class="form-control text-center product-qty" value="2" min="1">
+                        <button class="btn btn-outline-secondary increase-qty" type="button">+</button>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 mt-2 mt-sm-0">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <span class="text-muted">Precio:</span>
+                          <span class="fw-bold product-price">249.99€</span>
+                        </div>
+                        <div>
+                          <span class="text-muted">Total:</span>
+                          <span class="fw-bold product-total">499.98€</span>
+                        </div>
+                      </div>
+                      <div class="mt-2 text-end">
+                        <button class="btn btn-danger btn-sm remove-product">
+                          <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Producto 3 -->
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <div class="form-check">
+                    <input class="form-check-input product-checkbox" type="checkbox" value="">
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <img src="https://placehold.co/600x600" alt="Producto 3" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
+                </div>
+                <div class="col">
+                  <h5 class="product-name">Zapatillas deportivas Nike Air Max 270</h5>
+                  <div class="row align-items-center mt-2">
+                    <div class="col-sm-6">
+                      <div class="input-group input-group-sm" style="max-width: 120px;">
+                        <button class="btn btn-outline-secondary decrease-qty" type="button">-</button>
+                        <input type="number" class="form-control text-center product-qty" value="1" min="1">
+                        <button class="btn btn-outline-secondary increase-qty" type="button">+</button>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 mt-2 mt-sm-0">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <span class="text-muted">Precio:</span>
+                          <span class="fw-bold product-price">129.99€</span>
+                        </div>
+                        <div>
+                          <span class="text-muted">Total:</span>
+                          <span class="fw-bold product-total">129.99€</span>
+                        </div>
+                      </div>
+                      <div class="mt-2 text-end">
+                        <button class="btn btn-danger btn-sm remove-product">
+                          <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </div>
+      </div>
+      
+      <!-- Resumen del carrito (derecha) -->
+      <div class="col-md-4 order-md-2 order-1">
+        <div class="sticky-top pt-2">
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              <h3 class="mb-0">Resumen del pedido</h3>
+            </div>
+            <div class="card-body">
+              <div class="alert alert-info" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                El costo de envío se calculará según tu ubicación.
+              </div>
+              
+              <div class="d-flex justify-content-between mb-2">
+                <span>Productos:</span>
+                <span id="totalItems">4</span>
+              </div>
+              
+              <div class="d-flex justify-content-between mb-2">
+                <span>Subtotal:</span>
+                <span id="subtotal">929.96€</span>
+              </div>
+              
+              <div class="d-flex justify-content-between mb-3">
+                <span>Envío:</span>
+                <span id="shipping">Por calcular</span>
+              </div>
+              
+              <hr>
+              
+              <div class="d-flex justify-content-between mb-3 fw-bold">
+                <span>Total:</span>
+                <span id="total">929.96€</span>
+              </div>
+              
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                Finalizar compra
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal de compra -->
+  <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="checkoutModalLabel">Finalizar compra</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="checkoutForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="firstName" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="firstName" required>
+              </div>
+              <div class="col-md-6">
+                <label for="lastName" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="lastName" required>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+              </div>
+              <div class="col-md-6">
+                <label for="phone" class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" id="phone" required>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="province" class="form-label">Provincia</label>
+                <select class="form-select" id="province" required>
+                  <option value="" selected disabled>Selecciona una provincia</option>
+                  <option value="madrid">Madrid</option>
+                  <option value="barcelona">Barcelona</option>
+                  <option value="valencia">Valencia</option>
+                  <option value="sevilla">Sevilla</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="municipality" class="form-label">Municipio</label>
+                <select class="form-select" id="municipality" disabled required>
+                  <option value="" selected disabled>Selecciona primero una provincia</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="address" class="form-label">Dirección</label>
+              <input type="text" class="form-control" id="address" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="details" class="form-label">Detalles adicionales</label>
+              <textarea class="form-control" id="details" rows="2"></textarea>
+            </div>
+            
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5 class="mb-0">Resumen del pedido</h5>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Subtotal:</span>
+                  <span class="modal-subtotal">929.96€</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Envío:</span>
+                  <span class="modal-shipping">5.99€</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between fw-bold">
+                  <span>Total:</span>
+                  <span class="modal-total">935.95€</span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" form="checkoutForm" class="btn btn-primary">Completar compra</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Datos de municipios por provincia
+    const municipalities = {
+      madrid: [
+        { name: 'Madrid', shippingCost: 3.99 },
+        { name: 'Alcalá de Henares', shippingCost: 4.99 },
+        { name: 'Móstoles', shippingCost: 4.99 }
+      ],
+      barcelona: [
+        { name: 'Barcelona', shippingCost: 3.99 },
+        { name: 'Hospitalet de Llobregat', shippingCost: 4.99 },
+        { name: 'Badalona', shippingCost: 4.99 }
+      ],
+      valencia: [
+        { name: 'Valencia', shippingCost: 3.99 },
+        { name: 'Torrent', shippingCost: 5.99 },
+        { name: 'Paterna', shippingCost: 5.99 }
+      ],
+      sevilla: [
+        { name: 'Sevilla', shippingCost: 4.99 },
+        { name: 'Dos Hermanas', shippingCost: 5.99 },
+        { name: 'Alcalá de Guadaíra', shippingCost: 5.99 }
+      ]
+    };
+    
+    // Actualizar municipios cuando cambia la provincia
+    document.getElementById('province').addEventListener('change', function() {
+      const municipalitySelect = document.getElementById('municipality');
+      const selectedProvince = this.value;
+      
+      // Limpiar select de municipios
+      municipalitySelect.innerHTML = '';
+      
+      if (selectedProvince) {
+        municipalitySelect.disabled = false;
+        
+        // Añadir opción por defecto
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        defaultOption.textContent = 'Selecciona un municipio';
+        municipalitySelect.appendChild(defaultOption);
+        
+        // Añadir municipios de la provincia seleccionada
+        municipalities[selectedProvince].forEach(muni => {
+          const option = document.createElement('option');
+          option.value = muni.name.toLowerCase().replace(/\s+/g, '-');
+          option.textContent = muni.name;
+          option.dataset.shippingCost = muni.shippingCost;
+          municipalitySelect.appendChild(option);
+        });
+      } else {
+        municipalitySelect.disabled = true;
+      }
+    });
+    
+    // Actualizar costo de envío cuando cambia el municipio
+    document.getElementById('municipality').addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      const shippingCost = selectedOption.dataset.shippingCost;
+      
+      if (shippingCost) {
+        document.querySelector('.modal-shipping').textContent = `${shippingCost}€`;
+        
+        // Actualizar total
+        const subtotal = parseFloat(document.querySelector('.modal-subtotal').textContent);
+        const total = subtotal + parseFloat(shippingCost);
+        document.querySelector('.modal-total').textContent = `${total.toFixed(2)}€`;
+      }
+    });
+    
+    // Funcionalidad para aumentar/disminuir cantidad
+    document.querySelectorAll('.increase-qty').forEach(button => {
+      button.addEventListener('click', function() {
+        const input = this.parentElement.querySelector('.product-qty');
+        input.value = parseInt(input.value) + 1;
+        updateProductTotal(this);
+        updateCartSummary();
+      });
+    });
+    
+    document.querySelectorAll('.decrease-qty').forEach(button => {
+      button.addEventListener('click', function() {
+        const input = this.parentElement.querySelector('.product-qty');
+        if (parseInt(input.value) > 1) {
+          input.value = parseInt(input.value) - 1;
+          updateProductTotal(this);
+          updateCartSummary();
+        }
+      });
+    });
+    
+    // Actualizar total del producto cuando cambia la cantidad
+    document.querySelectorAll('.product-qty').forEach(input => {
+      input.addEventListener('change', function() {
+        if (parseInt(this.value) < 1) {
+          this.value = 1;
+        }
+        updateProductTotal(this);
+        updateCartSummary();
+      });
+    });
+    
+    // Eliminar producto
+    document.querySelectorAll('.remove-product').forEach(button => {
+      button.addEventListener('click', function() {
+        this.closest('.card').remove();
+        updateCartSummary();
+      });
+    });
+    
+    // Seleccionar productos
+    document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const deleteSelectedBtn = document.getElementById('deleteSelected');
+        const checkedBoxes = document.querySelectorAll('.product-checkbox:checked');
+        
+        deleteSelectedBtn.disabled = checkedBoxes.length === 0;
+      });
+    });
+    
+    // Eliminar productos seleccionados
+    document.getElementById('deleteSelected').addEventListener('click', function() {
+      document.querySelectorAll('.product-checkbox:checked').forEach(checkbox => {
+        checkbox.closest('.card').remove();
+      });
+      
+      this.disabled = true;
+      updateCartSummary();
+    });
+    
+    // Función para actualizar el total de un producto
+    function updateProductTotal(element) {
+      const card = element.closest('.card');
+      const qty = parseInt(card.querySelector('.product-qty').value);
+      const price = parseFloat(card.querySelector('.product-price').textContent);
+      const totalElement = card.querySelector('.product-total');
+      
+      const total = qty * price;
+      totalElement.textContent = `${total.toFixed(2)}€`;
+    }
+    
+    // Función para actualizar el resumen del carrito
+    function updateCartSummary() {
+      let totalItems = 0;
+      let subtotal = 0;
+      
+      document.querySelectorAll('.product-qty').forEach(input => {
+        totalItems += parseInt(input.value);
+      });
+      
+      document.querySelectorAll('.product-total').forEach(element => {
+        subtotal += parseFloat(element.textContent);
+      });
+      
+      document.getElementById('totalItems').textContent = totalItems;
+      document.getElementById('subtotal').textContent = `${subtotal.toFixed(2)}€`;
+      document.getElementById('total').textContent = `${subtotal.toFixed(2)}€`;
+      
+      // Actualizar también en el modal
+      document.querySelector('.modal-subtotal').textContent = `${subtotal.toFixed(2)}€`;
+      
+      // Si hay un municipio seleccionado, actualizar el total con el envío
+      const municipalitySelect = document.getElementById('municipality');
+      if (municipalitySelect.selectedIndex > 0) {
+        const shippingCost = parseFloat(municipalitySelect.options[municipalitySelect.selectedIndex].dataset.shippingCost);
+        const total = subtotal + shippingCost;
+        document.querySelector('.modal-total').textContent = `${total.toFixed(2)}€`;
+      } else {
+        document.querySelector('.modal-total').textContent = `${subtotal.toFixed(2)}€`;
+      }
+    }
+    
+    // Inicializar
+    updateCartSummary();
+    
+    // Validación del formulario
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      if (this.checkValidity()) {
+        alert('¡Pedido realizado con éxito!');
+        document.getElementById('checkoutModal').querySelector('.btn-close').click();
+      } else {
+        this.reportValidity();
+      }
+    });
+  </script>
+{% endblock %}
