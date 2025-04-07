@@ -38,6 +38,12 @@ def cart(request):
 def profile(request):
     return render(request,"auth/profile.html")
 
+def best_seller(request):
+    return render(request,"store/best_seller.html")
+
+def most_viewed(request):
+    return render(request,"store/most_viewed.html")
+
 def dashboard_callback(request, context):
     context.update(random_data())
     return context
