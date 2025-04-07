@@ -328,3 +328,9 @@
     width: 24px;
     height: 24px;
 }
+
+/*Contact*/
+.character-counter {
+  text-align: right;
+  font-size: 0.8rem;
+}

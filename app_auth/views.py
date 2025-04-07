@@ -44,6 +44,9 @@ def best_seller(request):
 def most_viewed(request):
     return render(request,"store/most_viewed.html")
 
+def contact(request):
+    return render(request,"store/contact.html")
+
 def dashboard_callback(request, context):
     context.update(random_data())
     return context
