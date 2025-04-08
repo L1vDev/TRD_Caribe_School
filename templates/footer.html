@@ -6,18 +6,17 @@
           <h5 class="mb-3 fw-bold">TRD-CARIBE</h5>
           <p class="mb-1"><i class="bi bi-telephone me-2"></i>+53 55555555</p>
           <p class="mb-3"><i class="bi bi-envelope me-2"></i>trdcaribe@gmail.com</p>
-          <button class="btn btn-outline-light rounded-pill px-4">Contáctenos</button>
+          <a href="{% url 'contact' %}" class="btn btn-outline-light rounded-pill px-4">Contáctenos</a>
         </div>
         
         <!-- Main Links -->
         <div class="col-md-4">
           <h5 class="mb-3">Enlaces</h5>
           <ul class="list-unstyled">
-            <li class="mb-2"><a href="#" class="text-decoration-none text-light">Inicio</a></li>
-            <li class="mb-2"><a href="#" class="text-decoration-none text-light">Carrito</a></li>
+            <li class="mb-2"><a href="{% url 'index' %}" class="text-decoration-none text-light">Inicio</a></li>
+            <li class="mb-2"><a href="{% url 'cart' %}" class="text-decoration-none text-light">Carrito</a></li>
             <li class="mb-2"><a href="#" class="text-decoration-none text-light">Favoritos</a></li>
-            <li class="mb-2"><a href="#" class="text-decoration-none text-light">Preguntas Frecuentes</a></li>
-            <li class="mb-2"><a href="#" class="text-decoration-none text-light">Documentos Legales</a></li>
+            <li class="mb-2"><a href="{% url 'terms-and-conditions' %}" class="text-decoration-none text-light">Términos y Condiciones</a></li>
           </ul>
         </div>
         

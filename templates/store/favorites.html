@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<p class="res-text" style="margin-left: 5vw;">FAVORITOS</p>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2" style="padding: 0 5vw;">
+    <div class="col">
+      <div class="card h-100 shadow-sm rounded-3">
+        <div class="product-img-container">
+        <span class="product-badge badge bg-success small py-1 px-2">Nuevo</span>
+        <img src="{% static 'img/product/3ec334a1-126d-4cdd-acf2-7d6be5933f5f.png' %}" class="card-img-top" alt="Café Orgánico">
+      </div>
+      <div class="card-body p-2">
+        <h6 class="card-title fw-bold mb-1 text-truncate">Café Orgánico Premium</h6>
+        <div class="mb-1 small">
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-half text-warning"></i>
+        <small class="text-muted ms-1">4.5</small>
+      </div>
+      <p class="card-text small text-muted mb-2 card-text-truncate">Café de especialidad cultivado en altura con notas
+        de chocolate.</p>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="small text-muted">250g</span>
+        <span class="fw-bold">$12.99</span>
+      </div>
+    </div>
+    <div class="card-footer bg-white p-2 border-top-0">
+      <div class="d-grid gap-2">
+        <a href="{% url 'product-details' %}" class="btn btn-primary btn-sm">
+          <i class="bi bi-cart-plus"></i> Añadir
+        </a>
+        <button class="btn btn-danger btn-sm">
+          <i class="bi bi-trash"></i> Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Producto en Oferta -->
+<div class="col">
+  <div class="card h-100 shadow-sm rounded-3">
+    <div class="product-img-container">
+      <span class="product-badge badge bg-danger small py-1 px-2">Oferta</span>
+      <img src="{% static 'img/product/39e9e6bc-e013-4522-afe1-3add749e9d31.png' %}" class="card-img-top" alt="Aceite de Oliva">
+    </div>
+    <div class="card-body p-2">
+      <h6 class="card-title fw-bold mb-1 text-truncate">Aceite de Oliva Extra Virgen</h6>
+      <div class="mb-1 small">
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star text-warning"></i>
+        <small class="text-muted ms-1">4.0</small>
+      </div>
+      <p class="card-text small text-muted mb-2 card-text-truncate">Aceite de primera prensada en frío, ideal para
+        ensaladas.</p>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="small text-muted">500ml</span>
+        <div class="text-end">
+          <small class="text-decoration-line-through text-muted d-block">$24.99</small>
+          <span class="fw-bold text-danger">$19.99</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer bg-white p-2 border-top-0">
+      <div class="d-grid gap-2">
+        <a href="{% url 'product-details' %}" class="btn btn-primary btn-sm">
+          <i class="bi bi-cart-plus"></i> Añadir
+        </a>
+        <button class="btn btn-danger btn-sm">
+          <i class="bi bi-trash"></i> Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Producto Agotado -->
+<div class="col">
+  <div class="card h-100 shadow-sm rounded-3">
+    <div class="product-img-container">
+      <span class="product-badge badge bg-secondary small py-1 px-2">Agotado</span>
+      <img src="{% static 'img/product/0352d1ea-9f66-4b77-87fc-66e47a50310c.png' %}" class="card-img-top opacity-50" alt="Miel de Lavanda">
+    </div>
+    <div class="card-body p-2">
+      <h6 class="card-title fw-bold mb-1 text-truncate">Miel de Lavanda</h6>
+      <div class="mb-1 small">
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-fill text-warning"></i>
+        <i class="bi bi-star-fill text-warning"></i>
+        <small class="text-muted ms-1">5.0</small>
+      </div>
+      <p class="card-text small text-muted mb-2 card-text-truncate">Miel artesanal con suaves notas florales de lavanda.
+      </p>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="small text-muted">350g</span>
+        <span class="fw-bold">$15.50</span>
+      </div>
+    </div>
+    <div class="card-footer bg-white p-2 border-top-0">
+      <div class="d-grid gap-2">
+        <a href="{% url 'product-details' %}" class="btn btn-secondary btn-sm" disabled>
+          <i class="bi bi-x-circle"></i> Agotado
+        </a>
+        <button class="btn btn-danger btn-sm" disabled>
+          <i class="bi bi-trash"></i> Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}

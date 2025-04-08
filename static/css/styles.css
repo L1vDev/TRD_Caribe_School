@@ -4,6 +4,14 @@
     border-radius: 60px;
 }
 
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.quantity-input:focus{
+    box-shadow: 0 0 0 0 !important;
+}
+
 .custom-form:focus{
     box-shadow: 0 0 0 0 !important;
 }
@@ -264,6 +272,7 @@
 
   /*cart.html*/
   .product-name {
+    text-decoration: none !important;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;

@@ -48,7 +48,7 @@
             <span class="rating"><i class="bi bi-star-fill"></i></span>
             <span class="rating"><i class="bi bi-star-fill"></i></span>
             <span class="rating-empty"><i class="bi bi-star"></i></span>
-            <span class="ms-2 text-muted small">4.0 (24 reviews)</span>
+            <span class="ms-2 text-muted small">4.0 (24 reseñas)</span>
           </div>
           <div class="vr mx-2 h-100"></div>
           <div class="d-flex align-items-center views-counter" id="views-counter">
@@ -80,19 +80,22 @@
         <!-- Social Actions -->
         <div class="d-flex gap-2 mb-4">
           <button class="btn btn-outline-secondary d-flex align-items-center">
-            <i class="bi bi-heart me-2"></i> Add to Wishlist
+            <i class="bi bi-heart me-2"></i> Añadir a Favoritos
           </button>
           <button class="btn btn-outline-secondary d-flex align-items-center">
-            <i class="bi bi-share me-2"></i> Share
+            <i class="bi bi-share me-2"></i> Compartir
           </button>
         </div>
 
         <!-- Botón de Añadir al Carrito (Simplificado) -->
         <div class="mt-4">
           <!-- Botón normal y con descuento -->
-          <button class="btn btn-warning btn-lg w-100 d-flex align-items-center justify-content-center" id="btn-add-to-cart">
+          <button class="btn btn-warning btn-lg w-100 d-flex align-items-center justify-content-center mb-3" id="btn-add-to-cart">
             <i class="bi bi-cart me-2"></i> Añadir al Carrito
           </button>
+          <a href="{% url 'cart' %}" class="btn btn-secondary btn-lg w-100 d-flex align-items-center justify-content-center" id="btn-add-to-cart">
+            </i> Ir al Carrito
+          </a>
           
           <!-- Botón para producto agotado -->
           <!-- <button class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center d-none" id="btn-soldout" disabled>
@@ -106,10 +109,10 @@
     <div class="mt-5">
       <ul class="nav nav-tabs" id="productTabs" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
+          <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Descripción</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Reviews (24)</button>
+          <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Reseñas (24)</button>
         </li>
       </ul>
       <div class="tab-content pt-4" id="productTabsContent">
@@ -210,7 +213,6 @@
                     <span class="text-muted small">· 2 months ago</span>
                   </div>
                 </div>
-                <button class="btn btn-sm btn-link text-muted">Report</button>
               </div>
               <p>
                 Great chair for the price. Very comfortable for long work sessions and the lumbar support is excellent. Assembly was straightforward and took about 20 minutes.
@@ -219,7 +221,6 @@
                 <button class="btn btn-sm btn-outline-secondary btn-like" data-likes="3">
                   <i class="bi bi-hand-thumbs-up me-1"></i> Me gusta (3)
                 </button>
-                <button class="btn btn-sm btn-link text-muted">Reply</button>
               </div>
             </div>
             <hr>
@@ -240,7 +241,6 @@
                     <span class="text-muted small">· 1 month ago</span>
                   </div>
                 </div>
-                <button class="btn btn-sm btn-link text-muted">Report</button>
               </div>
               <p>
                 This chair exceeded my expectations! The build quality is excellent and it's incredibly comfortable. I've been using it for 8+ hour workdays and have noticed a significant reduction in back pain.
@@ -249,7 +249,6 @@
                 <button class="btn btn-sm btn-outline-secondary btn-like" data-likes="3">
                   <i class="bi bi-hand-thumbs-up me-1"></i> Me gusta (3)
                 </button>
-                <button class="btn btn-sm btn-link text-muted">Reply</button>
               </div>
             </div>
             <hr>
@@ -270,7 +269,6 @@
                     <span class="text-muted small">· 3 weeks ago</span>
                   </div>
                 </div>
-                <button class="btn btn-sm btn-link text-muted">Report</button>
               </div>
               <p>
                 The chair is decent for the price, but I found the armrests to be a bit wobbly. The lumbar support is good, but I wish the seat cushion was a bit thicker for longer sitting sessions.
@@ -279,7 +277,6 @@
                 <button class="btn btn-sm btn-outline-secondary btn-like" data-likes="3">
                   <i class="bi bi-hand-thumbs-up me-1"></i> Me gusta (3)
                 </button>
-                <button class="btn btn-sm btn-link text-muted">Reply</button>
               </div>
             </div>
           </div>
@@ -415,7 +412,7 @@
             <button class="btn btn-outline-secondary" type="button" id="modal-btn-minus">
               <i class="bi bi-dash"></i>
             </button>
-            <input type="text" class="form-control text-center" value="1" id="modal-quantity">
+            <input type="number" class="form-control text-center quantity-input" value="1" id="modal-quantity">
             <button class="btn btn-outline-secondary" type="button" id="modal-btn-plus">
               <i class="bi bi-plus"></i>
             </button>

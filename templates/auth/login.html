@@ -31,7 +31,7 @@
         
         <div class="row">
           <div class="col-md-6 d-grid mb-3">
-            <button type="button" class="btn btn-outline-secondary">Cancelar</button>
+            <a href="{% url 'index' %}" type="button" class="btn btn-outline-secondary">Cancelar</a>
           </div>
           <div class="col-md-6 d-grid mb-3">
             <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
@@ -40,7 +40,7 @@
         
         <div class="text-center">
           <p class="mb-0"><a href="#" class="text-decoration-none">¿Ha olvidado la contraseña?</a></p>
-          <p>¿No tiene una cuenta? <a href="#" class="text-decoration-none">Crear cuenta</a></p>
+          <p>¿No tiene una cuenta? <a href="{% url 'register' %}" class="text-decoration-none">Crear cuenta</a></p>
         </div>
         
         {% if form.errors %}

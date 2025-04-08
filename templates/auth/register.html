@@ -71,7 +71,7 @@
                   <!-- Buttons for navigation -->
                   <div class="row mt-4">
                       <div class="col-md-6 d-grid mb-3">
-                          <a href="/" class="btn btn-outline-secondary">Volver</a>
+                          <a href="{% url 'index' %}" class="btn btn-outline-secondary">Volver</a>
                       </div>
                       <div class="col-md-6 d-grid mb-3">
                           <button type="button" class="btn btn-primary" id="nextStep">Siguiente</button>
@@ -80,7 +80,7 @@
               
                   <!-- Link to login -->
                   <div class="text-center mt-3">
-                      <p>¿Ya tienes una cuenta? <a href="/login" class="text-primary">Inicia sesión</a></p>
+                      <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}" class="text-primary">Inicia sesión</a></p>
                   </div>
               </div>
 

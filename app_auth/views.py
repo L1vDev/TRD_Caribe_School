@@ -50,6 +50,12 @@ def contact(request):
 def invoice_list(request):
     return render(request,"store/invoice.html")
 
+def terms_and_conditions(request):
+    return render(request,"store/terms.html")
+
+def favorites(request):
+    return render(request,"store/favorites.html")
+
 def dashboard_callback(request, context):
     context.update(random_data())
     return context

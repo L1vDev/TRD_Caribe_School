@@ -9,16 +9,16 @@
         {# Category Filter Select#}
         <div class="mx-2" style="max-width: 120px;">
           <select class="form-select text-truncate custom-form" style="background-color: rgb(78, 78, 78);" id="floatingSelect">
-            <option value="all_categories" selected>Todass lass cateegiras</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            <option value="all_categories" selected>Todas</option>
+            <option value="1">Alimentos</option>
+            <option value="2">Bebidas</option>
+            <option value="3">Electrodomésticos</option>
           </select>
         </div>
 
         {# Search Bar #}
         <form class="d-flex input-group flex-grow-1" role="search">
-          <input class="form-control bg-white border border-0 text-black custom-form" style="max-width: 600px;" type="search" placeholder="Search" aria-label="Search">
+          <input class="form-control bg-white border border-0 text-black custom-form" style="max-width: 600px;" type="search" placeholder="Buscar Producto" aria-label="Buscar Producto">
           <button class="btn bg-white border border-0 text-black" type="submit"><i class="bi bi-search"></i></button>
         </form>
       </div>
@@ -35,23 +35,23 @@
         </div>
         <div class="offcanvas-body">
           <div class="list-group ms-1">
-            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-envelope-fill mx-3"></i>Contactenos</a>
-            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-currency-dollar mx-3"></i>Mas Vendidos</a>
-            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-tag-fill mx-3"></i>Mas Vistos</a>
-            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-receipt mx-3"></i>Mis Compras</a>
-            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-box-arrow-right mx-3"></i>Cerrar Sesion</a>
-            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-file-earmark-text-fill mx-3"></i>Documentos Legales</a>
+            <a href="{% url 'contact' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-envelope-fill mx-3"></i>Contáctenos</a>
+            <a href="{% url 'best-seller' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-currency-dollar mx-3"></i>Más Vendidos</a>
+            <a href="{% url 'most-viewed' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-tag-fill mx-3"></i>Más Vistos</a>
+            <a href="{% url 'invoice-list' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-receipt mx-3"></i>Mis Compras</a>
+            <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-box-arrow-right mx-3"></i>Cerrar Sesión</a>
+            <a href="{% url 'terms-and-conditions' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-file-earmark-text-fill mx-3"></i>Términos y Condiciones</a>
             <a href="#" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-file-earmark-person-fill mx-3"></i>Manual de Usuario</a>
           </div>
           <hr class="text-dark"/>
           <div class="list-group ms-1 text-dark">
-            <span class="d-flex list-group-item px-0 bg-white text-dark border border-0 h6">Contactenos a:</span>
+            <span class="d-flex list-group-item px-0 bg-white text-dark border border-0 h6">Contáctenos a:</span>
             <span class="d-flex list-group-item px-0 bg-white text-dark border border-0 h6"><i class="bi bi-telephone-fill mx-2"></i>+55 555555</span>
             <span class="d-flex list-group-item px-0 bg-white text-dark border border-0 h6"><i class="bi bi-envelope-fill mx-2"></i>trdcaribe@gmail.com</span>
           </div>
           <div class="list-group ms-1 text-dark">
             <span class="d-flex list-group-item px-0 bg-white text-dark border border-0 h6">Tu opinión cuenta</span>
-            <button class="btn btn-warning text-dark" style="width: fit-content;"><span class="h6">Dejar Comentario</span></button>
+            <a href="{% url 'contact' %}" class="btn btn-warning text-dark" style="width: fit-content;"><span class="h6">Dejar Comentario</span></a>
           </div>
         </div>
       </div>
@@ -62,13 +62,13 @@
           <a href="{% url 'index' %}" id="subline" class="btn menu-button"><i class="bi bi-house-door-fill h4"></i></a>
         </li>
         <li class="nav-item nav-link">
-          <a href="{% url 'index' %}" id="subline" class="btn menu-button"><i class="bi bi-heart-fill h4"></i></a>
+          <a href="{% url 'favorites' %}" id="subline" class="btn menu-button"><i class="bi bi-heart-fill h4"></i></a>
         </li>
         <li class="nav-item nav-link">
-          <a href="{% url 'index' %}" id="subline" class="btn menu-button"><i class="bi bi-person-circle h4"></i></a>
+          <a href="{% url 'profile' %}" id="subline" class="btn menu-button"><i class="bi bi-person-circle h4"></i></a>
         </li>
         <li class="nav-item nav-link">
-          <a type="button" class="btn menu-button position-relative">
+          <a href="{% url 'cart' %}" type="button" class="btn menu-button position-relative">
             <i class="bi bi-cart-fill h4"></i>
             <span class="position-absolute start-90 translate-middle badge rounded-pill bg-danger" style="top:7px;font-size:0.7rem">
               99+
@@ -89,10 +89,10 @@
         <!-- Category Filter Select -->
         <div class="mx-2" style="max-width: 120px;">
           <select class="form-select text-truncate bg-white text-dark custom-form border border-0" id="floatingSelect">
-            <option value="all_categories" selected>Todas las categorías</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            <option value="all_categories" selected>Todas</option>
+            <option value="1">Alimentos</option>
+            <option value="2">Bebidas</option>
+            <option value="3">Electrodomésticos</option>
           </select>
         </div>
 
