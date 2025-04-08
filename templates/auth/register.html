@@ -3,125 +3,204 @@
 {% block content %}
 <div class="container py-2">
     <div class="row justify-content-center">
-      <div class="col-md-8">
-        <!-- Welcome text and registration header -->
-        <div class="text-center mb-4">
-          <h2 class="text-primary mb-4">REGISTRARSE</h2>
+        <div class="col-md-6"> <!-- Cambiado de col-md-8 a col-md-6 para reducir el ancho -->
+            <!-- Welcome text and registration header -->
+            <div class="text-center mb-4">
+                <h2 class="text-primary mb-4">REGISTRARSE</h2>
+            </div>
+
+            <!-- Step indicators -->
+            <div class="d-flex justify-content-center mb-4">
+                <div class="step-indicator">
+                    <span id="indicator-step-1" class="badge bg-primary register-badge">1</span>
+                    <span class="text-muted">Información de cuenta</span>
+                </div>
+                <div class="mx-3 align-self-center">
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+                <div class="step-indicator">
+                    <span id="indicator-step-2" class="badge bg-secondary register-badge">2</span>
+                    <span class="text-muted">Información personal</span>
+                </div>
+            </div>
+
+            <!-- Multi-step registration form -->
+            <form method="POST" class="needs-validation" id="registrationForm" novalidate>
+                {% csrf_token %}
+                {% if form.errors %}
+                <div class="alert alert-danger mt-3">
+                    <p>Hubo errores en el formulario. Por favor, corríjalos e intente nuevamente.</p>
+                </div>
+                {% for error in form.errors %}
+                <div class="alert alert-danger mt-3">
+                  <p>{{error}}</p>
+              </div>
+              {% endfor %}
+                {% endif %}
+
+                <!-- Step 1: Email and Password -->
+                <div id="step-1" class="step">
+                  <div class="mb-3">
+                      <label for="email" class="form-label">Correo electrónico</label>
+                      <input type="email" class="form-control auth-form" id="email" name="email" placeholder="Correo electrónico" required>
+                      <div class="invalid-feedback">Por favor, ingrese un correo electrónico válido.</div>
+                  </div>
+              
+                  <div class="mb-3 position-relative">
+                      <label for="password" class="form-label">Contraseña</label>
+                      <div class="input-group">
+                          <input type="password" class="form-control auth-form border border-end-0" id="password" name="password" placeholder="Contraseña" required>
+                          <button type="button" class="btn border border-start-0" id="togglePassword">
+                              <i class="bi bi-eye"></i>
+                          </button>
+                      </div>
+                      <div class="invalid-feedback">Por favor, ingrese una contraseña.</div>
+                  </div>
+              
+                  <div class="mb-3 position-relative">
+                      <label for="confirm_password" class="form-label">Confirmar contraseña</label>
+                      <div class="input-group">
+                          <input type="password" class="form-control auth-form border border-end-0" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" required>
+                          <button type="button" class="btn border border-start-0" id="toggleConfirmPassword">
+                              <i class="bi bi-eye"></i>
+                          </button>
+                      </div>
+                      <div class="invalid-feedback">Las contraseñas no coinciden.</div>
+                  </div>
+              
+                  <!-- Buttons for navigation -->
+                  <div class="row mt-4">
+                      <div class="col-md-6 d-grid mb-3">
+                          <a href="/" class="btn btn-outline-secondary">Volver</a>
+                      </div>
+                      <div class="col-md-6 d-grid mb-3">
+                          <button type="button" class="btn btn-primary" id="nextStep">Siguiente</button>
+                      </div>
+                  </div>
+              
+                  <!-- Link to login -->
+                  <div class="text-center mt-3">
+                      <p>¿Ya tienes una cuenta? <a href="/login" class="text-primary">Inicia sesión</a></p>
+                  </div>
+              </div>
+
+                <!-- Step 2: Personal Information -->
+                <div id="step-2" class="step d-none">
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">Nombre</label>
+                        <input type="text" class="form-control auth-form" id="first_name" name="first_name" placeholder="Nombre" required>
+                        <div class="invalid-feedback">Por favor, ingrese su nombre.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Apellido</label>
+                        <input type="text" class="form-control auth-form" id="last_name" name="last_name" placeholder="Apellido" required>
+                        <div class="invalid-feedback">Por favor, ingrese su apellido.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Número de teléfono</label>
+                        <input type="tel" class="form-control auth-form" id="phone_number" name="phone_number" placeholder="Número de teléfono" pattern="^\+?[0-9]{10,15}$" required>
+                        <div class="invalid-feedback">Por favor, ingrese un número de teléfono válido.</div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                        <label class="form-check-label" for="terms">
+                            Acepto los <a href="/terms" target="_blank">términos y condiciones</a>.
+                        </label>
+                        <div class="invalid-feedback">Debe aceptar los términos y condiciones para continuar.</div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6 d-grid mb-3">
+                            <button type="button" class="btn btn-outline-secondary" id="prevStep">Anterior</button>
+                        </div>
+                        <div class="col-md-6 d-grid mb-3">
+                            <button type="submit" class="btn btn-primary">Registrarse</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-        
-        <!-- Registration form with floating labels -->
-        <form method="POST" class="needs-validation" style="margin: 0 5vw;">
-          {% csrf_token %}
-          {% if form.errors %}
-          <div class="alert alert-danger mt-3">
-            <p>Hubo errores en el formulario. Por favor, corríjalos e intente nuevamente.</p>
-          </div>
-          {% endif %}
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Nombre" required>
-                <label for="first_name">Nombre</label>
-                <div class="invalid-feedback">Por favor, ingrese su nombre.</div>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Apellido" required>
-                <label for="last_name">Apellido</label>
-                <div class="invalid-feedback">Por favor, ingrese su apellido.</div>
-            </div>
-          
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="dni_number" name="dni_number" placeholder="Número de DNI" required>
-            <label for="dni_number">Número de DNI</label>
-            <div class="invalid-feedback">Por favor, ingrese un número de DNI válido.</div>
-          </div>
-          
-          <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
-            <label for="email">Correo electrónico</label>
-            <div class="invalid-feedback">Por favor, ingrese un correo electrónico válido.</div>
-          </div>
-          
-          <div class="form-floating mb-3">
-            <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Número de teléfono" required>
-            <label for="phone_number">Número de teléfono</label>
-            <div class="invalid-feedback">Por favor, ingrese un número de teléfono válido.</div>
-          </div>
-          
-          <div class="form-floating mb-3">
-            <input class="form-control" id="address" name="address" placeholder="Dirección" required>
-            <label for="address">Dirección</label>
-            <div class="invalid-feedback">Por favor, ingrese su dirección.</div>
-          </div>
-          
-          <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
-            <label for="password">Contraseña</label>
-            <div class="invalid-feedback">Por favor, ingrese una contraseña.</div>
-          </div>
-          
-          <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" required>
-            <label for="confirm_password">Confirmar contraseña</label>
-            <div class="invalid-feedback">Las contraseñas no coinciden.</div>
-          </div>
-          
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
-            <label class="form-check-label" for="terms">Acepto los términos y condiciones</label>
-            <div class="invalid-feedback">Debe aceptar los términos y condiciones para continuar.</div>
-          </div>
-          
-          <div class="row mt-4">
-            <div class="col-md-6 d-grid mb-3">
-              <button type="button" class="btn btn-outline-secondary">Cancelar</button>
-            </div>
-            <div class="col-md-6 d-grid mb-3">
-              <button type="submit" class="btn btn-primary">Registrarse</button>
-            </div>
-          </div>
-          
-          <div class="text-center">
-            <p>¿Ya tiene una cuenta? <a href="#" class="text-decoration-none">Inicie sesión</a></p>
-          </div>
-        </form>
-      </div>
     </div>
-  </div>
-  
-  <script>
-    // Form validation script
+</div>
+
+<script>
     (function() {
-      'use strict';
-      
-      // Fetch all forms we want to apply validation styles to
-      var forms = document.querySelectorAll('.needs-validation');
-      
-      // Password confirmation validation
-      var password = document.getElementById("password");
-      var confirmPassword = document.getElementById("confirm_password");
-      
-      function validatePassword() {
-        if (password.value != confirmPassword.value) {
-          confirmPassword.setCustomValidity("Las contraseñas no coinciden");
-        } else {
-          confirmPassword.setCustomValidity("");
+        'use strict';
+
+        // Form validation and step navigation
+        const form = document.getElementById('registrationForm');
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const nextStep = document.getElementById('nextStep');
+        const prevStep = document.getElementById('prevStep');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm_password');
+        const togglePassword = document.getElementById('togglePassword');
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const indicatorStep1 = document.getElementById('indicator-step-1');
+        const indicatorStep2 = document.getElementById('indicator-step-2');
+
+        // Toggle password visibility
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('bi-eye');
+            this.querySelector('i').classList.toggle('bi-eye-slash');
+        });
+
+        toggleConfirmPassword.addEventListener('click', function() {
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('bi-eye');
+            this.querySelector('i').classList.toggle('bi-eye-slash');
+        });
+
+        // Validate password match
+        function validatePassword() {
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity("Las contraseñas no coinciden");
+            } else {
+                confirmPassword.setCustomValidity("");
+            }
         }
-      }
-      
-      if (password && confirmPassword) {
-        password.addEventListener("change", validatePassword);
-        confirmPassword.addEventListener("keyup", validatePassword);
-      }
-      
-      // Loop over forms and prevent submission if invalid
-      Array.prototype.slice.call(forms).forEach(function(form) {
+
+        if (password && confirmPassword) {
+            password.addEventListener("change", validatePassword);
+            confirmPassword.addEventListener("keyup", validatePassword);
+        }
+
+        // Navigate to the next step
+        nextStep.addEventListener('click', function() {
+            if (step1.querySelectorAll(':invalid').length === 0) {
+                step1.classList.add('d-none');
+                step2.classList.remove('d-none');
+                indicatorStep1.classList.replace('bg-primary', 'bg-secondary');
+                indicatorStep2.classList.replace('bg-secondary', 'bg-primary');
+            } else {
+                step1.classList.add('was-validated');
+            }
+        });
+
+        // Navigate to the previous step
+        prevStep.addEventListener('click', function() {
+            step2.classList.add('d-none');
+            step1.classList.remove('d-none');
+            indicatorStep2.classList.replace('bg-primary', 'bg-secondary');
+            indicatorStep1.classList.replace('bg-secondary', 'bg-primary');
+        });
+
+        // Form submission validation
         form.addEventListener('submit', function(event) {
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-          form.classList.add('was-validated');
-        }, false);
-      });
+            if (step2.querySelectorAll(':invalid').length > 0) {
+                event.preventDefault();
+                event.stopPropagation();
+                step2.classList.add('was-validated');
+            }
+        });
     })();
-  </script>
+</script>
 {% endblock %}

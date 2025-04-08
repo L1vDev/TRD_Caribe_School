@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <h4 class="mb-4 text-secondary">Historial de Compras</h4>
+    
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="bg-white">
+                    <tr>
+                        <th class="border-bottom">Factura</th>
+                        <th class="border-bottom">Fecha</th>
+                        <th class="border-bottom text-center">Estado</th>
+                        <th class="border-bottom text-center">Descargar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="uuid-text">8f7d6c5e-4b3a-2d1c-9f8e-7d6c5b4a3f2e</span></td>
+                        <td>
+                            <span class="date-long">Lunes, 3 de marzo de 2025</span>
+                            <span class="date-short">03/03/2025</span>
+                            <div class="text-muted small">11:18</div>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill bg-warning">Pendiente</span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-light">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="uuid-text">2e3f4d5c-6b7a-8d9e-1f2c-3b4a5d6e7f8c</span></td>
+                        <td>
+                            <span class="date-long">Martes, 25 de febrero de 2025</span>
+                            <span class="date-short">25/02/2025</span>
+                            <div class="text-muted small">09:05</div>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill bg-danger">Cancelado</span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-light">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="uuid-text">1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d</span></td>
+                        <td>
+                            <span class="date-long">Martes, 25 de febrero de 2025</span>
+                            <span class="date-short">25/02/2025</span>
+                            <div class="text-muted small">01:09</div>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill bg-success">Procesado</span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-light">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="uuid-text">9d8c7b6a-5f4e-3d2c-1b0a-9f8e7d6c5b4a</span></td>
+                        <td>
+                            <span class="date-long">Miércoles, 19 de febrero de 2025</span>
+                            <span class="date-short">19/02/2025</span>
+                            <div class="text-muted small">11:19</div>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill bg-success">Procesado</span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-light">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="uuid-text">5e4d3c2b-1a0f-9e8d-7c6b-5a4f3e2d1c0b</span></td>
+                        <td>
+                            <span class="date-long">Martes, 18 de febrero de 2025</span>
+                            <span class="date-short">18/02/2025</span>
+                            <div class="text-muted small">12:02</div>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill bg-success">Procesado</span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-light">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Paginación con clases nativas de Bootstrap -->
+    <nav aria-label="Navegación de páginas" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}

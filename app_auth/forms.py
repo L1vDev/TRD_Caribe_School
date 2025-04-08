@@ -9,7 +9,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["dni_number","email","first_name","last_name","phone_number","address"]
+        fields = ["email","first_name","last_name","phone_number","address"]
 
     def clean_email(self):
         email = self.cleaned_data.get('email').lower()
@@ -19,17 +19,6 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError("Ya existe un usuario registrado con este correo electrónico")
         return email
     
-    def clean_dni_number(self):
-        dni_number = self.cleaned_data.get('dni_number')
-        print("Cleaning DNI")
-        if not dni_number.isdigit() or len(dni_number) != 11:
-            print("DNI is not valid")
-            raise forms.ValidationError("El DNI debe ser una cadena de 11 dígitos numéricos.")
-        if User.objects.filter(dni_number__iexact=dni_number).exists():
-            print("DNI exists")
-            raise forms.ValidationError("Ya existe un usuario registrado con este DNI")
-        return dni_number
-
     def clean_terms(self):
         terms = self.cleaned_data.get('terms')
         if not terms:

@@ -24,16 +24,16 @@ class UsersAdmin(UserAdmin, ModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     change_password_form = AdminPasswordChangeForm
-    list_display = ['email',"display_full_name","dni_number","display_is_email_verified","created_at"]
+    list_display = ['email',"display_full_name","display_is_email_verified","created_at"]
     list_display_links = ["email"]
     readonly_fields=["is_email_verified"]
-    search_fields = ['email','first_name','last_name','dni_number']
+    search_fields = ['email','first_name','last_name']
     ordering=["email"]
     fieldsets = (
         (
             _("Información personal"),
             {
-                "fields": ("email", "password",( "first_name", "last_name"), "dni_number","phone_number","address"),
+                "fields": ("email", "password",( "first_name", "last_name"),"phone_number","address"),
                 "classes": ["tab"],
             },
         ),
@@ -53,7 +53,7 @@ class UsersAdmin(UserAdmin, ModelAdmin):
         }),
         (_("Información Personal"),{
             "classes": ["tab"],
-            "fields":(("first_name", "last_name"),"dni_number","address","phone_number","is_staff","is_superuser"),
+            "fields":(("first_name", "last_name"),"address","phone_number","is_staff","is_superuser"),
         })
     )
     filter_horizontal = ('groups', 'user_permissions')
@@ -102,15 +102,15 @@ class WorkerAdmin(UserAdmin, ModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     change_password_form = AdminPasswordChangeForm
-    list_display = ['email',"display_full_name","dni_number","display_is_email_verified","created_at","display_superuser"]
+    list_display = ['email',"display_full_name","display_is_email_verified","created_at","display_superuser"]
     list_display_links = ["email"]
     readonly_fields=["is_email_verified"]
-    search_fields = ['email','first_name','last_name','dni_number']
+    search_fields = ['email','first_name','last_name']
     fieldsets = (
         (
             _("Información personal"),
             {
-                "fields": ("email", "password",( "first_name", "last_name"), "dni_number","phone_number","address"),
+                "fields": ("email", "password",( "first_name", "last_name"),"phone_number","address"),
                 "classes": ["tab"],
             },
         ),
@@ -130,7 +130,7 @@ class WorkerAdmin(UserAdmin, ModelAdmin):
         }),
         (_("Información Personal"),{
             "classes": ["tab"],
-            "fields":(("first_name", "last_name"),"dni_number","address","phone_number","is_staff","is_superuser"),
+            "fields":(("first_name", "last_name"),"address","phone_number","is_staff","is_superuser"),
         })
     )
     filter_horizontal = ('groups', 'user_permissions')

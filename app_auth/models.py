@@ -22,7 +22,6 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     id=models.CharField(primary_key=True, default=uuid.uuid4, editable=False)
-    dni_number = models.CharField(verbose_name="Carnet de Identidad",unique=True, validators=[RegexValidator(r'^\d{11}$',message="El DNI debe ser una cadena de 11 dígitos numéricos.")])
     email = models.EmailField(verbose_name="Correo Electrónico",unique=True)
     first_name = models.CharField(verbose_name="Nombre")
     last_name = models.CharField(verbose_name="Apellidos")
@@ -30,7 +29,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     #profile_picture
     #province
     #municipality
-    address = models.CharField(verbose_name="Dirección Particular")
+    address = models.CharField(verbose_name="Dirección Particular", null=True,blank=True)
     created_at = models.DateTimeField(verbose_name="Creado",auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="Actualizado",auto_now=True)
     is_email_verified = models.BooleanField(verbose_name="Correo Verificado",default=False)
@@ -39,7 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(verbose_name="Superusuario",default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name','last_name','dni_number','address']
+    REQUIRED_FIELDS = ['first_name','last_name','address']
 
     objects = CustomUserManager()
 

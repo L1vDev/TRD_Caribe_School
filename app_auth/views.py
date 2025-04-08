@@ -47,6 +47,9 @@ def most_viewed(request):
 def contact(request):
     return render(request,"store/contact.html")
 
+def invoice_list(request):
+    return render(request,"store/invoice.html")
+
 def dashboard_callback(request, context):
     context.update(random_data())
     return context
