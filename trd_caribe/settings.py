@@ -169,6 +169,54 @@ UNFOLD = {
                 ],
             },
             {
+                "title": _("Configuración"),
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Localizaciones"),
+                        "icon": "location_on",
+                        "link": reverse_lazy("admin:app_config_province_changelist"),
+                    },
+                    {
+                        "title": _("Quejas y Sugerencias"),
+                        "icon": "person_alert",
+                        "link": reverse_lazy("admin:app_config_contactrequest_changelist"),
+                    }
+                ],
+            },
+            {
+                "title": _("Productos"),
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Productos"),
+                        "icon": "package_2",
+                        "link": reverse_lazy("admin:app_products_products_changelist"),
+                    },
+                    {
+                        "title": _("Categorías"),
+                        "icon": "category",
+                        "link": reverse_lazy("admin:app_products_category_changelist"),
+                    },
+                    {
+                        "title": _("Reseñas"),
+                        "icon": "reviews",
+                        "link": reverse_lazy("admin:app_products_reviews_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Tienda"),
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Facturas"),
+                        "icon": "receipt_long",
+                        "link": reverse_lazy("admin:app_store_invoices_changelist"),
+                    },
+                ],
+            },
+            {
                 "title": _("Usuarios & Grupos"),
                 "collapsible": True,
                 "items": [

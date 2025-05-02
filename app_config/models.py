@@ -28,7 +28,7 @@ class ContactRequest(models.Model):
     first_name = models.CharField(verbose_name="Nombre")
     last_name = models.CharField(verbose_name="Apellidos")
     email = models.EmailField(verbose_name="Correo Electrónico")
-    phone = models.CharField(verbose_name="Teléfono", blank=True, null=True,validators=[RegexValidator(regex=r'^\+\d{10,15}$', message="Introduzca un número de teléfono válido.")])
+    phone_number = models.CharField(verbose_name="Teléfono", blank=True, null=True,validators=[RegexValidator(regex=r'^\+\d{10,15}$', message="Introduzca un número de teléfono válido.")])
     message = models.TextField(verbose_name="Mensaje")
     created_at = models.DateTimeField(auto_now_add=True,verbose_name="Fecha de Solicitud")
     answered = models.BooleanField(default=False, verbose_name="Atendida")

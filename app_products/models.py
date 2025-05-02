@@ -25,7 +25,7 @@ class Products(models.Model):
     stock=models.PositiveIntegerField(verbose_name="Stock",default=0)
     views=models.PositiveIntegerField(verbose_name="Vistas",default=0)
     purchases=models.PositiveIntegerField(verbose_name="Compras",default=0)
-    public=models.BooleanField(verbose_name="Público",default=False)
+    available=models.BooleanField(verbose_name="Disponible",default=False)
     created_at=models.DateTimeField(auto_now_add=True,verbose_name="Fecha de Creación")
 
     def __str__(self):
