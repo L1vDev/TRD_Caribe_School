@@ -33,7 +33,7 @@ class UsersAdmin(UserAdmin, ModelAdmin):
         (
             _("Información personal"),
             {
-                "fields": ("email", "password",( "first_name", "last_name"),"phone_number","address"),
+                "fields": ("email", "password",( "first_name", "last_name"),"phone_number"),
                 "classes": ["tab"],
             },
         ),
@@ -53,7 +53,7 @@ class UsersAdmin(UserAdmin, ModelAdmin):
         }),
         (_("Información Personal"),{
             "classes": ["tab"],
-            "fields":(("first_name", "last_name"),"address","phone_number","is_staff","is_superuser"),
+            "fields":(("first_name", "last_name"),"phone_number","is_staff","is_superuser"),
         })
     )
     filter_horizontal = ('groups', 'user_permissions')
@@ -110,7 +110,7 @@ class WorkerAdmin(UserAdmin, ModelAdmin):
         (
             _("Información personal"),
             {
-                "fields": ("email", "password",( "first_name", "last_name"),"phone_number","address"),
+                "fields": ("email", "password",( "first_name", "last_name"),"phone_number"),
                 "classes": ["tab"],
             },
         ),
@@ -130,7 +130,7 @@ class WorkerAdmin(UserAdmin, ModelAdmin):
         }),
         (_("Información Personal"),{
             "classes": ["tab"],
-            "fields":(("first_name", "last_name"),"address","phone_number","is_staff","is_superuser"),
+            "fields":(("first_name", "last_name"),"phone_number","is_staff","is_superuser"),
         })
     )
     filter_horizontal = ('groups', 'user_permissions')

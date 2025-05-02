@@ -2,6 +2,7 @@ from typing import Iterable
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.core.validators import RegexValidator
+from app_auth.utils import get_unique_filename
 import uuid
 
 class CustomUserManager(BaseUserManager):
@@ -26,19 +27,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(verbose_name="Nombre")
     last_name = models.CharField(verbose_name="Apellidos")
     phone_number = models.CharField(verbose_name="Teléfono",blank=True, null=True, validators=[RegexValidator(regex=r'^\+\d{10,15}$',message="Introduzca un número de teléfono válido.")])
-    #profile_picture
-    #province
-    #municipality
-    address = models.CharField(verbose_name="Dirección Particular", null=True,blank=True)
-    created_at = models.DateTimeField(verbose_name="Creado",auto_now_add=True)
-    updated_at = models.DateTimeField(verbose_name="Actualizado",auto_now=True)
+    profile_picture= models.ImageField(verbose_name="Foto de Perfil",upload_to=get_unique_filename,null=True,blank=True)
+    created_at = models.DateTimeField(verbose_name="Fecha de Creado",auto_now_add=True)
     is_email_verified = models.BooleanField(verbose_name="Correo Verificado",default=False)
     is_active = models.BooleanField(verbose_name="Activo",default=True)
     is_staff = models.BooleanField(verbose_name="Staff",default=False)
     is_superuser = models.BooleanField(verbose_name="Superusuario",default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name','last_name','address']
+    REQUIRED_FIELDS = ['first_name','last_name']
 
     objects = CustomUserManager()
 
