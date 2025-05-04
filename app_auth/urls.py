@@ -12,7 +12,7 @@ urlpatterns=[
     path("products/best-seller/",best_seller,name="best-seller"),
     path("contact/",contact,name="contact"),
     path("invoice/",invoice_list,name="invoice-list"),
-    path("terms-and-conditions/",terms_and_conditions,name="terms-and-conditions"),
+    path("terms/",terms_and_conditions,name="terms-and-conditions"),
     path("favorites/",favorites,name="favorites"),
     #path("/login/",LoginView,name="login"),
 ]

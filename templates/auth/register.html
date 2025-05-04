@@ -1,5 +1,5 @@
 {% extends 'auth/authbase.html' %}
-
+{% load static %}
 {% block content %}
 <div class="container py-2">
     <div class="row justify-content-center">
@@ -54,7 +54,7 @@
                               <i class="bi bi-eye"></i>
                           </button>
                       </div>
-                      <div class="invalid-feedback">Por favor, ingrese una contraseña.</div>
+                      <div class="error-message text-danger" id="passwordError"></div>
                   </div>
               
                   <div class="mb-3 position-relative">
@@ -65,7 +65,7 @@
                               <i class="bi bi-eye"></i>
                           </button>
                       </div>
-                      <div class="invalid-feedback">Las contraseñas no coinciden.</div>
+                      <div class="error-message text-danger" id="confirmPasswordError"></div>
                   </div>
               
                   <!-- Buttons for navigation -->
@@ -127,80 +127,7 @@
     </div>
 </div>
 
-<script>
-    (function() {
-        'use strict';
 
-        // Form validation and step navigation
-        const form = document.getElementById('registrationForm');
-        const step1 = document.getElementById('step-1');
-        const step2 = document.getElementById('step-2');
-        const nextStep = document.getElementById('nextStep');
-        const prevStep = document.getElementById('prevStep');
-        const password = document.getElementById('password');
-        const confirmPassword = document.getElementById('confirm_password');
-        const togglePassword = document.getElementById('togglePassword');
-        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-        const indicatorStep1 = document.getElementById('indicator-step-1');
-        const indicatorStep2 = document.getElementById('indicator-step-2');
+<script src="{% static 'js/register.js' %}"></script>
 
-        // Toggle password visibility
-        togglePassword.addEventListener('click', function() {
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            this.querySelector('i').classList.toggle('bi-eye');
-            this.querySelector('i').classList.toggle('bi-eye-slash');
-        });
-
-        toggleConfirmPassword.addEventListener('click', function() {
-            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmPassword.setAttribute('type', type);
-            this.querySelector('i').classList.toggle('bi-eye');
-            this.querySelector('i').classList.toggle('bi-eye-slash');
-        });
-
-        // Validate password match
-        function validatePassword() {
-            if (password.value !== confirmPassword.value) {
-                confirmPassword.setCustomValidity("Las contraseñas no coinciden");
-            } else {
-                confirmPassword.setCustomValidity("");
-            }
-        }
-
-        if (password && confirmPassword) {
-            password.addEventListener("change", validatePassword);
-            confirmPassword.addEventListener("keyup", validatePassword);
-        }
-
-        // Navigate to the next step
-        nextStep.addEventListener('click', function() {
-            if (step1.querySelectorAll(':invalid').length === 0) {
-                step1.classList.add('d-none');
-                step2.classList.remove('d-none');
-                indicatorStep1.classList.replace('bg-primary', 'bg-secondary');
-                indicatorStep2.classList.replace('bg-secondary', 'bg-primary');
-            } else {
-                step1.classList.add('was-validated');
-            }
-        });
-
-        // Navigate to the previous step
-        prevStep.addEventListener('click', function() {
-            step2.classList.add('d-none');
-            step1.classList.remove('d-none');
-            indicatorStep2.classList.replace('bg-primary', 'bg-secondary');
-            indicatorStep1.classList.replace('bg-secondary', 'bg-primary');
-        });
-
-        // Form submission validation
-        form.addEventListener('submit', function(event) {
-            if (step2.querySelectorAll(':invalid').length > 0) {
-                event.preventDefault();
-                event.stopPropagation();
-                step2.classList.add('was-validated');
-            }
-        });
-    })();
-</script>
 {% endblock %}

@@ -1,0 +1,21 @@
+.auth-form:focus {
+  box-shadow: 0 0 0 0 !important;
+}
+
+.register-badge {
+  border-radius: 15px !important;
+  font-size: 1.1rem !important;
+}
+
+
+@media (min-width: 0px) {
+  .relative-body {
+    margin-top: 120px;
+  }
+}
+
+@media (min-width: 992px) {
+  .relative-body {
+    margin-top: 80px;
+  }
+}

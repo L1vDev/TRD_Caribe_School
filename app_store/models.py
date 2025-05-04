@@ -19,6 +19,7 @@ class Invoices(models.Model):
     province=models.CharField(verbose_name="Provincia",max_length=100)
     municipality=models.CharField(verbose_name="Municipio",max_length=100)
     address=models.CharField(verbose_name="Dirección",max_length=255)
+    #Add delivery details
     delivery_price=models.DecimalField(verbose_name="Precio de Entrega",max_digits=10, decimal_places=2, default=0.00, validators=[MinValueValidator(0.00)])
     status=models.CharField(verbose_name="Estado",max_length=50,default='Pendiente',choices=STATUS_CHOICES)
     invoice_file=models.FileField(verbose_name="Archivo de Factura", upload_to="invoices/")

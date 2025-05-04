@@ -1,5 +1,5 @@
 {% extends 'auth/authbase.html' %}
-
+{% load static %}
 {% block content %}
 <div class="container py-2">
   <div class="row justify-content-center">
@@ -53,33 +53,7 @@
   </div>
 </div>
 
-<script>
-  // Form validation script
-  (function() {
-    'use strict';
-    
-    // Fetch all forms we want to apply validation styles to
-    var forms = document.querySelectorAll('.needs-validation');
-    const togglePassword = document.getElementById('togglePassword');
-
-    togglePassword.addEventListener('click', function() {
-      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-      password.setAttribute('type', type);
-      this.querySelector('i').classList.toggle('bi-eye');
-      this.querySelector('i').classList.toggle('bi-eye-slash');
-    });
-
-    
-    // Loop over forms and prevent submission if invalid
-    Array.prototype.slice.call(forms).forEach(function(form) {
-      form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    });
-  })();
-</script>
+{% block script %}
+<script src="{% static 'js/login.js' %}"></script>
+{% endblock script %}
 {% endblock %}

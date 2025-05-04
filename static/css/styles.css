@@ -343,13 +343,3 @@ input[type=number] {
   text-align: right;
   font-size: 0.8rem;
 }
-
-/* Register and Login */
-.auth-form:focus {
-  box-shadow: 0 0 0 0 !important;
-}
-
-.register-badge{
-  border-radius: 15px !important;
-  font-size: 1.1rem !important;
-}
