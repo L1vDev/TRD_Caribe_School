@@ -27,16 +27,17 @@
             <!-- Multi-step registration form -->
             <form method="POST" class="needs-validation" id="registrationForm" novalidate>
                 {% csrf_token %}
-                {% if form.errors %}
-                <div class="alert alert-danger mt-3">
-                    <p>Hubo errores en el formulario. Por favor, corríjalos e intente nuevamente.</p>
+                <div class="mb-3">
+                    {% if form.errors %}
+                    {% for field in form %}
+                    {% if field.errors %}
+                    <div class="text-danger">
+                    {{ field.errors|striptags }}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
                 </div>
-                {% for error in form.errors %}
-                <div class="alert alert-danger mt-3">
-                  <p>{{error}}</p>
-              </div>
-              {% endfor %}
-                {% endif %}
 
                 <!-- Step 1: Email and Password -->
                 <div id="step-1" class="step">

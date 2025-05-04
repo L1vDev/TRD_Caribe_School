@@ -9,6 +9,12 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from app_auth.forms import RegisterForm
 from django.views.generic import CreateView
+from django.views import View
+from django.contrib.auth import login
+from app_auth.utils import generate_token,verify_token, send_verification_email
+from django.urls import reverse
+from django.shortcuts import redirect
+from app_auth.models import User
 
 def initial_view(request):
     return render(request,"index.html")
@@ -19,12 +25,35 @@ def register_view(request):
 class RegisterView(CreateView):
     template_name = 'auth/register.html'
     form_class = RegisterForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('verify-email-alert')
 
     def form_valid(self, form):
         user = form.save()
-        print("Registered user")
+        token=generate_token(user)
+        domain = self.request.get_host()  
+        scheme = 'https' if self.request.is_secure() else 'http' 
+        verification_url = f"{scheme}://{domain}{reverse('verify-email', kwargs={'token': token})}"
+        send_verification_email(user, verification_url)
         return super().form_valid(form)
+    
+def verify_email_alert(request):
+    return render(request, 'auth/verify_email.html')
+
+def verify_email_view(request, token):
+    payload, is_valid = verify_token(token)
+    if is_valid:
+        print("is_valid")
+        user_email = payload.get('user_email')
+        user=User.objects.get(email=user_email) 
+        if user is None:
+            return render(request, 'auth/email_verification_failed.html')
+        print(f"user:{user.email}")
+        user.is_email_verified = True
+        user.save()
+        login(request, user)
+        return redirect('index')
+    else:
+        return render(request, 'auth/email_verification_failed.html')
 
 def login_view(request):
     return render(request,"auth/login.html")

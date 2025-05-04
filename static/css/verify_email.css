@@ -1,0 +1,42 @@
+body {
+    background-color: #f8f9fa;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.verification-card {
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+.icon-container {
+    font-size: 5rem;
+    color: #0d6efd;
+    margin-bottom: 1.5rem;
+}
+.verification-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+.verification-text {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+.spam-alert {
+    border-left: 4px solid #ffc107;
+}
+.login-btn {
+    padding: 10px 30px;
+    font-weight: 500;
+}
+.info-box {
+    background-color: #f1f8ff;
+    border-left: 4px solid #0d6efd;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}

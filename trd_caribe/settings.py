@@ -100,6 +100,15 @@ DATABASES={
     }
 }
 
+#Email config
+EMAIL_BACKEND = config("EMAIL_BACKEND")
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')  
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD') 
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL=config('DEFAULT_FROM_EMAIL',EMAIL_HOST_USER)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -150,6 +159,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SITE_NAME = "TRD Caribe"
 
 UNFOLD = {
     "SITE_TITLE": "TRD Caribe",
