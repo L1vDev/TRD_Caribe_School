@@ -7,10 +7,10 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from app_auth.forms import RegisterForm
+from app_auth.forms import RegisterForm, LoginForm
 from django.views.generic import CreateView
 from django.views import View
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate, logout
 from app_auth.utils import generate_token,verify_token, send_verification_email
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -54,9 +54,43 @@ def verify_email_view(request, token):
         return redirect('index')
     else:
         return render(request, 'auth/email_verification_failed.html')
+    
+class LoginView(View):
+    template_name="auth/login.html"
+    form_class=LoginForm
 
-def login_view(request):
-    return render(request,"auth/login.html")
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+    def post(self,request,*args,**kwargs):
+        try:
+            form=self.form_class(request.POST)
+            if form.is_valid():
+                email=form.cleaned_data['email']
+                password=form.cleaned_data['password']
+                try:
+                    user=User.objects.get(email=email)
+                    user=authenticate(request, username=user.email,password=password)
+                    if user is not None:
+                        if not user.is_email_verified:
+                            token=generate_token(user)
+                            domain = request.get_host()  
+                            scheme = 'https' if request.is_secure() else 'http' 
+                            verification_url = f"{scheme}://{domain}{reverse('verify-email', kwargs={'token': token})}"
+                            send_verification_email(user, verification_url)
+                            return render(request, self.template_name,{'error':'Email por verificar. Revise su bandeja de entrada.'})
+                        login(request,user)
+                        return redirect('index')
+                except User.DoesNotExist:
+                    print("user does not exist")
+                    return render(request, self.template_name,{'error':'Credenciales Inválidas'})
+        except Exception as e:
+            print(str(e))
+        return render(request, self.template_name,{'error':'Credenciales Inválidas'})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 def product_detail(request):
     return render(request,"store/products.html")

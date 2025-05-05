@@ -1,12 +1,13 @@
 from django.urls import path
-from app_auth.views import initial_view, RegisterView,verify_email_alert,verify_email_view, login_view, product_detail, cart,profile, best_seller, most_viewed, contact, invoice_list, terms_and_conditions, favorites
+from app_auth.views import initial_view, RegisterView,verify_email_alert,verify_email_view, LoginView,logout_view, product_detail, cart,profile, best_seller, most_viewed, contact, invoice_list, terms_and_conditions, favorites
 
 urlpatterns=[
     path("", initial_view,name="index"),
     path("register/",RegisterView.as_view(),name="register"),
     path("verify-email/",verify_email_alert,name="verify-email-alert"),
     path("verify-email/<str:token>/",verify_email_view,name="verify-email"),
-    path("login/",login_view,name="login"),
+    path("login/",LoginView.as_view(),name="login"),
+    path("logout/",logout_view,name="logout"),
     path("product-details/",product_detail,name="product-details"),
     path("cart/", cart, name="cart"),
     path("profile/", profile, name="profile"),
