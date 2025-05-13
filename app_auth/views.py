@@ -7,11 +7,11 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from app_auth.forms import RegisterForm, LoginForm
+from app_auth.forms import RegisterForm, LoginForm, ResetPasswordForm
 from django.views.generic import CreateView
 from django.views import View
 from django.contrib.auth import login, authenticate, logout
-from app_auth.utils import generate_token,verify_token, send_verification_email
+from app_auth.utils import generate_token,verify_token, send_verification_email, send_reset_password_email
 from django.urls import reverse
 from django.shortcuts import redirect
 from app_auth.models import User
@@ -39,6 +39,9 @@ class RegisterView(CreateView):
 def verify_email_alert(request):
     return render(request, 'auth/verify_email.html')
 
+def verify_email_failed(request):
+    return render(request, 'auth/email_verification_failed.html')
+
 def verify_email_view(request, token):
     payload, is_valid = verify_token(token)
     if is_valid:
@@ -46,14 +49,14 @@ def verify_email_view(request, token):
         user_email = payload.get('user_email')
         user=User.objects.get(email=user_email) 
         if user is None:
-            return render(request, 'auth/email_verification_failed.html')
+            return redirect("verify-email-failed")
         print(f"user:{user.email}")
         user.is_email_verified = True
         user.save()
         login(request, user)
         return redirect('index')
     else:
-        return render(request, 'auth/email_verification_failed.html')
+        return redirect("verify-email-failed")
     
 class LoginView(View):
     template_name="auth/login.html"
@@ -84,6 +87,17 @@ class LoginView(View):
                 except User.DoesNotExist:
                     print("user does not exist")
                     return render(request, self.template_name,{'error':'Credenciales Inválidas'})
+            elif request.POST.get('forgot_password_email'):
+                email=request.POST.get('forgot_password_email')
+                user=User.objects.filter(email=email).first()
+                if not user:
+                    return render(request, self.template_name,{'error':'No existe una cuenta con este correo electrónico.'})
+                token=generate_token(user)
+                domain = request.get_host()  
+                scheme = 'https' if request.is_secure() else 'http' 
+                verification_url = f"{scheme}://{domain}{reverse('reset-password', kwargs={'token': token})}"
+                send_reset_password_email(user, verification_url)
+                return redirect('reset-password-alert')
         except Exception as e:
             print(str(e))
         return render(request, self.template_name,{'error':'Credenciales Inválidas'})
@@ -91,6 +105,49 @@ class LoginView(View):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def reset_password_email_alert(request):
+    return render(request, 'auth/reset_password_email.html')
+
+def reset_password_email_failed(request):
+    return render(request, 'auth/reset_password_failed.html')
+
+class ResetPasswordView(View):
+    template_name='auth/reset_password_form.html'
+    form_class=ResetPasswordForm
+
+    def get(self, request, token, *args, **kwargs):
+        payload, is_valid=verify_token(token)
+        if is_valid:
+            user=User.objects.filter(email=payload["user_email"]).first()
+            if not user:
+                return redirect('reset-password-failed')
+            return render(request,self.template_name,{"token":token})
+        else:
+            return redirect('reset-password-failed')
+        
+    
+    def post(self, request, token, *args, **kwargs):
+        try:
+            payload, is_valid=verify_token(token)
+            if is_valid:
+                email=payload["user_email"]
+                form=self.form_class(request.POST)
+                if form.is_valid():
+                    new_password=form.cleaned_data['new_password']
+                    try:
+                        user=User.objects.get(email=email)
+                        if user is not None:
+                            user.set_password(new_password)
+                            user.save()
+                        login(request,user)
+                        return redirect('index')
+                    except User.DoesNotExist:
+                        print("user does not exist")
+                        return render(request, self.template_name,{'error':'Ha ocurrido un error al recuperar la contraseña'})
+        except Exception as e:
+            print(str(e))
+        return render(request, self.template_name,{'error':'Ha ocurrido un error al recuperar la contraseña'})
 
 def product_detail(request):
     return render(request,"store/products.html")

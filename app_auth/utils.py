@@ -58,3 +58,20 @@ def send_verification_email(user,url):
     email.attach_alternative(html_content, 'text/html')
     email.send()
     return True
+
+def send_reset_password_email(user,url):
+    subject = f'Reinicia tu contraseña en {settings.SITE_NAME}'
+    context = {
+        "url":url,
+        "user":user,
+        "site_name":settings.SITE_NAME
+    }
+    to_email=[user.email]
+    from_email=settings.DEFAULT_FROM_EMAIL
+    html_content = render_to_string('utils/reset_password.html', context)
+    text_content = strip_tags(html_content)
+    
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, 'text/html')
+    email.send()
+    return True

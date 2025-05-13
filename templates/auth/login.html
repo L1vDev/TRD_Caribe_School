@@ -44,7 +44,9 @@
         </div>
         
         <div class="text-center">
-          <p class="mb-0"><a href="#" class="text-decoration-none">¿Ha olvidado la contraseña?</a></p>
+          <p class="mb-0">
+            <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">¿Ha olvidado la contraseña?</a>
+          </p>
           <p>¿No tiene una cuenta? <a href="{% url 'register' %}" class="text-decoration-none">Crear cuenta</a></p>
         </div>
         
@@ -53,6 +55,37 @@
           <p>Correo electrónico o contraseña incorrectos. Por favor, intente nuevamente.</p>
         </div>
         {% endif %}
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para recuperar contraseña -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="forgotPasswordModalLabel">Recuperar Contraseña</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="POST" id="forgot-password-form" class="needs-validation" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          {% if forgot_password_error %}
+          <div class="alert alert-danger" role="alert">
+            {{ forgot_password_error }}
+          </div>
+          {% endif %}
+          <div class="mb-3">
+            <label for="forgot-email" class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control auth-form" id="forgot-email" name="forgot_password_email" placeholder="Ingrese su correo electrónico" required>
+            <div class="invalid-feedback">Por favor, ingrese un correo electrónico válido.</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
       </form>
     </div>
   </div>

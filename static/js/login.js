@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Fetch all forms we want to apply validation styles to
   const form = document.getElementById('login-form');
   const togglePassword = document.getElementById('togglePassword');
-
+  const forgotPassword= document.getElementById('forgotPasswordModal')
   const email=document.getElementById("email");
 
   email.addEventListener("keyup",()=>{
@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', function () {
     password.setAttribute('type', type);
     this.querySelector('i').classList.toggle('bi-eye');
     this.querySelector('i').classList.toggle('bi-eye-slash');
+  });
+
+  forgotPassword.addEventListener('shown.bs.modal', function () {
+    document.getElementById('forgot-email').focus();
   });
 
   form.addEventListener('submit', function (event) {
