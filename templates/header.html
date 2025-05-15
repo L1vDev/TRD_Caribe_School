@@ -9,6 +9,7 @@
     <link rel="application/text" href="{% static 'js/bootstrap.min.js' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block static %}{% endblock %}
 </head>
 <body class="hold-transition layout-top-nav">
         {% include "navbar.html" %}

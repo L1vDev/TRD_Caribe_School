@@ -11,6 +11,7 @@ from app_auth.forms import RegisterForm, LoginForm, ResetPasswordForm
 from django.views.generic import CreateView
 from django.views import View
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from app_auth.utils import generate_token,verify_token, send_verification_email, send_reset_password_email
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -148,6 +149,63 @@ class ResetPasswordView(View):
         except Exception as e:
             print(str(e))
         return render(request, self.template_name,{'error':'Ha ocurrido un error al recuperar la contraseña'})
+
+class ProfileView(LoginRequiredMixin, View):
+    template_name="auth/profile.html"
+
+    def get(self, request, *args, **kwargs):
+        user=request.user
+        context={
+            "first_name":user.first_name,
+            "last_name":user.last_name,
+            "email":user.email,
+            "phone_number":user.phone_number,
+            "profile_picture":user.profile_picture.url if user.profile_picture else None
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        user=request.user
+        error=""
+        if "delete_account" in request.POST:
+            user.delete()
+            logout(request)
+            return redirect("index")
+        elif "change_password" in request.POST:
+            old_password=request.POST.get("current_password")
+            new_password=request.POST.get("new_password")
+            confirm_password=request.POST.get("confirm_password")
+            if user.check_password(old_password):
+                if new_password==confirm_password:
+                    user.set_password(new_password)
+                    user.save()
+                    login(request,user)
+                else:
+                    error="Las contraseñas no coinciden."
+            else:
+                error="Su contraseña actual es incorrecta."
+        elif "remove_picture" in request.POST:
+            user.profile_picture=None
+        else:
+            user.first_name=request.POST.get("first_name")
+            user.last_name=request.POST.get("last_name")
+            user.phone_number=request.POST.get("phone_number")
+            if "profile_picture" in request.FILES:
+                profile_picture = request.FILES["profile_picture"]
+                user.profile_picture.save(profile_picture.name, profile_picture, save=False)
+        user.save()
+        context={
+            "first_name":user.first_name,
+            "last_name":user.last_name,
+            "email":user.email,
+            "phone_number":user.phone_number,
+            "profile_picture":user.profile_picture.url if user.profile_picture else None,
+        }
+        if error:
+            context["errors"]=error
+        else:
+            context["success"]="Perfil actualizado correctamente"
+        return render(request, self.template_name, context)
 
 def product_detail(request):
     return render(request,"store/products.html")

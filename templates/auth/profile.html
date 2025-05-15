@@ -1,48 +1,85 @@
 {% extends '../base.html' %}
 {% load static %}
 
+{% block static %}
+{% endblock %}
+
 {% block content %}
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-6">
 
-            <form>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="profile-picture d-flex justify-content-center align-items-center mx-auto mb-4 position-relative">
-                    <img id="profileImage" src="{% static 'img/logo.png' %}" alt="Profile Picture" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                    <label for="profilePictureInput" class="edit-badge rounded-circle d-flex justify-content-center align-items-center position-absolute" style="bottom: 0; right: 0; width: 30px; height: 30px; cursor: pointer;">
+                    <img id="profileImage" 
+                        src="{% if profile_picture %}{{profile_picture}}{% else %}{% static 'img/logo.png' %}{% endif %}" 
+                        alt="Profile Picture" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                    <label for="profilePictureInput" class="edit-badge rounded-circle d-flex justify-content-center align-items-center position-absolute" style="bottom: 0; right: 0px; width: 30px; height: 30px; cursor: pointer;">
                         <i class="bi bi-pencil-fill text-white" style="font-size: 12px;"></i>
                     </label>
-                    <input type="file" id="profilePictureInput" class="d-none" accept="image/*">
+                    <input type="file" id="profilePictureInput" name="profile_picture" class="d-none" accept="image/*">
+                    {% if profile_picture %}
+                    <button type="submit" name="remove_picture" value="1" class="btn btn-danger btn-sm position-absolute" style="bottom: 0; left: 0; width: 30px; height: 30px; border-radius: 50%;" title="Eliminar foto de perfil">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    {% endif %}
+                </div>
+                {% if success %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ success }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endif %}
+                {% if errors %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {% if errors.items %}
+                        <ul class="mb-0">
+                        {% for field, error_list in errors.items %}
+                            {% for error in error_list %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        {{ errors }}
+                    {% endif %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endif %}
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label text-secondary small">Correo electrónico</label>
+                    <input type="email" class="form-control custom-form" id="email" value="{{email}}" disabled readonly>
                 </div>
                 <!-- Name -->
                 <div class="mb-3">
-                    <label for="nombre" class="form-label text-secondary small">Nombre(s)</label>
-                    <input type="text" class="form-control" id="nombre" value="Livan">
+                    <label for="first_name" class="form-label text-secondary small">Nombre(s)</label>
+                    <input type="text" class="form-control custom-form" id="first_name" name="first_name" value="{{first_name}}">
                 </div>
                 
                 <!-- Last Name -->
                 <div class="mb-3">
-                    <label for="apellidos" class="form-label text-secondary small">Apellidos</label>
-                    <input type="text" class="form-control" id="apellidos" value="Rodriguez">
-                </div>
-                
-                <!-- Email -->
-                <div class="mb-3">
-                    <label for="email" class="form-label text-secondary small">Correo electrónico</label>
-                    <input type="email" class="form-control" id="email" value="liv.rguez.twitter@gmail.com">
+                    <label for="last_name" class="form-label text-secondary small">Apellidos</label>
+                    <input type="text" class="form-control custom-form" id="last_name" name="last_name" value="{{last_name}}">
                 </div>
                 
                 <!-- Phone -->
                 <div class="mb-3">
-                    <label for="telefono" class="form-label text-secondary small">Teléfono</label>
+                    <label for="phone_number" class="form-label text-secondary small">Teléfono</label>
                     <div class="input-group">
-                        <input type="tel" class="form-control" id="telefono" value="+53 52735874">
+                        <input type="tel" class="form-control custom-form" id="phone_number" name="phone_number" value="{{phone_number}}">
                     </div>
                 </div>
                 <!-- Buttons -->
                 <div class="d-grid gap-2 mt-4">
                     <button class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Cambiar Contraseña</button>
                     <button class="btn btn-success" type="submit">Guardar Cambios</button>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button class="btn btn-danger" type="submit" name="delete_account" value="1">Eliminar cuenta
+                        </button>
+                    </form>
                 </div>
             </form>
         </div>
@@ -58,13 +95,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="changePasswordForm">
+                <form id="changePasswordForm" method="POST">
+                    {% csrf_token %}
                     <!-- Contraseña Actual -->
                     <div class="mb-3">
                         <label for="currentPassword" class="form-label">Contraseña Actual</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="currentPassword" required>
-                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="currentPassword">
+                            <input type="password" class="form-control custom-form border border-end-0" id="currentPassword" name="current_password" required>
+                            <button class="btn toggle-password border border-start-0" type="button" data-target="currentPassword">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </div>
@@ -74,8 +112,8 @@
                     <div class="mb-3">
                         <label for="newPassword" class="form-label">Nueva Contraseña</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="newPassword" required>
-                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="newPassword">
+                            <input type="password" class="form-control custom-form border border-end-0" id="newPassword" name="new_password" required>
+                            <button class="btn toggle-password border border-start-0" type="button" data-target="newPassword">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </div>
@@ -85,89 +123,23 @@
                     <div class="mb-3">
                         <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="confirmPassword" required>
-                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="confirmPassword">
+                            <input type="password" class="form-control custom-form border border-end-0" id="confirmPassword" name="confirm_password" required>
+                            <button class="btn toggle-password border border-start-0" type="button" data-target="confirmPassword">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </div>
                         <div class="invalid-feedback">Este campo no puede estar vacío.</div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-success" id="changePasswordButton">Cambiar Contraseña</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success" name="change_password" id="changePasswordButton">Cambiar Contraseña</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-<script>
-    document.getElementById('profilePictureInput').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('profileImage').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-</script>
-<script>
-    // Validar campos vacíos y contraseñas coincidentes
-    document.getElementById('changePasswordButton').addEventListener('click', function () {
-        const currentPassword = document.getElementById('currentPassword');
-        const newPassword = document.getElementById('newPassword');
-        const confirmPassword = document.getElementById('confirmPassword');
-        let isValid = true;
 
-        // Validar que los campos no estén vacíos
-        [currentPassword, newPassword, confirmPassword].forEach(field => {
-            if (!field.value.trim()) {
-                field.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                field.classList.remove('is-invalid');
-            }
-        });
-
-        if (!isValid) return;
-
-        // Validar que las contraseñas coincidan
-        if (newPassword.value !== confirmPassword.value) {
-            alert('La nueva contraseña y la confirmación no coinciden.');
-            return;
-        }
-
-        // Aquí puedes enviar los datos al servidor usando fetch o AJAX
-        console.log('Contraseña actual:', currentPassword.value);
-        console.log('Nueva contraseña:', newPassword.value);
-
-        // Cierra el modal después de procesar
-        const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
-        modal.hide();
-
-        alert('Contraseña cambiada exitosamente.');
-    });
-
-    // Mostrar/Ocultar contraseñas
-    document.querySelectorAll('.toggle-password').forEach(button => {
-        button.addEventListener('click', function () {
-            const targetId = this.getAttribute('data-target');
-            const targetInput = document.getElementById(targetId);
-            const icon = this.querySelector('i');
-
-            if (targetInput.type === 'password') {
-                targetInput.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
-            } else {
-                targetInput.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
-            }
-        });
-    });
-</script>
+<script src="{% static 'js/profile.js' %}"></script>
 
 {% endblock %}
