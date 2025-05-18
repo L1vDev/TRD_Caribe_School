@@ -75,3 +75,45 @@ def send_reset_password_email(user,url):
     email.attach_alternative(html_content, 'text/html')
     email.send()
     return True
+
+def send_invoice_email(invoice):
+    try:
+        subject = f'Estado de entrega de pedido en {settings.SITE_NAME}'
+        from_email = settings.DEFAULT_FROM_EMAIL
+        to_email = [invoice.email]
+        if invoice.status == "canceled":
+            email_subject="Su pedido ha sido cancelado"
+            text=f"Tu pedido {invoice.id} ha sido cancelado. Sentimos mucho cualquier molestia ocasionada y quedamos a tu disposición para cualquier consulta o para ayudarte con una nueva compra. Gracias por confiar en nosotros."
+        elif invoice.status == "completed":
+            email_subject="¡Pedido entregado!"
+            text=f"Tu pedido {invoice.id} ha sido entregado con éxito. ¡Gracias por elegirnos! Esperamos verte pronto de nuevo."
+        elif invoice.status == "sended":
+            email_subject="¡Tu pedido está en camino!"
+            text=f"Nos alegra informarte que tu pedido {invoice.id} ya está en camino. Pronto lo tendrás en tus manos. Gracias por comprar con nosotros."
+        else:
+            email_subject="¡Su compra ha sido completada!"
+            text=""
+        context = {
+            'invoice': invoice,
+            'site_name':settings.SITE_NAME,
+            'delivery_message':text,
+            'email_subject': email_subject,
+        }
+
+        html_content = render_to_string('utils/invoice_email.html', context)
+        text_content = strip_tags(html_content)
+    
+        email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+        email.attach_alternative(html_content, "text/html")
+        email.attach(f'{settings.SITE_NAME}-{invoice.first_name} {invoice.last_name}-{invoice.id}.pdf', invoice.invoice_file.file.read(), 'application/pdf')
+        
+        try:
+            email.send()
+            return True
+        except Exception as e:
+            # Log the error or handle it appropriately
+            print(f"Failed to send email: {str(e)}")
+    except Exception as e:
+          print(str(e))
+    
+    return False

@@ -1,0 +1,234 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información de Pedido - TRD Caribe</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333333;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+    
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+    
+        td {
+            padding: 0;
+        }
+    
+        img {
+            border: 0;
+            -ms-interpolation-mode: bicubic;
+            max-width: 100%;
+        }
+    
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+        }
+    
+        .logo-section {
+            text-align: center;
+            padding: 30px 0 15px;
+            background-color: #ffffff;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+    
+        .site-name {
+            font-size: 15px;
+            color: #666666;
+            margin: 10px 0 15px;
+            text-align: center;
+        }
+    
+        .email-subject {
+            background-color: #e63946;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    
+        .content {
+            padding: 30px;
+            text-align: center;
+        }
+    
+        .message {
+            text-align: left;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #444444;
+        }
+    
+        .greeting {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+    
+        .info-card {
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            padding-left: 22px;
+            padding-right: 22px;
+            margin: 20px 0;
+            text-align: left;
+            border-left: 4px solid #e63946;
+        }
+    
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    
+        .info-row {
+            border-bottom: 1px solid #eeeeee;
+        }
+    
+        .info-row:last-child {
+            border-bottom: none;
+        }
+    
+        .info-label {
+            font-weight: bold;
+            color: #555555;
+            padding: 12px 10px 12px 0;
+            width: 20%;
+            vertical-align: top;
+        }
+    
+        .info-value {
+            color: #333333;
+            text-align: right;
+            font-weight: 500;
+            padding: 12px 0 12px 10px;
+            width: 50%;
+            vertical-align: top;
+        }
+    
+        .signature {
+            margin-top: 25px;
+            text-align: left;
+            color: #555555;
+        }
+    
+        .company-name {
+            font-weight: bold;
+            color: #333333;
+        }
+    
+        .footer {
+            background-color: #f8f9fa;
+            padding: 18px;
+            text-align: center;
+            color: #666666;
+            font-size: 12px;
+            border-top: 1px solid #eeeeee;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+    
+        @media only screen and (max-width: 480px) {
+            .container {
+                width: 100% !important;
+                border-radius: 0 !important;
+            }
+    
+            .content {
+                padding: 20px 15px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#f9f9f9">
+        <tr>
+            <td align="center" style="padding: 25px 0;">
+                <table class="container" width="550" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="site-name">
+                            <h1>{{site_name}}</h1>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="email-subject">
+                            {{email_subject}}
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="content">
+                            <div class="message">
+                                <p class="greeting">Estimado/a {{invoice.first_name}} {{invoice.last_name}}:</p>
+                                {% if delivery_message %}
+                                <p>
+                                    {{delivery_message}}
+                                </p>
+                                {% else %}
+                                <p>Queremos agradecerle por su reciente compra en {{site_name}}. Nos complace confirmar que hemos recibido su pedido y está siendo procesado con la mayor atención.</p>
+                                {% endif %}
+                                
+                                <p>A continuación, encontrará los detalles de su compra:</p>
+                            </div>
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                <tr>
+                                    <td class="info-card">
+                                        <table class="info-table" cellpadding="0" cellspacing="0" border="0" width="100%">
+                                            <tr class="info-row">
+                                                <td class="info-label">Nombre:</td>
+                                                <td class="info-value">{{invoice.first_name}} {{invoice.last_name}}</td>
+                                            </tr>
+                                            <tr class="info-row">
+                                                <td class="info-label">Factura:</td>
+                                                <td class="info-value">{{invoice.id}}</td>
+                                            </tr>
+                                            <tr class="info-row">
+                                                <td class="info-label">Fecha:</td>
+                                                <td class="info-value">{{ invoice.created_at|date:"d/m/Y" }}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <div class="message">
+                                <p>Si tiene alguna pregunta o inquietud sobre su compra, no dude en contactarnos a través de nuestros metodos de atención al cliente.</p>
+                                
+                                <p>Valoramos su confianza en nosotros y esperamos que disfrute de sus productos.</p>
+                                
+                                <div class="signature">
+                                    <p>Atentamente,</p>
+                                    <p class="company-name">Equipo de {{site_name}}</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td class="footer">
+                            <p>&copy; {% now "Y" %} {{ site_name }}. Todos los derechos reservados.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

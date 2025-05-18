@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, FileResponse
 import os
 from django.shortcuts import get_object_or_404
+from app_auth.utils import send_invoice_email
         
 class CartView(LoginRequiredMixin,View):
     template_name="store/cart.html"
@@ -94,7 +95,7 @@ class CartView(LoginRequiredMixin,View):
             print(str(e))
             context["error"] = "Ha ocurrido un error al realizar la compra. Por favor, intente de nuevo."
             return render(request, self.template_name, context)
-        
+        send_invoice_email(invoice)
         cart.delete()
         Cart.objects.create(user=user)
         return redirect("order-list")
