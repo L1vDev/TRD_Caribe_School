@@ -6,6 +6,8 @@ from django.db.models import F, Avg, Count, Value, ExpressionWrapper, DecimalFie
 from django.db.models.functions import Coalesce, Round
 from django.utils import timezone
 from django.db.models.functions import Now
+from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class ProductsView(ListView):
     """
@@ -13,7 +15,7 @@ class ProductsView(ListView):
     """
 
     queryset = Products.objects.filter(available=True).annotate(
-        stars=Coalesce(Avg('reviews__rating'), Value(float(0))),
+        stars=Coalesce(Round(Avg('reviews__rating'), 1), Value(float(0))),
         discount_price=Round(
             ExpressionWrapper(
                 F('price') * (1 - F('discount') / 100),
@@ -30,7 +32,7 @@ class ProductsView(ListView):
 
 class MostViewedProductsView(ListView):
     queryset = Products.objects.filter(available=True).annotate(
-        stars=Coalesce(Avg('reviews__rating'), Value(float(0))),
+        stars=Coalesce(Round(Avg('reviews__rating'), 1), Value(float(0))),
         discount_price=Round(
             ExpressionWrapper(
                 F('price') * (1 - F('discount') / 100),
@@ -47,7 +49,7 @@ class MostViewedProductsView(ListView):
 
 class MostPurchasedProductsView(ListView):
     queryset = Products.objects.filter(available=True).annotate(
-        stars=Coalesce(Avg('reviews__rating'), Value(float(0))),
+        stars=Coalesce(Round(Avg('reviews__rating'), 1), Value(float(0))),
         discount_price=Round(
             ExpressionWrapper(
                 F('price') * (1 - F('discount') / 100),
@@ -73,7 +75,7 @@ class ProductDetailsView(ListView):
         """
         context=super(ProductDetailsView, self).get_context_data(**kwargs)
         product= Products.objects.filter(id=self.kwargs.get('pk'), available=True).annotate(
-            stars=Coalesce(Avg('reviews__rating'), Value(float(0))),
+            stars=Coalesce(Round(Avg('reviews__rating'), 1), Value(float(0))),
             discount_price=Round(
                 ExpressionWrapper(
                     F('price') * (1 - F('discount') / 100),
@@ -107,7 +109,7 @@ class ProductDetailsView(ListView):
             available=True,
             category__in=product.category.all()
         ).annotate(
-            stars=Coalesce(Avg('reviews__rating'), Value(float(0))),
+            stars=Coalesce(Round(Avg('reviews__rating'), 1), Value(float(0))),
             discount_price=Round(
                 ExpressionWrapper(
                     F('price') * (1 - F('discount') / 100),
@@ -121,3 +123,19 @@ class ProductDetailsView(ListView):
         context["product"]=product
         context["reviews"]=reviews
         return context
+
+class CreateReviewView(LoginRequiredMixin,View):
+
+    def post(self,request,pk,*args,**kwargs):
+        if request.method=="POST":
+            product=Products.objects.get(pk=pk)
+            user=request.user
+            comment=request.POST.get("comment", "")
+            rating=request.POST.get("rating",5)
+            Reviews.objects.create(
+                product=product,
+                user=user,
+                comment=comment,
+                rating=rating,
+            )
+            return redirect('product-details',pk=pk)

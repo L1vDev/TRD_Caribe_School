@@ -330,7 +330,8 @@
                 <i class="bi bi-star-fill text-warning"></i>
                 {% endif %}
               </div>
-              <span class="text-muted small">({{related.reviews.count}})</span>
+              <span class="text-muted small"> {{related.stars}}</span>
+              <span class="text-muted small"> ({{related.reviews.count}})</span>
             </div>
             {% if related.discount > 0 %}
               <p class="card-text fw-medium mb-0">
@@ -359,6 +360,7 @@
   </div>
 </div>
 </div>
+{% if request.user.is_authenticated %}
 <!-- Modal para Añadir al Carrito -->
 <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -375,16 +377,18 @@
           </div>
           <!-- Información del producto -->
           <div>
-            <h5 class="mb-2">Ergonomic Desk Chair</h5>
+            <h5 class="mb-2">{{product.name}}</h5>
             <!-- Precio normal -->
+            {% if product.discount > 0 %}
             <div id="modal-price-normal">
-              <p class="fw-bold mb-1">$299.99</p>
+              <p class="fw-bold mb-1">${{product.price}}</p>
             </div>
+            {% else %}
             <!-- Precio con descuento -->
-            <div id="modal-price-discount" class="d-none">
-              <p class="fw-bold mb-1 price-discount">$239.99 <span class="price-original small">$299.99</span></p>
+            <div id="modal-price-discount" >
+              <p class="fw-bold mb-1 price-discount">${{product.discount_price}} <span class="price-original small">${{product.price}}</span></p>
             </div>
-            <p class="text-muted small mb-0">Color: <span id="selected-color">Black</span></p>
+            {% endif %}
           </div>
         </div>
         
@@ -414,6 +418,7 @@
     </div>
   </div>
 </div>
+
 <div class="modal fade" id="writeReviewModal" tabindex="-1" aria-labelledby="writeReviewModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -422,7 +427,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="review-form">
+        <form method="POST"  id="review-form" action="{% url 'add-review' pk=product.pk %}">
+          {% csrf_token %}
           <!-- Calificación con estrellas -->
           <div class="mb-4">
             <label class="form-label fw-medium">Calificación</label>
@@ -440,23 +446,24 @@
           <!-- Comentario de la reseña -->
           <div class="mb-3">
             <label for="review-comment" class="form-label fw-medium">Comentario</label>
-            <textarea class="form-control" id="review-comment" rows="4" placeholder="Comparte tu experiencia con este producto" required></textarea>
+            <textarea class="form-control" id="review-comment" name="comment" rows="4" placeholder="Comparte tu experiencia con este producto" required></textarea>
             <div class="invalid-feedback">Por favor, ingresa un comentario.</div>
           </div>
           
           <div class="alert alert-success d-none" id="review-success-message">
             <i class="bi bi-check-circle me-2"></i> ¡Gracias! Tu reseña ha sido enviada correctamente y será publicada después de ser revisada.
           </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-warning" id="submit-review">
+              <i class="bi bi-send me-2"></i> Enviar Reseña
+            </button>
+          </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-warning" id="submit-review">
-          <i class="bi bi-send me-2"></i> Enviar Reseña
-        </button>
       </div>
     </div>
   </div>
 </div>
+{% endif %}
 <script src="{% static 'js/product_details.js' %}"></script>
 {% endblock %}

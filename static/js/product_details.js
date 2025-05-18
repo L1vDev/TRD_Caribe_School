@@ -91,38 +91,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Evento para enviar la reseña
-    submitReviewBtn.addEventListener('click', function () {
+    submitReviewBtn.addEventListener('click', function (event) {
         // Validar el formulario
         const form = document.getElementById('review-form');
         if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
             // Mostrar mensajes de validación
             form.classList.add('was-validated');
             return;
         }
-
-        // Verificar que se haya seleccionado una calificación
-        if (selectedRating.value === '0') {
-            form.classList.add('was-validated');
-            return;
-        }
-
-        // Mostrar mensaje de éxito
-        reviewSuccessMessage.classList.remove('d-none');
-
-        // Deshabilitar el botón temporalmente
-        submitReviewBtn.disabled = true;
-
-        // Simular envío de reseña
-        setTimeout(function () {
-            // Habilitar el botón nuevamente
-            submitReviewBtn.disabled = false;
-
-            // Cerrar el modal después de un breve retraso
-            setTimeout(function () {
-                writeReviewModal.hide();
-                form.classList.remove('was-validated');
-            }, 2000);
-        }, 1500);
     });
 
     // Evento para abrir el modal al hacer clic en "Añadir al Carrito"

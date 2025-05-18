@@ -60,4 +60,3 @@ class Reviews(models.Model):
         verbose_name = 'Reseña'
         verbose_name_plural = 'Reseñas'
         ordering = ['-created_at']
-        unique_together = ('product', 'user')

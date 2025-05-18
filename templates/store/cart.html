@@ -18,7 +18,8 @@
           </div>
           
           <!-- Producto 1 -->
-           <div class="products-container">
+          <div class="products-container">
+            {% for product in products %}
           <div class="card mb-3">
             <div class="card-body">
               <div class="row align-items-center">
@@ -28,10 +29,10 @@
                   </div>
                 </div>
                 <div class="col-auto">
-                  <img src="https://placehold.co/600x600" alt="Producto 1" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
+                  <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}https://placehold.co/600x600{% endif %}" alt="Producto {{product.id}}" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
                 </div>
                 <div class="col">
-                  <a href="{% url 'product-details' %}" class="product-name h5">Smartphone Samsung Galaxy A54 128GB Negro Libre</a>
+                  <a href="{% url 'product-details' pk=product.product_id %}" class="product-name h5">product.product_name</a>
                   <div class="row align-items-center mt-2">
                     <div class="col-sm-6">
                       <div class="input-group input-group-sm" style="max-width: 120px;">
@@ -62,96 +63,7 @@
               </div>
             </div>
           </div>
-          
-          <!-- Producto 2 -->
-          <div class="card mb-3">
-            <div class="card-body">
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <div class="form-check">
-                    <input class="form-check-input product-checkbox" type="checkbox" value="">
-                  </div>
-                </div>
-                <div class="col-auto">
-                  <img src="https://placehold.co/600x600" alt="Producto 2" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
-                </div>
-                <div class="col">
-                  <a href="{% url 'product-details' %}" class="product-name h5">Auriculares Bluetooth Sony WH-1000XM5 con Cancelación de Ruido</a>
-                  <div class="row align-items-center mt-2">
-                    <div class="col-sm-6">
-                      <div class="input-group input-group-sm" style="max-width: 120px;">
-                        <button class="btn btn-outline-secondary decrease-qty" type="button">-</button>
-                        <input type="number" class="form-control text-center product-qty quantity-input" value="2" min="1">
-                        <button class="btn btn-outline-secondary increase-qty" type="button">+</button>
-                      </div>
-                    </div>
-                    <div class="col-sm-6 mt-2 mt-sm-0">
-                      <div class="d-flex justify-content-between">
-                        <div>
-                          <span class="text-muted">Precio:</span>
-                          <span class="fw-bold product-price">249.99€</span>
-                        </div>
-                        <div>
-                          <span class="text-muted">Total:</span>
-                          <span class="fw-bold product-total">499.98€</span>
-                        </div>
-                      </div>
-                      <div class="mt-2 text-end">
-                        <button class="btn btn-danger btn-sm remove-product">
-                          <i class="bi bi-trash"></i> Eliminar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Producto 3 -->
-          <div class="card mb-3">
-            <div class="card-body">
-              <div class="row align-items-center">
-                <div class="col-auto">
-                  <div class="form-check">
-                    <input class="form-check-input product-checkbox" type="checkbox" value="">
-                  </div>
-                </div>
-                <div class="col-auto">
-                  <img src="https://placehold.co/600x600" alt="Producto 3" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
-                </div>
-                <div class="col">
-                  <a href="{% url 'product-details' %}" class="product-name h5">Zapatillas deportivas Nike Air Max 270</a>
-                  <div class="row align-items-center mt-2">
-                    <div class="col-sm-6">
-                      <div class="input-group input-group-sm" style="max-width: 120px;">
-                        <button class="btn btn-outline-secondary decrease-qty" type="button">-</button>
-                        <input type="number" class="form-control text-center product-qty quantity-input" value="1" min="1">
-                        <button class="btn btn-outline-secondary increase-qty" type="button">+</button>
-                      </div>
-                    </div>
-                    <div class="col-sm-6 mt-2 mt-sm-0">
-                      <div class="d-flex justify-content-between">
-                        <div>
-                          <span class="text-muted">Precio:</span>
-                          <span class="fw-bold product-price">129.99€</span>
-                        </div>
-                        <div>
-                          <span class="text-muted">Total:</span>
-                          <span class="fw-bold product-total">129.99€</span>
-                        </div>
-                      </div>
-                      <div class="mt-2 text-end">
-                        <button class="btn btn-danger btn-sm remove-product">
-                          <i class="bi bi-trash"></i> Eliminar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
 
         </div>
