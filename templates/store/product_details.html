@@ -44,42 +44,42 @@
         
         <div class="d-flex align-items-center mb-3">
           <div class="me-3">
-           {% if product.stars == 0 %}
+           {% if product.get_stars == 0 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 0 and product.stars < 1 %}
+              {% elif product.get_stars > 0 and product.get_stars < 1 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 1 %}
+              {% if product.get_stars <= 1 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 1 and product.stars < 2 %}
+              {% elif product.get_stars > 1 and product.get_stars < 2 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 2 %}
+              {% if product.get_stars <= 2 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 2 and product.stars < 3 %}
+              {% elif product.get_stars > 2 and product.get_stars < 3 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 3 %}
+              {% if product.get_stars <= 3 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 3 and product.stars < 4 %}
+              {% elif product.get_stars > 3 and product.get_stars < 4 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 4 %}
+              {% if product.get_stars <= 4 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 4 and product.stars < 5 %}
+              {% elif product.get_stars > 4 and product.get_stars < 5 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-            <span class="ms-2 text-muted small">{{product.stars}} ({{product.reviews.count}} reseñas)</span>
+            <span class="ms-2 text-muted small">{{product.get_stars}} ({{product.reviews.count}} reseñas)</span>
           </div>
           <div class="vr mx-2 h-100"></div>
           <div class="d-flex align-items-center views-counter" id="views-counter">
@@ -94,7 +94,7 @@
           {% if product.discount > 0 %}
           <div class="" id="price-discount">
             <div class="d-flex align-items-center gap-2">
-              <h2 class="fs-2 fw-bold price-discount mb-0">${{product.discount_price}}</h2>
+              <h2 class="fs-2 fw-bold price-discount mb-0">${{product.get_discount_price}}</h2>
               <span class="fs-5 price-original">${{product.price}}</span>
             </div>
           </div>
@@ -160,39 +160,39 @@
           <!-- Review Summary -->
           <div class="row mb-4">
             <div class="col-md-3 text-center text-md-start mb-4 mb-md-0">
-              <div class="display-4 fw-bold">{{product.stars}}</div>
+              <div class="display-4 fw-bold">{{product.get_stars}}</div>
               <div>
-                {% if product.stars == 0 %}
+                {% if product.get_stars == 0 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 0 and product.stars < 1 %}
+              {% elif product.get_stars > 0 and product.get_stars < 1 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 1 %}
+              {% if product.get_stars <= 1 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 1 and product.stars < 2 %}
+              {% elif product.get_stars > 1 and product.get_stars < 2 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 2 %}
+              {% if product.get_stars <= 2 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 2 and product.stars < 3 %}
+              {% elif product.get_stars > 2 and product.get_stars < 3 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 3 %}
+              {% if product.get_stars <= 3 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 3 and product.stars < 4 %}
+              {% elif product.get_stars > 3 and product.get_stars < 4 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 4 %}
+              {% if product.get_stars <= 4 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 4 and product.stars < 5 %}
+              {% elif product.get_stars > 4 and product.get_stars < 5 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
@@ -201,7 +201,7 @@
               <div class="text-muted small mt-1">Basado en {{product.reviews.count}} reseñas</div>
             </div>
             <div class="col-md-9">
-              {% for key,value in stars_percent.items %}
+              {% for key,value in get_stars_percent.items %}
               <div class="d-flex align-items-center mb-2">
                 <div class="text-muted me-2">{{key}}</div>
                 <div class="progress flex-grow-1" style="height: 8px;">
@@ -294,48 +294,48 @@
             <h5 class="card-title fs-6 text-truncate">{{ related.name }}</h5>
             <div class="d-flex align-items-center mb-1">
               <div class="me-1">
-                {% if related.stars == 0 %}
+                {% if related.get_stars == 0 %}
                 <i class="bi bi-star text-warning"></i>
-                {% elif related.stars > 0 and related.stars < 1 %}
+                {% elif related.get_stars > 0 and related.get_stars < 1 %}
                 <i class="bi bi-star-half text-warning"></i>
                 {% else %}
                 <i class="bi bi-star-fill text-warning"></i>
                 {% endif %}
-                {% if related.stars <= 1 %}
+                {% if related.get_stars <= 1 %}
                 <i class="bi bi-star text-warning"></i>
-                {% elif related.stars > 1 and related.stars < 2 %}
+                {% elif related.get_stars > 1 and related.get_stars < 2 %}
                 <i class="bi bi-star-half text-warning"></i>
                 {% else %}
                 <i class="bi bi-star-fill text-warning"></i>
                 {% endif %}
-                {% if related.stars <= 2 %}
+                {% if related.get_stars <= 2 %}
                 <i class="bi bi-star text-warning"></i>
-                {% elif related.stars > 2 and related.stars < 3 %}
+                {% elif related.get_stars > 2 and related.get_stars < 3 %}
                 <i class="bi bi-star-half text-warning"></i>
                 {% else %}
                 <i class="bi bi-star-fill text-warning"></i>
                 {% endif %}
-                {% if related.stars <= 3 %}
+                {% if related.get_stars <= 3 %}
                 <i class="bi bi-star text-warning"></i>
-                {% elif related.stars > 3 and related.stars < 4 %}
+                {% elif related.get_stars > 3 and related.get_stars < 4 %}
                 <i class="bi bi-star-half text-warning"></i>
                 {% else %}
                 <i class="bi bi-star-fill text-warning"></i>
                 {% endif %}
-                {% if related.stars <= 4 %}
+                {% if related.get_stars <= 4 %}
                 <i class="bi bi-star text-warning"></i>
-                {% elif related.stars > 4 and related.stars < 5 %}
+                {% elif related.get_stars > 4 and related.get_stars < 5 %}
                 <i class="bi bi-star-half text-warning"></i>
                 {% else %}
                 <i class="bi bi-star-fill text-warning"></i>
                 {% endif %}
               </div>
-              <span class="text-muted small"> {{related.stars}}</span>
+              <span class="text-muted small"> {{related.get_stars}}</span>
               <span class="text-muted small"> ({{related.reviews.count}})</span>
             </div>
             {% if related.discount > 0 %}
               <p class="card-text fw-medium mb-0">
-                <span class="text-danger">${{ related.discount_price }}</span>
+                <span class="text-danger">${{ related.get_discount_price }}</span>
                 <span class="text-muted text-decoration-line-through small ms-1">${{ related.price }}</span>
               </p>
             {% else %}
@@ -379,42 +379,44 @@
           <div>
             <h5 class="mb-2">{{product.name}}</h5>
             <!-- Precio normal -->
-            {% if product.discount > 0 %}
+            {% if product.discount == 0 %}
             <div id="modal-price-normal">
               <p class="fw-bold mb-1">${{product.price}}</p>
             </div>
             {% else %}
             <!-- Precio con descuento -->
             <div id="modal-price-discount" >
-              <p class="fw-bold mb-1 price-discount">${{product.discount_price}} <span class="price-original small">${{product.price}}</span></p>
+              <p class="fw-bold mb-1 price-discount">${{product.get_discount_price}} <span class="price-original small">${{product.price}}</span></p>
             </div>
             {% endif %}
           </div>
         </div>
         
-        <div class="mb-3">
-          <label for="modal-quantity" class="form-label">Cantidad</label>
-          <div class="input-group">
-            <button class="btn btn-outline-secondary" type="button" id="modal-btn-minus">
-              <i class="bi bi-dash"></i>
-            </button>
-            <input type="number" class="form-control text-center quantity-input" value="1" id="modal-quantity">
-            <button class="btn btn-outline-secondary" type="button" id="modal-btn-plus">
-              <i class="bi bi-plus"></i>
+        <form method="POST" id="modal-add-to-cart-form" action="{% url 'add-to-cart' pk=product.pk %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="modal-quantity" class="form-label">Cantidad</label>
+            <div class="input-group">
+              <button class="btn btn-outline-secondary" type="button" id="modal-btn-minus">
+                <i class="bi bi-dash"></i>
+              </button>
+              <input type="number" name="quantity" class="form-control text-center quantity-input" value="1" id="modal-quantity" min="1" max="{{ product.stock }}">
+              <button class="btn btn-outline-secondary" type="button" id="modal-btn-plus">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="alert alert-success d-none" id="modal-success-message">
+            <i class="bi bi-check-circle me-2"></i> Producto añadido al carrito correctamente.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-warning" id="modal-add-to-cart">
+              <i class="bi bi-cart me-2"></i> Añadir al Carrito
             </button>
           </div>
-        </div>
-        
-        <div class="alert alert-success d-none" id="modal-success-message">
-          <i class="bi bi-check-circle me-2"></i> Producto añadido al carrito correctamente.
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-warning" id="modal-add-to-cart">
-          <i class="bi bi-cart me-2"></i> Añadir al Carrito
-        </button>
-      </div>
+        </form>
     </div>
   </div>
 </div>

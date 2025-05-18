@@ -54,6 +54,12 @@ class Cart(models.Model):
     products = models.ManyToManyField("app_products.Products", verbose_name= 'Productos', through='CartItem', default=' ')
     is_active = models.BooleanField(verbose_name='Carrito Activo', default= True)
 
+    def get_subtotal(self):
+        subtotal=0
+        for item in self.cartitem_set.all():
+            subtotal += item.get_total()
+        return subtotal
+
     class Meta:
         verbose_name = "Carrito"
         verbose_name_plural = "Carritos"
@@ -63,12 +69,9 @@ class CartItem(models.Model):
     product = models.ForeignKey("app_products.Products", on_delete=models.CASCADE, verbose_name="Producto",null = True, blank=True, default=None)
     quantity = models.PositiveIntegerField(default=1, verbose_name="Cantidad")
 
-    def save(self, *args, **kwargs):
-        MAX_CART_ITEMS = 40
-        if self.cart.cartitem_set.count() >= MAX_CART_ITEMS and not self.pk:
-            raise ValidationError(f'Cannot add more than {MAX_CART_ITEMS} items to the cart.')
-        super(CartItem, self).save(*args, **kwargs)
-    
+    def get_total(self):
+        total=self.product.get_discount_price()*self.quantity
+        return total
 
     class Meta:
         verbose_name = "Producto del carrito"

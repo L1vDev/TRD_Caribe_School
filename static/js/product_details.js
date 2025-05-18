@@ -129,23 +129,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Añadir al carrito desde el modal
-    modalAddToCartBtn.addEventListener('click', function () {
-        // Mostrar mensaje de éxito
-        modalSuccessMessage.classList.remove('d-none');
-
-        // Deshabilitar el botón temporalmente
-        modalAddToCartBtn.disabled = true;
-
-        // Simular añadir al carrito
-        setTimeout(function () {
-            // Habilitar el botón nuevamente
-            modalAddToCartBtn.disabled = false;
-
-            // Cerrar el modal después de un breve retraso
-            setTimeout(function () {
-                addToCartModal.hide();
-            }, 1500);
-        }, 1000);
+    modalAddToCartBtn.addEventListener('click', function (event) {
+        const form = document.getElementById('modal-add-to-cart-form');
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+            // Mostrar mensajes de validación
+            form.classList.add('was-validated');
+            return;
+        }
     });
 
     // Thumbnail slider navigation

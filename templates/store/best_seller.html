@@ -48,7 +48,7 @@
           <span class="product-badge badge bg-secondary small py-1 px-2">Agotado</span>
           {% elif product.discount > 0 %}
           <span class="product-badge badge bg-danger small py-1 px-2">Oferta</span>
-          {% elif product.is_new %}
+          {% elif product.get_is_new %}
           <span class="product-badge badge bg-success small py-1 px-2">Nuevo</span>
           {% endif %}
           <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}{% static 'img/logo.png' %}{% endif %}" class="card-img-top {% if product.stock == 0 %}opacity-50{% endif %}" alt="Café Orgánico">
@@ -56,42 +56,42 @@
           <div class="card-body p-2">
             <h6 class="card-title fw-bold mb-1 text-truncate">{{product.name}}</h6>
             <div class="mb-1 small">
-              {% if product.stars == 0 %}
+              {% if product.get_stars == 0 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 0 and product.stars < 1 %}
+              {% elif product.get_stars > 0 and product.get_stars < 1 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 1 %}
+              {% if product.get_stars <= 1 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 1 and product.stars < 2 %}
+              {% elif product.get_stars > 1 and product.get_stars < 2 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 2 %}
+              {% if product.get_stars <= 2 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 2 and product.stars < 3 %}
+              {% elif product.get_stars > 2 and product.get_stars < 3 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 3 %}
+              {% if product.get_stars <= 3 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 3 and product.stars < 4 %}
+              {% elif product.get_stars > 3 and product.get_stars < 4 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              {% if product.stars <= 4 %}
+              {% if product.get_stars <= 4 %}
               <i class="bi bi-star text-warning"></i>
-              {% elif product.stars > 4 and product.stars < 5 %}
+              {% elif product.get_stars > 4 and product.get_stars < 5 %}
               <i class="bi bi-star-half text-warning"></i>
               {% else %}
               <i class="bi bi-star-fill text-warning"></i>
               {% endif %}
-              <small class="text-muted ms-1">{{product.stars}}</small>
+              <small class="text-muted ms-1">{{product.get_stars}}</small>
             </div>
             <p class="card-text small text-muted mb-2 card-text-truncate">{{product.about}}</p>
             <div class="d-flex justify-content-between align-items-center">
@@ -99,7 +99,7 @@
               {% if product.discount > 0 %}
               <div class="text-end">
                 <small class="text-decoration-line-through text-muted d-block">${{product.price}}</small>
-                <span class="fw-bold text-danger">${{product.discount_price}}</span>
+                <span class="fw-bold text-danger">${{product.get_discount_price}}</span>
               </div>
               {% else %}
               <span class="fw-bold">${{product.price}}</span>

@@ -272,57 +272,6 @@ input[type=number] {
     background-color: #0b5ed7;
   }
 
-  /*cart.html*/
-  .product-name {
-    text-decoration: none !important;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .cart-summary {
-    position: sticky;
-    top: 20px;
-  }
-  
-  .products-container {
-    max-height: calc(100vh - 40px);
-    overflow-y: auto;
-  }
-  
-  @media (max-width: 767.98px) {
-    .cart-summary {
-      position: relative;
-      top: 0;
-      margin-bottom: 20px;
-    }
-    
-    .products-container {
-      max-height: none;
-      overflow-y: visible;
-    }
-    
-    .order-mobile-1 {
-      order: 1;
-    }
-    
-    .order-mobile-2 {
-      order: 2;
-    }
-  }
-
-  .products-container {
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
-  }
-  
-  @media (max-width: 767.98px) {
-    .products-container {
-      max-height: calc(100vh - 350px);
-    }
-  }
-
   /* profile.html */
   .profile-picture {
     width: 100px;

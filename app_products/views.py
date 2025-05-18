@@ -14,53 +14,17 @@ class ProductsView(ListView):
     AÑADIR PAGINACION A LOS PRODUCTOS
     """
 
-    queryset = Products.objects.filter(available=True).annotate(
-        stars=Coalesce(Round(Avg('reviews__rating'), 1), Value(float(0))),
-        discount_price=Round(
-            ExpressionWrapper(
-                F('price') * (1 - F('discount') / 100),
-                output_field=DecimalField()
-            ), 2
-        ),
-        is_new=ExpressionWrapper(
-            Q(created_at__gte=Now() - timezone.timedelta(days=3)),
-            output_field=DecimalField()
-        )
-    ).all()
+    queryset = Products.objects.filter(available=True).all()
     template_name = "index.html"
     context_object_name = "products"
 
 class MostViewedProductsView(ListView):
-    queryset = Products.objects.filter(available=True).annotate(
-        stars=Coalesce(Round(Avg('reviews__rating'), 1), Value(float(0))),
-        discount_price=Round(
-            ExpressionWrapper(
-                F('price') * (1 - F('discount') / 100),
-                output_field=DecimalField()
-            ), 2
-        ),
-        is_new=ExpressionWrapper(
-            Q(created_at__gte=Now() - timezone.timedelta(days=3)),
-            output_field=DecimalField()
-        )
-    ).order_by("-views").all()[:10]
+    queryset = Products.objects.filter(available=True).order_by("-views").all()[:10]
     template_name="store/most_viewed.html"
     context_object_name="products"
 
 class MostPurchasedProductsView(ListView):
-    queryset = Products.objects.filter(available=True).annotate(
-        stars=Coalesce(Round(Avg('reviews__rating'), 1), Value(float(0))),
-        discount_price=Round(
-            ExpressionWrapper(
-                F('price') * (1 - F('discount') / 100),
-                output_field=DecimalField()
-            ), 2
-        ),
-        is_new=ExpressionWrapper(
-            Q(created_at__gte=Now() - timezone.timedelta(days=3)),
-            output_field=DecimalField()
-        )
-    ).order_by("-purchases").all()[:10]
+    queryset = Products.objects.filter(available=True).order_by("-purchases").all()[:10]
     template_name="store/best_seller.html"
     context_object_name="products"
 
@@ -74,19 +38,7 @@ class ProductDetailsView(ListView):
         AÑADIR PAGINACION A REVIEW Y RELATED PRODUCTS
         """
         context=super(ProductDetailsView, self).get_context_data(**kwargs)
-        product= Products.objects.filter(id=self.kwargs.get('pk'), available=True).annotate(
-            stars=Coalesce(Round(Avg('reviews__rating'), 1), Value(float(0))),
-            discount_price=Round(
-                ExpressionWrapper(
-                    F('price') * (1 - F('discount') / 100),
-                    output_field=DecimalField()
-                ), 2
-            ),
-            is_new=ExpressionWrapper(
-                Q(created_at__gte=Now() - timezone.timedelta(days=3)),
-                output_field=DecimalField()
-            )
-        ).first()
+        product= Products.objects.filter(id=self.kwargs.get('pk'), available=True).first()
         product.views=product.views+1
         product.save()
         reviews=Reviews.objects.filter(product=product).all()
@@ -108,14 +60,6 @@ class ProductDetailsView(ListView):
         related_products = Products.objects.filter(
             available=True,
             category__in=product.category.all()
-        ).annotate(
-            stars=Coalesce(Round(Avg('reviews__rating'), 1), Value(float(0))),
-            discount_price=Round(
-                ExpressionWrapper(
-                    F('price') * (1 - F('discount') / 100),
-                    output_field=DecimalField()
-                ), 2
-            ),
         ).exclude(id=product.id).distinct()[:4]
 
         context["stars_percent"] = stars_percent

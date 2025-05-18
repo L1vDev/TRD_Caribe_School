@@ -1,0 +1,49 @@
+.product-name {
+    text-decoration: none !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.discount-price {
+    color: #dc3545;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+.cart-summary {
+    position: sticky;
+    top: 20px;
+}
+
+.products-container {
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+}
+
+@media (max-width: 767.98px) {
+    .cart-summary {
+        position: relative;
+        top: 0;
+        margin-bottom: 20px;
+    }
+}
+
+.custom-form:focus{
+    box-shadow: 0 0 0 0 !important;
+}
+
+.custom-form::placeholder{
+    color: black !important;
+}

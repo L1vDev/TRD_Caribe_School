@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from app_auth.utils import get_unique_filename
+from django.utils import timezone
 
 class Category(models.Model):
     name= models.CharField(verbose_name="Nombre de la Categoría", unique=True)
@@ -30,6 +31,20 @@ class Products(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_discount_price(self):
+        discount_price=self.price*(1-self.discount/100)
+        return round(discount_price,2)
+    
+    def get_stars(self):
+        reviews = self.reviews.all()
+        if not reviews.exists():
+            return 0.0
+        avg = reviews.aggregate(models.Avg('rating'))['rating__avg']
+        return round(avg or 0.0, 1)
+    
+    def get_is_new(self):
+        return self.created_at >= timezone.now() - timezone.timedelta(days=3)
     
     class Meta:
         verbose_name = 'Producto'
