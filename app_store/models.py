@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 import io
 import uuid
 from django.contrib.staticfiles import finders
+from private_storage.fields import PrivateFileField
 
 class Invoices(models.Model):
     STATUS_CHOICES = [
@@ -28,7 +29,7 @@ class Invoices(models.Model):
     delivery_details=models.TextField(verbose_name="Detalles de Entrega", null=True, blank=True)
     delivery_price=models.DecimalField(verbose_name="Precio de Entrega",max_digits=10, decimal_places=2, default=0.00, validators=[MinValueValidator(0.00)])
     status=models.CharField(verbose_name="Estado",max_length=50,default='pending',choices=STATUS_CHOICES)
-    invoice_file=models.FileField(verbose_name="Archivo de Factura", upload_to="invoices/")
+    invoice_file=PrivateFileField(verbose_name="Factura", upload_to="invoices/")
     created_at=models.DateTimeField(auto_now_add=True,verbose_name="Fecha de Creación")
 
     def __str__(self):

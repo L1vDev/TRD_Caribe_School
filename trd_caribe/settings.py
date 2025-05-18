@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'private_storage',
     'app_auth',
     'app_config',
     'app_products',
@@ -155,6 +156,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, 'private')
+PRIVATE_STORAGE_URL = '/private/'
+PRIVATE_STORAGE_AUTH_FUNCTION='private_storage.permissions.allow_superuser'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

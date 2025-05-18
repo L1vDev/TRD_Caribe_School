@@ -376,6 +376,17 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-private-storage"
+version = "3.1.1"
+description = "Private media file storage for Django projects"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-private-storage-3.1.1.tar.gz", hash = "sha256:9e8f9e88818b04895cf4be6c86f1255c4befa5466f7d25e1be3a7c2784e9b275"},
+    {file = "django_private_storage-3.1.1-py3-none-any.whl", hash = "sha256:fcb14c0f56e1fb5e1984afe689e6a92d79c1347dd5329aa50b53ecec4e517a52"},
+]
+
+[[package]]
 name = "django-unfold"
 version = "0.50.0"
 description = "Modern Django admin theme for seamless interface development"
@@ -1308,4 +1319,4 @@ test = ["coverage (>=5.3)", "tomli (>=2.0.1)", "tox"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "ac2d148a7e265a08220d15b28df2ffc506d2b6da0d0deed23ceebcc766bd3aec"
+content-hash = "e9b807abc24540546ea30c31ba23a51b7ec85d81e9c1389a8820a923347dede1"
