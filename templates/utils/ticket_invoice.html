@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket compra</title>
+    <style>
+        @page {
+            size: letter portrait;
+            @frame header_frame {
+                -pdf-frame-content: header_content;
+                top: 15pt;
+                margin: 15pt;
+                left: 25pt;
+                right: 25pt;
+                bottom: 15pt;
+            }
+            @frame content_frame {          /* Content Frame */  
+                top: 87pt;
+                margin: 15pt;
+                left: 25pt;
+                right: 25pt;
+                bottom: 15pt;
+            }
+        }
+    </style>
+</head>
+
+<body style="width: 100%; font-family: 'Helvetica'; color: black;align-content: center;">
+    <div id="header_content">
+    <table border="0" style="margin: 0 auto; width: 100%;">
+        <tr style="margin: 0 auto; text-align: center;">
+            <td style="text-align: center;">
+                <table cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto; width: auto;">
+                    <tr>
+                        <td align="left" style="vertical-align: top; text-align: center;">
+                            <h1 style="text-align: center; font-size: 18px;padding-top: 20px;"></h1>
+                        </td>
+                        <td align="center" style="vertical-align: middle; padding-bottom: 5px;">
+                            <img height="72" style="object-fit: contain;" src="{{ logo_pdf_url }}" alt="MC">
+                        </td>
+                        <td align="right" style="vertical-align: top; text-align: center;">
+                            <h1 style="text-align: center; font-size: 18px; padding-top: 20px; margin: 0;">
+                                {{ invoice.created_at|date:"j \d\e F \d\e Y" }}
+                            </h1>                            
+                            <h1 style="text-align: center; font-size: 18px; margin: 0;">
+                                {{ invoice.created_at|date:"H:i" }}
+                            </h1>                            
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    </div>
+    <table border="0" style="margin: 0 auto; width: 100%;">
+        <tr style="margin: 0 auto; text-align: center;">
+            <td style="text-align: center;">
+                <h4 style="text-align: center; margin: 0; padding: 0; text-transform: uppercase;font-size: 24px;">
+                    COMPROBANTE</h4>
+            </td>
+        </tr>
+
+        <tr style="margin: 0;">
+            <td style="margin: 0;">
+                <table cellpadding="0" cellspacing="0" border="0" style="margin: 0; ">
+                    <tr style="margin: 0; font-size: 15px; margin-bottom: 15px;">
+                        <td style="margin: 0; white-space: nowrap; width:90px; margin-left: 5px;"><b>ID:</b></td>
+                        <td align="left"
+                            style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; text-align: left;">
+                            {{invoice.id}}</td>
+                    </tr>
+                    <tr style="margin: 0; font-size: 15px; margin-bottom: 15px;">
+                        <td style="margin: 0; white-space: nowrap; width:90px; margin-left: 5px;"><b>Cliente:</b></td>
+                        <td align="left"
+                            style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; text-align: left;">
+                            {{invoice.first_name }} {{ invoice.last_name }}</td>
+                    </tr>
+                    <tr style="margin: 0; font-size: 15px; margin-bottom: 15px;">
+                        <td style="margin: 0; white-space: nowrap;width: 120px; margin-left: 5px;"><b>Correo:</b></td>
+                        <td align="left"
+                            style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; text-align: left;">
+                            {{invoice.email }}</td>
+                    </tr>
+                    <tr style="margin: 0; font-size: 15px; margin-bottom: 15px; margin-left: 5px;">
+                        <td style="margin: 0; white-space: nowrap;width: 120px;"><b>Teléfono:</b></td>
+                        <td align="left"
+                            style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; text-align: left;">
+                            {{invoice.phone_number }}</td>
+                    </tr>
+                    <tr style="margin: 0; font-size: 15px; margin-bottom: 15px; margin-left: 5px;">
+                        <td style="margin: 0; white-space: nowrap;width: 120px;"><b>Localizacion:</b></td>
+                        <td align="left"
+                            style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; text-align: left;">
+                            {{invoice.municipality}} / {{invoice.province}}</td>
+                    </tr>
+                    <tr style="margin: 0; font-size: 15px; margin-bottom: 15px; margin-left: 5px;">
+                        <td style="margin: 0; white-space: nowrap;width: 120px;"><b>Dirección:</b></td>
+                        <td align="left"
+                            style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; text-align: left;">
+                            {{invoice.address }}</td>
+                    </tr>
+                    <tr style="margin: 0; font-size: 15px; margin-bottom: 15px; margin-left: 5px;">
+                        <td style="margin: 0; white-space: nowrap;width: 120px;"><b>Detalles de Entrega:</b></td>
+                        <td align="left"
+                            style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; text-align: left;">
+                            {{invoice.delivery_details }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr style="margin: 0 auto 10px;">
+            <td style="height: 38px;">
+                <hr style="border-style: dashed; border-color: black;" />
+            </td>
+        </tr>
+    </table>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0"
+        style="margin: 0; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="font-size: 18px; text-align: left; margin-left: 5px;">Productos</th>
+                <th style="font-size: 18px; text-align: center; width: 120px;">Cantidad</th>
+                <th style="font-size: 18px; text-align: center; width: 120px;">Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr style="margin: 0;">
+                <td style="margin: 0;margin-left: 5px; font-size: 15px; text-align: left;">{{product.product_name}}</td>
+                <td style="margin: 0; font-size: 15px; text-align: center;">{{product.quantity}}</td>
+                <td style="margin: 0; font-size: 15px; text-align: center;">
+                    $ {{product.get_product_total}}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+          
+    <table border="0" style="margin: 0 auto; width: 100%;">
+        <tr>
+            <td style="border-block: 10px solid transparent; height: 38px;">
+                <hr style="border-color: black; " />
+            </td>
+        </tr>
+    
+        <tr style="margin: 0;">
+            <td style="margin: 0;font-size: 14px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0;">
+                    <tr style="margin: 0;">
+                        <td style="margin: 0;font-size: 17px; margin-left: 5px;">
+                            <h2 style="font-size: 17px">Transportación:</h2>
+                        </td>
+                        <td align="right" style="font-size: 17px; margin-right: 5px;">
+                            <h2 style="font-size: 17px">$ {{ invoice.delivery_price }}</h2>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr style="margin: 0 auto 15px;">
+            <td style="border-block: 10px solid transparent;  height: 38px;">
+                <hr style="border-color: black;" />
+            </td>
+        </tr>
+
+        <tr style="margin: 0;">
+            <td style="margin: 0;font-size: 17px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0;">
+                    <tr style="margin: 0;">
+                        <td style="margin: 0;font-size: 17px; margin-left: 5px;">
+                            <h2 style="font-size: 17px">Total a Pagar:</h2>
+                        </td>
+                        <td align="right" style="font-size: 17px; margin-right: 5px;">
+                            <h2 style="font-size: 17px">$ {{invoice.get_total_amount}}</h2>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td style=" height: 10px;">
+                <hr style="border-color: black; border-style: dashed;"/>
+            </td>
+        </tr>
+        
+        <tr style="margin: 0;">
+            <td style="margin: 0;font-size: 14px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0;">
+                    <tr style="margin: 0;">
+                        <td align="center" style="font-size: 14px; padding-top: 50px;">
+                            <p style="display:inline-block; width: 80px; border-top: 1px solid black;">____________________</p>
+                        </td>
+                        <td align="center" style="font-size: 14px; padding-top: 50px;">
+                            <p style="display:inline-block; width: 80px; border-top: 1px solid black;">____________________</p>
+                        </td>
+                        <td align="center" style="font-size: 14px; padding-top: 50px;">
+                            <p style="display:inline-block; width: 80px; border-top: 1px solid black;">____________________</p>
+                        </td>
+                    </tr>
+                    <tr style="margin: 0;">
+                        <td align="center" style="font-size: 14px; padding-top: 6px;">
+                            <p>Firma</p>
+                        </td>
+                        <td align="center" style="font-size: 14px; padding-top: 6px;">
+                            <p>Firma</p>
+                        </td>
+                        <td align="center" style="font-size: 14px; padding-top: 6px;">
+                            <p>Firma</p>
+                        </td>
+                    </tr>
+                    <tr style="margin: 0;">
+                        <td align="center" style="font-size: 14px;">
+                            <b>Administrador</b>
+                        </td>
+                        <td align="center" style="font-size: 14px;">
+                            <b>Mensajero</b>
+                        </td>
+                        <td align="center" style="font-size: 14px;">
+                            <b>Cliente</b>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr style="margin: 0;">
+            <td style="margin: 0;">
+                <h2 style="font-size: 16px; text-align: center; margin: 0;padding-top: 8px;">GRACIAS POR PREFERIRNOS, ¡VUELVA PRONTO!</h2>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

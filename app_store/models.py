@@ -2,7 +2,13 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
 from app_auth.utils import get_unique_filename
+from django.conf import settings
+from xhtml2pdf import pisa
+from django.core.files.base import ContentFile
+from django.template.loader import render_to_string
+import io
 import uuid
+from django.contrib.staticfiles import finders
 
 class Invoices(models.Model):
     STATUS_CHOICES = [
@@ -28,8 +34,25 @@ class Invoices(models.Model):
     def __str__(self):
         return f"Factura {self.id} - {self.first_name} {self.last_name}"
     
+    def get_total_amount(self):
+        total=0
+        for product in self.products.all():
+            total+=product.get_product_total()
+        total+=self.delivery_price
+        return total
+    
     def generate_pdf(self):
-        pass
+        logo_pdf_url = finders.find("img/logo.png")
+        context = {
+            'invoice': self,
+            'logo_pdf_url': logo_pdf_url,
+            'products':self.products.all(),
+        }
+        html_ticket = render_to_string('utils/ticket_invoice.html', context)
+        result_pdf = io.BytesIO() 
+        
+        pdf_file = pisa.pisaDocument(io.BytesIO(html_ticket.encode("UTF-8")), result_pdf)
+        self.invoice_file.save(f'{str(self.id)}.pdf', ContentFile(result_pdf.getvalue()))
 
     class Meta:
         verbose_name = 'Factura'
@@ -46,6 +69,11 @@ class InvoiceProducts(models.Model):
 
     def __str__(self):
         return f"{self.product_name} - Factura {self.invoice.id}"
+    
+    def get_product_total(self):
+        discount_price=self.product_price*(1-self.product_discount/100)
+        product_total=discount_price*self.quantity
+        return round(product_total,2)
     
     class Meta:
         verbose_name = 'Producto de Factura'

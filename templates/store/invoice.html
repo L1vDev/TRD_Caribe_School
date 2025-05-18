@@ -39,7 +39,7 @@
                             {% endif %}
                         </td>
                         <td data-label="Descargar" class="text-center">
-                            <a href="{{invoice.id}}" class="btn btn-sm btn-light" target="_blank" title="Descargar PDF">
+                            <a href="{% url 'download-invoice' pk=invoice.id %}" class="btn btn-sm btn-light" target="_blank" title="Descargar PDF">
                                 <i class="bi bi-download"></i>
                             </a>
                         </td>

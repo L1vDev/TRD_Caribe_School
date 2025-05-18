@@ -9,6 +9,11 @@ from django.db.models.functions import Round
 from app_products.models import Products
 from app_config.models import Province, Municipality
 import json
+from django.db import transaction
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, FileResponse
+import os
+from django.shortcuts import get_object_or_404
         
 class CartView(LoginRequiredMixin,View):
     template_name="store/cart.html"
@@ -36,6 +41,7 @@ class CartView(LoginRequiredMixin,View):
     
     def post(self, request, *args, **kwargs):
         user=request.user
+        context=self.get_context_data()
         cart=Cart.objects.filter(user=user).first()
         cart_items=CartItem.objects.filter(cart=cart).all()
         over_stock=False
@@ -47,11 +53,9 @@ class CartView(LoginRequiredMixin,View):
                 over_stock=True
         
         if low_stock:
-            context=self.get_context_data()
             context["error"]="Algunos productos se han agotado. Retírelos del carrito para poder comprar."
             return render(request, self.template_name,context)
         elif over_stock:
-            context=self.get_context_data()
             context["error"]="Algunos productos no tienen stock suficiente. Modifique las cantidades."
             return render(request, self.template_name,context)
 
@@ -59,31 +63,38 @@ class CartView(LoginRequiredMixin,View):
         municipality_id=request.POST.get("municipality")
         province=Province.objects.get(pk=province_id)
         municipality=Municipality.objects.get(pk=municipality_id)
+        
+        try:
+            with transaction.atomic():
+                invoice = Invoices.objects.create(
+                    email=user.email,
+                    first_name=user.first_name,
+                    last_name=user.last_name,
+                    phone_number=request.POST.get("phone_number", user.phone_number),
+                    province=province.name,
+                    municipality=municipality.name,
+                    address=request.POST.get("address", ""),
+                    delivery_details=request.POST.get("delivery_details", ""),
+                    delivery_price=municipality.price,
+                )
 
-        invoice=Invoices.objects.create(
-            email=user.email,
-            first_name=user.first_name,
-            last_name=user.last_name,
-            phone_number=request.POST.get("phone_number",user.phone_number),
-            province=province.name,
-            municipality=municipality.name,
-            address=request.POST.get("address",""),
-            delivery_details=request.POST.get("delivery_details",""),
-            delivery_price=municipality.price,
-        )
-
-        for item in cart_items:
-            item.product.stock=item.product.stock-item.quantity
-            item.product.save()
-            InvoiceProducts.objects.create(
-                invoice=invoice,
-                product_id=item.product.id,
-                product_name=item.product.name,
-                product_price=item.product.price,
-                product_discount=item.product.discount,
-                quantity=item.quantity
-            )
-        invoice.generate_pdf()
+                for item in cart_items:
+                    item.product.stock = item.product.stock - item.quantity
+                    item.product.save()
+                    InvoiceProducts.objects.create(
+                    invoice=invoice,
+                    product_id=item.product.id,
+                    product_name=item.product.name,
+                    product_price=item.product.price,
+                    product_discount=item.product.discount,
+                    quantity=item.quantity
+                    )
+                invoice.generate_pdf()
+        except Exception as e:
+            print(str(e))
+            context["error"] = "Ha ocurrido un error al realizar la compra. Por favor, intente de nuevo."
+            return render(request, self.template_name, context)
+        
         cart.delete()
         Cart.objects.create(user=user)
         return redirect("order-list")
@@ -138,3 +149,25 @@ class ListInvoicesView(LoginRequiredMixin, ListView):
         invoices=self.get_queryset()
         context["invoices"]=invoices
         return context
+
+@login_required
+def download_invoice_pdf(request, pk):
+    user = request.user
+    try:
+        if user.is_superuser:
+            invoice = get_object_or_404(Invoices, pk=pk)
+        else:
+            invoice = get_object_or_404(Invoices, pk=pk, email=user.email)
+        file_path = invoice.invoice_file.path
+
+        if not os.path.exists(file_path):
+            return HttpResponse("Archivo no encontrado.", status=404)
+        pdf_file = open(file_path, 'rb')
+        response = FileResponse(pdf_file, as_attachment=True)
+        response['Content-Disposition'] = f'attachment; filename="{os.path.basename(invoice.invoice_file.name)}"'
+        return response
+
+    except Invoices.DoesNotExist:
+        return HttpResponse("Factura no encontrada.", status=404)
+    except Exception:
+        return HttpResponse("No autorizado o error interno.", status=401)
