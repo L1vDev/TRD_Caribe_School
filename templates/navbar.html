@@ -65,9 +65,6 @@
         </li>
         {% if request.user.is_authenticated %}
         <li class="nav-item nav-link">
-          <a href="{% url 'favorites' %}" id="subline" class="btn menu-button"><i class="bi bi-heart-fill h4"></i></a>
-        </li>
-        <li class="nav-item nav-link">
           <a href="{% url 'profile' %}" id="subline" class="btn menu-button"><i class="bi bi-person-circle h4"></i></a>
         </li>
         <li class="nav-item nav-link">

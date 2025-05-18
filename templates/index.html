@@ -40,213 +40,88 @@
   <p class="res-text" style="margin-left: 5vw;">PRODUCTOS</p>
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2" style="padding: 0 5vw;">
-
+    {% for product in products %}
     <div class="col">
       <div class="card h-100 shadow-sm rounded-3">
         <div class="product-img-container">
-        <span class="product-badge badge bg-success small py-1 px-2">Nuevo</span>
-        <img src="{% static 'img/product/3ec334a1-126d-4cdd-acf2-7d6be5933f5f.png' %}" class="card-img-top" alt="Café Orgánico">
-      </div>
-      <div class="card-body p-2">
-        <h6 class="card-title fw-bold mb-1 text-truncate">Café Orgánico Premium</h6>
-        <div class="mb-1 small">
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-half text-warning"></i>
-        <small class="text-muted ms-1">4.5</small>
-      </div>
-      <p class="card-text small text-muted mb-2 card-text-truncate">Café de especialidad cultivado en altura con notas
-        de chocolate.</p>
-      <div class="d-flex justify-content-between align-items-center">
-        <span class="small text-muted">250g</span>
-        <span class="fw-bold">$12.99</span>
-      </div>
-    </div>
-    {% if request.user.is_authenticated %}
-    <div class="card-footer bg-white p-2 border-top-0">
-      <a href="{% url 'product-details' %}" class="btn btn-primary btn-sm w-100">
-        <i class="bi bi-cart-plus"></i> Añadir
-      </a>
-    </div>
-    {% endif %}
-  </div>
-</div>
-
-<!-- Producto en Oferta -->
-<div class="col">
-  <div class="card h-100 shadow-sm rounded-3">
-    <div class="product-img-container">
-      <span class="product-badge badge bg-danger small py-1 px-2">Oferta</span>
-      <img src="{% static 'img/product/39e9e6bc-e013-4522-afe1-3add749e9d31.png' %}" class="card-img-top" alt="Aceite de Oliva">
-    </div>
-    <div class="card-body p-2">
-      <h6 class="card-title fw-bold mb-1 text-truncate">Aceite de Oliva Extra Virgen</h6>
-      <div class="mb-1 small">
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star text-warning"></i>
-        <small class="text-muted ms-1">4.0</small>
-      </div>
-      <p class="card-text small text-muted mb-2 card-text-truncate">Aceite de primera prensada en frío, ideal para
-        ensaladas.</p>
-      <div class="d-flex justify-content-between align-items-center">
-        <span class="small text-muted">500ml</span>
-        <div class="text-end">
-          <small class="text-decoration-line-through text-muted d-block">$24.99</small>
-          <span class="fw-bold text-danger">$19.99</span>
+          {% if product.stock == 0 %}
+          <span class="product-badge badge bg-secondary small py-1 px-2">Agotado</span>
+          {% elif product.discount > 0 %}
+          <span class="product-badge badge bg-danger small py-1 px-2">Oferta</span>
+          {% elif product.is_new %}
+          <span class="product-badge badge bg-success small py-1 px-2">Nuevo</span>
+          {% endif %}
+          <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}{% static 'img/logo.png' %}{% endif %}" class="card-img-top {% if product.stock == 0 %}opacity-50{% endif %}" alt="Producto {{product.id}}">
+          </div>
+          <div class="card-body p-2">
+            <h6 class="card-title fw-bold mb-1 text-truncate">{{product.name}}</h6>
+            <div class="mb-1 small">
+              {% if product.stars == 0 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 0 and product.stars < 1 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 1 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 1 and product.stars < 2 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 2 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 2 and product.stars < 3 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 3 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 3 and product.stars < 4 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 4 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 4 and product.stars < 5 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              <small class="text-muted ms-1">{{product.stars}}</small>
+            </div>
+            <p class="card-text small text-muted mb-2 card-text-truncate">{{product.about}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="small text-muted"><i class="bi bi-cart2 pe-1"></i>{{product.purchases}}</span>
+              {% if product.discount > 0 %}
+              <div class="text-end">
+                <small class="text-decoration-line-through text-muted d-block">${{product.price}}</small>
+                <span class="fw-bold text-danger">${{product.discount_price}}</span>
+              </div>
+              {% else %}
+              <span class="fw-bold">${{product.price}}</span>
+              {% endif %}
+            </div>
+              
+          </div>
+          <div class="card-footer bg-white p-2 border-top-0">
+            {% if product.stock == 0 %}
+            <a href="{% url 'product-details' pk=product.pk %}" class="btn btn-secondary btn-sm w-100" disabled>
+              <i class="bi bi-x-circle"></i> Agotado
+            </a>
+            {% else %}
+            <a href="{% url 'product-details' pk=product.pk %}" class="btn btn-primary btn-sm w-100">
+              <i class="bi bi-cart-plus"></i> Añadir
+            </a>
+            {% endif %}
+          </div>
         </div>
-      </div>
-    </div>
-    {% if request.user.is_authenticated %}
-    <div class="card-footer bg-white p-2 border-top-0">
-      <a href="{% url 'product-details' %}" class="btn btn-primary btn-sm w-100">
-        <i class="bi bi-cart-plus"></i> Añadir
-      </a>
-    </div>
-    {% endif %}
+      </div>  
+      {% endfor %}
   </div>
-</div>
-
-<!-- Producto Agotado -->
-<div class="col">
-  <div class="card h-100 shadow-sm rounded-3">
-    <div class="product-img-container">
-      <span class="product-badge badge bg-secondary small py-1 px-2">Agotado</span>
-      <img src="{% static 'img/product/0352d1ea-9f66-4b77-87fc-66e47a50310c.png' %}" class="card-img-top opacity-50" alt="Miel de Lavanda">
-    </div>
-    <div class="card-body p-2">
-      <h6 class="card-title fw-bold mb-1 text-truncate">Miel de Lavanda</h6>
-      <div class="mb-1 small">
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <small class="text-muted ms-1">5.0</small>
-      </div>
-      <p class="card-text small text-muted mb-2 card-text-truncate">Miel artesanal con suaves notas florales de lavanda.
-      </p>
-      <div class="d-flex justify-content-between align-items-center">
-        <span class="small text-muted">350g</span>
-        <span class="fw-bold">$15.50</span>
-      </div>
-    </div>
-    {% if request.user.is_authenticated %}
-    <div class="card-footer bg-white p-2 border-top-0">
-      <a href="{% url 'product-details' %}" class="btn btn-secondary btn-sm w-100" disabled>
-        <i class="bi bi-x-circle"></i> Agotado
-      </a>
-    </div>
-    {% endif %}
-  </div>
-</div>
-
-<!-- Producto Regular -->
-<div class="col">
-  <div class="card h-100 shadow-sm rounded-3">
-    <div class="product-img-container">
-      <img src="{% static 'img/product/0352d1ea-9f66-4b77-87fc-66e47a50310c.png' %}" class="card-img-top" alt="Chocolate Negro">
-    </div>
-    <div class="card-body p-2">
-      <h6 class="card-title fw-bold mb-1 text-truncate">Chocolate Negro 70%</h6>
-      <div class="mb-1 small">
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-half text-warning"></i>
-        <i class="bi bi-star text-warning"></i>
-        <small class="text-muted ms-1">3.5</small>
-      </div>
-      <p class="card-text small text-muted mb-2 card-text-truncate">Chocolate artesanal elaborado con cacao de origen
-        único.</p>
-      <div class="d-flex justify-content-between align-items-center">
-        <span class="small text-muted">100g</span>
-        <span class="fw-bold">$8.75</span>
-      </div>
-    </div>
-    {% if request.user.is_authenticated %}
-    <div class="card-footer bg-white p-2 border-top-0">
-      <a href="{% url 'product-details' %}" class="btn btn-primary btn-sm w-100">
-        <i class="bi bi-cart-plus"></i> Añadir
-      </a>
-    </div>
-    {% endif %}
-  </div>
-</div>
-
-<!-- Producto Nuevo -->
-<div class="col">
-  <div class="card h-100 shadow-sm rounded-3">
-    <div class="product-img-container">
-      <span class="product-badge badge bg-success small py-1 px-2">Nuevo</span>
-      <img src="{% static 'img/product/0352d1ea-9f66-4b77-87fc-66e47a50310c.png' %}" class="card-img-top" alt="Té Verde">
-    </div>
-    <div class="card-body p-2">
-      <h6 class="card-title fw-bold mb-1 text-truncate">Té Verde Matcha </h6>
-      <div class="mb-1 small">
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star text-warning"></i>
-        <small class="text-muted ms-1">4.0</small>
-      </div>
-      <p class="card-text small text-muted mb-2 card-text-truncate">Té matcha ceremonial japonés de primera calidad.</p>
-      <div class="d-flex justify-content-between align-items-center">
-        <span class="small text-muted">30g</span>
-        <span class="fw-bold">$18.50</span>
-      </div>
-    </div>
-    {% if request.user.is_authenticated %}
-    <div class="card-footer bg-white p-2 border-top-0">
-      <a href="{% url 'product-details' %}" class="btn btn-primary btn-sm w-100">
-        <i class="bi bi-cart-plus"></i> Añadir
-      </a>
-    </div>
-    {% endif %}
-  </div>
-</div>
-
-<!-- Producto en Oferta -->
-<div class="col">
-  <div class="card h-100 shadow-sm rounded-3">
-    <div class="product-img-container">
-      <span class="product-badge badge bg-danger small py-1 px-2">Oferta</span>
-      <img src="{% static 'img/product/0352d1ea-9f66-4b77-87fc-66e47a50310c.png' %}" class="card-img-top" alt="Mermelada">
-    </div>
-    <div class="card-body p-2">
-      <h6 class="card-title fw-bold mb-1 text-truncate">Mermelada de Frutos Rojos</h6>
-      <div class="mb-1 small">
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star-fill text-warning"></i>
-        <i class="bi bi-star text-warning"></i>
-        <i class="bi bi-star text-warning"></i>
-        <small class="text-muted ms-1">3.0</small>
-      </div>
-      <p class="card-text small text-muted mb-2 card-text-truncate">Mermelada artesanal con trozos de fruta y bajo
-        contenido de azúcar.</p>
-      <div class="d-flex justify-content-between align-items-center">
-        <span class="small text-muted">200g</span>
-        <div class="text-end">
-          <small class="text-decoration-line-through text-muted d-block">$9.99</small>
-          <span class="fw-bold text-danger">$7.50</span>
-        </div>
-      </div>
-    </div>
-    {% if request.user.is_authenticated %}
-    <div class="card-footer bg-white p-2 border-top-0">
-      <a href="{% url 'product-details' %}" class="btn btn-primary btn-sm w-100">
-        <i class="bi bi-cart-plus"></i> Añadir
-      </a>
-    </div>
-    {% endif %}
-  </div>
-</div>
 </div>
 
 </div>

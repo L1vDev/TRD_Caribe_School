@@ -1,0 +1,462 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+  <div class="container py-5">
+    <div class="row g-4">
+      <!-- Product Images -->
+      <div class="col-md-6">
+        <div class="position-relative">
+          {% if product.stock == 0 %}
+          <div class="product-overlay rounded" id="soldout-overlay">
+            <span class="badge bg-secondary fs-5 p-3">AGOTADO</span>
+          </div>
+          {% endif %}
+          {% if product.discount > 0 %}
+          <span class="badge bg-danger discount-badge fs-6 p-2" id="discount-badge">-{{product.discount}}%</span>
+          {% endif %}
+          
+          <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}https://placehold.co/600x600{% endif %}" alt="Product image" class="img-fluid rounded border mb-3" id="main-product-image">
+        </div>
+        <div class="position-relative px-4">
+          <!-- Slider controls -->
+          <button class="btn btn-sm btn-light rounded-circle position-absolute top-50 start-0 translate-middle-y z-1 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          
+          <!-- Thumbnail slider -->
+           <!-- Ajustar tamaño de imagenes-->
+          <div class="thumbnail-slider py-2 gap-2">
+            <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}https://placehold.co/600x600{% endif %}" alt="Product thumbnail 1" class="rounded border p-1 product-thumbnail border-primary">
+            {% for image in product.images.all %}
+              <img src="{{image.image.url}}" alt="Product thumbnail {{ forloop.counter }}" class="rounded border p-1 product-thumbnail">
+            {% endfor %}
+          </div>
+          
+          <button class="btn btn-sm btn-light rounded-circle position-absolute top-50 end-0 translate-middle-y z-1 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div class="col-md-6">
+        <h1 class="fw-bold mb-2">{{product.name}}</h1>
+        
+        <div class="d-flex align-items-center mb-3">
+          <div class="me-3">
+           {% if product.stars == 0 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 0 and product.stars < 1 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 1 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 1 and product.stars < 2 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 2 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 2 and product.stars < 3 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 3 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 3 and product.stars < 4 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 4 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 4 and product.stars < 5 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+            <span class="ms-2 text-muted small">{{product.stars}} ({{product.reviews.count}} reseñas)</span>
+          </div>
+          <div class="vr mx-2 h-100"></div>
+          <div class="d-flex align-items-center views-counter" id="views-counter">
+            <i class="bi bi-eye text-muted me-1"></i>
+            <span class="text-muted small" id="views-count">{{product.views}} {% if product.views == 1%}vista{% else %}vistas{% endif %}</span>
+          </div>
+        </div>
+
+        <!-- Precios (cambian según la variante) -->
+        <div class="mb-3">
+          <!-- Precio normal -->
+          {% if product.discount > 0 %}
+          <div class="" id="price-discount">
+            <div class="d-flex align-items-center gap-2">
+              <h2 class="fs-2 fw-bold price-discount mb-0">${{product.discount_price}}</h2>
+              <span class="fs-5 price-original">${{product.price}}</span>
+            </div>
+          </div>
+          {% else %}
+          <h2 class="fs-2 fw-bold" id="price-normal">${{product.price}}</h2> 
+          {% endif %}
+        </div>
+
+        <p class="text-muted mb-3">
+          {{product.about}}
+        </p>
+
+        <!-- Botón de Añadir al Carrito (Simplificado) -->
+        <div class="mt-4">
+          {% if request.user.is_authenticated %}
+          {% if product.stock == 0 %}
+          <button class="btn btn-primary btn-lg w-100 d-flex align-items-center justify-content-center mb-3" id="btn-soldout" disabled>
+            <i class="bi bi-cart me-2"></i> Añadir al Carrito
+          </button>
+          {% else %}
+          <button class="btn btn-warning btn-lg w-100 d-flex align-items-center justify-content-center mb-3" id="btn-add-to-cart">
+            <i class="bi bi-cart me-2"></i> Añadir al Carrito
+          </button>
+          {% endif %}
+          <a href="{% url 'cart' %}" class="btn btn-secondary btn-lg w-100 d-flex align-items-center justify-content-center" id="btn-add-to-cart">
+            </i> Ir al Carrito
+          </a>
+          {% else %}
+          <a href="{% url 'login' %}" class="btn btn-warning btn-lg w-100 d-flex align-items-center justify-content-center mb-3" id="btn-add-to-cart">
+            Iniciar Sesión
+          </a>
+          {% endif %}          
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Details Tabs -->
+    <div class="mt-5">
+      <ul class="nav nav-tabs" id="productTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Descripción</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Reseñas ({{product.reviews.count}})</button>
+        </li>
+      </ul>
+      <div class="tab-content pt-4" id="productTabsContent">
+        <!-- Description Tab -->
+        <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+          <div class="row">
+            <div class="col-lg-10">
+              <div class="mb-4">
+                <p>
+                  {{product.details}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Reviews Tab -->
+        <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+          <!-- Review Summary -->
+          <div class="row mb-4">
+            <div class="col-md-3 text-center text-md-start mb-4 mb-md-0">
+              <div class="display-4 fw-bold">{{product.stars}}</div>
+              <div>
+                {% if product.stars == 0 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 0 and product.stars < 1 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 1 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 1 and product.stars < 2 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 2 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 2 and product.stars < 3 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 3 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 3 and product.stars < 4 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              {% if product.stars <= 4 %}
+              <i class="bi bi-star text-warning"></i>
+              {% elif product.stars > 4 and product.stars < 5 %}
+              <i class="bi bi-star-half text-warning"></i>
+              {% else %}
+              <i class="bi bi-star-fill text-warning"></i>
+              {% endif %}
+              </div>
+              <div class="text-muted small mt-1">Basado en {{product.reviews.count}} reseñas</div>
+            </div>
+            <div class="col-md-9">
+              {% for key,value in stars_percent.items %}
+              <div class="d-flex align-items-center mb-2">
+                <div class="text-muted me-2">{{key}}</div>
+                <div class="progress flex-grow-1" style="height: 8px;">
+                  <div class="progress-bar bg-warning" role="progressbar" style="width: {{value.percent_int}}%;" aria-valuenow="{{value.percent_int}}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="text-muted ms-2 small" style="width: 40px;">{{value.percent}}%</div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% if request.user.is_authenticated %}
+          <div class="text-center mb-4">
+            <button class="btn btn-warning" id="btn-write-review">
+              <i class="bi bi-pencil me-2"></i> Escribir una reseña
+            </button>
+          </div>
+          {% endif %}
+          <hr>
+          
+          <!-- Individual Reviews -->
+          <div class="mb-4">
+            {% for review in reviews %}
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <h5 class="mb-0">{{review.user.get_full_name}}</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="me-2">
+                      {% if review.rating == 0 %}
+                      <i class="bi bi-star text-warning"></i>
+                      {% elif review.rating > 0 and review.rating < 1 %}
+                      <i class="bi bi-star-half text-warning"></i>
+                      {% else %}
+                      <i class="bi bi-star-fill text-warning"></i>
+                      {% endif %}
+                      {% if review.rating <= 1 %}
+                      <i class="bi bi-star text-warning"></i>
+                      {% elif review.rating > 1 and review.rating < 2 %}
+                      <i class="bi bi-star-half text-warning"></i>
+                      {% else %}
+                      <i class="bi bi-star-fill text-warning"></i>
+                      {% endif %}
+                      {% if review.rating <= 2 %}
+                      <i class="bi bi-star text-warning"></i>
+                      {% elif review.rating > 2 and review.rating < 3 %}
+                      <i class="bi bi-star-half text-warning"></i>
+                      {% else %}
+                      <i class="bi bi-star-fill text-warning"></i>
+                      {% endif %}
+                      {% if review.rating <= 3 %}
+                      <i class="bi bi-star text-warning"></i>
+                      {% elif review.rating > 3 and review.rating < 4 %}
+                      <i class="bi bi-star-half text-warning"></i>
+                      {% else %}
+                      <i class="bi bi-star-fill text-warning"></i>
+                      {% endif %}
+                      {% if review.rating <= 4 %}
+                      <i class="bi bi-star text-warning"></i>
+                      {% elif review.rating > 4 and review.rating < 5 %}
+                      <i class="bi bi-star-half text-warning"></i>
+                      {% else %}
+                      <i class="bi bi-star-fill text-warning"></i>
+                      {% endif %}
+                    </div>
+                    <span class="text-muted small">· {{ review.created_at|date:"d/m/Y" }}</span>
+                  </div>
+                </div>
+              </div>
+              <p>
+                {{review.comment}}
+              </p>
+            </div>
+            <hr>
+            {% endfor %}
+          <!--Añadir paginacion-->
+          <button class="btn btn-outline-primary w-100">Ver Más Reseñas</button>
+        </div>
+      </div>
+    </div>
+  
+  <!-- Related Products -->
+  <div class="mt-5">
+    <h2 class="fw-bold mb-4">Productos Relacionados</h2>
+    <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 g-3">
+      {% for related in related_products %}
+      <div class="col">
+        <div class="card h-100 product-card">
+          <img src="{% if related.main_image %}{{related.main_image.url}}{% else %}https://placehold.co/400x400{% endif %}" class="card-img-top {% if related.stock == 0 %}opacity-50{% endif %}" alt="Producto {{relate.id}}">
+          <div class="card-body p-3">
+            <h5 class="card-title fs-6 text-truncate">{{ related.name }}</h5>
+            <div class="d-flex align-items-center mb-1">
+              <div class="me-1">
+                {% if related.stars == 0 %}
+                <i class="bi bi-star text-warning"></i>
+                {% elif related.stars > 0 and related.stars < 1 %}
+                <i class="bi bi-star-half text-warning"></i>
+                {% else %}
+                <i class="bi bi-star-fill text-warning"></i>
+                {% endif %}
+                {% if related.stars <= 1 %}
+                <i class="bi bi-star text-warning"></i>
+                {% elif related.stars > 1 and related.stars < 2 %}
+                <i class="bi bi-star-half text-warning"></i>
+                {% else %}
+                <i class="bi bi-star-fill text-warning"></i>
+                {% endif %}
+                {% if related.stars <= 2 %}
+                <i class="bi bi-star text-warning"></i>
+                {% elif related.stars > 2 and related.stars < 3 %}
+                <i class="bi bi-star-half text-warning"></i>
+                {% else %}
+                <i class="bi bi-star-fill text-warning"></i>
+                {% endif %}
+                {% if related.stars <= 3 %}
+                <i class="bi bi-star text-warning"></i>
+                {% elif related.stars > 3 and related.stars < 4 %}
+                <i class="bi bi-star-half text-warning"></i>
+                {% else %}
+                <i class="bi bi-star-fill text-warning"></i>
+                {% endif %}
+                {% if related.stars <= 4 %}
+                <i class="bi bi-star text-warning"></i>
+                {% elif related.stars > 4 and related.stars < 5 %}
+                <i class="bi bi-star-half text-warning"></i>
+                {% else %}
+                <i class="bi bi-star-fill text-warning"></i>
+                {% endif %}
+              </div>
+              <span class="text-muted small">({{related.reviews.count}})</span>
+            </div>
+            {% if related.discount > 0 %}
+              <p class="card-text fw-medium mb-0">
+                <span class="text-danger">${{ related.discount_price }}</span>
+                <span class="text-muted text-decoration-line-through small ms-1">${{ related.price }}</span>
+              </p>
+            {% else %}
+              <p class="card-text fw-medium mb-0">${{ related.price }}</p>
+            {% endif %}
+          </div>
+          <div class="card-footer bg-white p-2 border-top-0">
+          {% if related.stock == 0 %}
+          <a href="{% url 'product-details' pk=related.pk %}" class="btn btn-secondary btn-sm w-100" disabled>
+            <i class="bi bi-x-circle"></i> Agotado
+          </a>
+          {% else %}
+          <a href="{% url 'product-details' pk=related.pk %}" class="btn btn-primary btn-sm w-100">
+            <i class="bi bi-cart-plus"></i> Añadir
+          </a>
+          {% endif %}
+        </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+<!-- Modal para Añadir al Carrito -->
+<div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addToCartModalLabel">Añadir al Carrito</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex mb-3">
+          <!-- Imagen del producto -->
+          <div class="me-3">
+            <img src="https://placehold.co/600x600" alt="Product image" class="modal-product-img rounded border" id="modal-product-image">
+          </div>
+          <!-- Información del producto -->
+          <div>
+            <h5 class="mb-2">Ergonomic Desk Chair</h5>
+            <!-- Precio normal -->
+            <div id="modal-price-normal">
+              <p class="fw-bold mb-1">$299.99</p>
+            </div>
+            <!-- Precio con descuento -->
+            <div id="modal-price-discount" class="d-none">
+              <p class="fw-bold mb-1 price-discount">$239.99 <span class="price-original small">$299.99</span></p>
+            </div>
+            <p class="text-muted small mb-0">Color: <span id="selected-color">Black</span></p>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="modal-quantity" class="form-label">Cantidad</label>
+          <div class="input-group">
+            <button class="btn btn-outline-secondary" type="button" id="modal-btn-minus">
+              <i class="bi bi-dash"></i>
+            </button>
+            <input type="number" class="form-control text-center quantity-input" value="1" id="modal-quantity">
+            <button class="btn btn-outline-secondary" type="button" id="modal-btn-plus">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="alert alert-success d-none" id="modal-success-message">
+          <i class="bi bi-check-circle me-2"></i> Producto añadido al carrito correctamente.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-warning" id="modal-add-to-cart">
+          <i class="bi bi-cart me-2"></i> Añadir al Carrito
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="writeReviewModal" tabindex="-1" aria-labelledby="writeReviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="writeReviewModalLabel">Escribir una Reseña</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="review-form">
+          <!-- Calificación con estrellas -->
+          <div class="mb-4">
+            <label class="form-label fw-medium">Calificación</label>
+            <div class="star-rating" id="star-rating">
+              <i class="bi bi-star" data-rating="1"></i>
+              <i class="bi bi-star" data-rating="2"></i>
+              <i class="bi bi-star" data-rating="3"></i>
+              <i class="bi bi-star" data-rating="4"></i>
+              <i class="bi bi-star" data-rating="5"></i>
+            </div>
+            <input type="hidden" name="rating" id="selected-rating" value="0" required>
+            <div class="invalid-feedback">Por favor, selecciona una calificación.</div>
+          </div>
+          
+          <!-- Comentario de la reseña -->
+          <div class="mb-3">
+            <label for="review-comment" class="form-label fw-medium">Comentario</label>
+            <textarea class="form-control" id="review-comment" rows="4" placeholder="Comparte tu experiencia con este producto" required></textarea>
+            <div class="invalid-feedback">Por favor, ingresa un comentario.</div>
+          </div>
+          
+          <div class="alert alert-success d-none" id="review-success-message">
+            <i class="bi bi-check-circle me-2"></i> ¡Gracias! Tu reseña ha sido enviada correctamente y será publicada después de ser revisada.
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-warning" id="submit-review">
+          <i class="bi bi-send me-2"></i> Enviar Reseña
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/product_details.js' %}"></script>
+{% endblock %}

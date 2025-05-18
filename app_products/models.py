@@ -54,7 +54,7 @@ class Reviews(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
 
     def __str__(self):
-        return f"Reseña de {self.user.username} para {self.product.name} - Calificación: {self.rating}"
+        return f"Reseña de {self.user.email} para {self.product.name} - Calificación: {self.rating}"
     
     class Meta:
         verbose_name = 'Reseña'

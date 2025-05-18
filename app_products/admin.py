@@ -14,6 +14,9 @@ class ProductImageInline(TabularInline):
 class ProductsAdmin(ModelAdmin):
     list_display = ['name','display_available', 'price', 'discount', 'stock']
     list_display_links = ['name']
+    autocomplete_fields=["category"]
+    exclude=["canon_name"]
+    readonly_fields=["views","purchases"]
     search_fields = ['name', 'description']
     search_help_text = _("Buscar Producto")
     inlines = [ProductImageInline]
@@ -42,6 +45,6 @@ class CategoryAdmin(ModelAdmin):
 class ReviewsAdmin(ModelAdmin):
     list_display = ['product', 'user', 'rating', 'created_at']
     list_display_links = ['product', 'user']
-    search_fields = ['product__name', 'user__username', 'comment']
+    search_fields = ['product__name', 'user__email', 'comment']
     search_help_text = _("Buscar Reseña")
     list_filter = [('product', ChoicesDropdownFilter), ('user', ChoicesDropdownFilter)]
