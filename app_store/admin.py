@@ -17,6 +17,7 @@ class InvoicesAdmin(ModelAdmin):
     list_display = ['id','display_name','email','display_status','created_at']
     #add view to download invoice file
     list_display_links = ['id', 'display_name', 'email']
+    readonly_fields=["invoice_file"]
     search_fields = ['id', 'email', 'first_name', 'last_name']
     search_help_text = _("Buscar Factura")
     inlines = [InvoiceProductsInline]

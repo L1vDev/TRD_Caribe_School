@@ -39,7 +39,7 @@
             <a href="{% url 'best-seller' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-currency-dollar mx-3"></i>Más Vendidos</a>
             <a href="{% url 'most-viewed' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-tag-fill mx-3"></i>Más Vistos</a>
             {% if request.user.is_authenticated %}
-            <a href="{% url 'invoice-list' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-receipt mx-3"></i>Mis Compras</a>
+            <a href="{% url 'order-list' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-receipt mx-3"></i>Mis Compras</a>
             <a href="{% url 'logout' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-box-arrow-right mx-3"></i>Cerrar Sesión</a>
             {% endif %}
             <a href="{% url 'terms-and-conditions' %}" class="d-flex list-group-item px-0 bg-white text-dark border border-0 offcanva-list-item"><i class="bi bi-file-earmark-text-fill mx-3"></i>Términos y Condiciones</a>

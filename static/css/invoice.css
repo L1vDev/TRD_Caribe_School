@@ -1,0 +1,70 @@
+.table-responsive {
+    margin-bottom: 0;
+}
+
+.status-badge {
+    font-weight: 500;
+}
+
+.invoice-card {
+    margin-bottom: 1rem;
+    border-left: 5px solid #dee2e6;
+}
+
+.invoice-card.pending {
+    border-left-color: #ffc107;
+}
+
+.invoice-card.sent {
+    border-left-color: #0dcaf0;
+}
+
+.invoice-card.completed {
+    border-left-color: #198754;
+}
+
+.invoice-card.canceled {
+    border-left-color: #dc3545;
+}
+
+.invoice-card .card-title {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.2rem;
+}
+
+.invoice-card .card-text {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-family: monospace;
+    /* Monospace font for better UUID readability */
+    font-size: 0.85rem;
+    word-break: keep-all;
+    /* Prevent breaking within the UUID */
+    white-space: nowrap;
+    /* Keep on one line */
+}
+
+.invoice-id {
+    font-family: monospace;
+    /* Monospace font for better UUID readability */
+    font-size: 0.85rem;
+    white-space: nowrap;
+    /* Keep on one line */
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+@media (max-width: 767.98px) {
+    .desktop-view {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .mobile-view {
+        display: none;
+    }
+}

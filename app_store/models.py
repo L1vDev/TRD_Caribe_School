@@ -15,18 +15,21 @@ class Invoices(models.Model):
     email=models.EmailField(verbose_name="Correo Electrónico")
     first_name=models.CharField(verbose_name="Nombre")
     last_name=models.CharField(verbose_name="Apellidos")
-    phone = models.CharField(verbose_name="Teléfono", blank=True, null=True,validators=[RegexValidator(regex=r'^\+\d{10,15}$', message="Introduzca un número de teléfono válido.")])
+    phone_number = models.CharField(verbose_name="Teléfono", blank=True, null=True,validators=[RegexValidator(regex=r'^\+\d{10,15}$', message="Introduzca un número de teléfono válido.")])
     province=models.CharField(verbose_name="Provincia",max_length=100)
     municipality=models.CharField(verbose_name="Municipio",max_length=100)
     address=models.CharField(verbose_name="Dirección",max_length=255)
-    #Add delivery details
+    delivery_details=models.TextField(verbose_name="Detalles de Entrega", null=True, blank=True)
     delivery_price=models.DecimalField(verbose_name="Precio de Entrega",max_digits=10, decimal_places=2, default=0.00, validators=[MinValueValidator(0.00)])
-    status=models.CharField(verbose_name="Estado",max_length=50,default='Pendiente',choices=STATUS_CHOICES)
+    status=models.CharField(verbose_name="Estado",max_length=50,default='pending',choices=STATUS_CHOICES)
     invoice_file=models.FileField(verbose_name="Archivo de Factura", upload_to="invoices/")
     created_at=models.DateTimeField(auto_now_add=True,verbose_name="Fecha de Creación")
 
     def __str__(self):
         return f"Factura {self.id} - {self.first_name} {self.last_name}"
+    
+    def generate_pdf(self):
+        pass
 
     class Meta:
         verbose_name = 'Factura'
@@ -42,7 +45,7 @@ class InvoiceProducts(models.Model):
     quantity = models.PositiveIntegerField(verbose_name="Cantidad", default=1)
 
     def __str__(self):
-        return f"{self.product.name} - Factura {self.invoice.id}"
+        return f"{self.product_name} - Factura {self.invoice.id}"
     
     class Meta:
         verbose_name = 'Producto de Factura'
@@ -72,6 +75,9 @@ class CartItem(models.Model):
     def get_total(self):
         total=self.product.get_discount_price()*self.quantity
         return total
+    
+    def get_is_enough(self):
+        return self.quantity<=self.product.stock
 
     class Meta:
         verbose_name = "Producto del carrito"

@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from app_store.models import Cart, CartItem
+from app_store.models import Cart, CartItem, Invoices, InvoiceProducts
 from django.views import View
+from django.views.generic import ListView
 from django.db.models import F, ExpressionWrapper, FloatField
 from django.db.models.functions import Round
 from app_products.models import Products
@@ -32,6 +33,60 @@ class CartView(LoginRequiredMixin,View):
     def get(self,request,*args,**kwargs):
         context=self.get_context_data()
         return render(request, self.template_name,context)
+    
+    def post(self, request, *args, **kwargs):
+        user=request.user
+        cart=Cart.objects.filter(user=user).first()
+        cart_items=CartItem.objects.filter(cart=cart).all()
+        over_stock=False
+        low_stock=False
+        for item in cart_items:
+            if item.product.stock==0:
+                low_stock=True
+            elif item.quantity>item.product.stock:
+                over_stock=True
+        
+        if low_stock:
+            context=self.get_context_data()
+            context["error"]="Algunos productos se han agotado. Retírelos del carrito para poder comprar."
+            return render(request, self.template_name,context)
+        elif over_stock:
+            context=self.get_context_data()
+            context["error"]="Algunos productos no tienen stock suficiente. Modifique las cantidades."
+            return render(request, self.template_name,context)
+
+        province_id=request.POST.get("province")
+        municipality_id=request.POST.get("municipality")
+        province=Province.objects.get(pk=province_id)
+        municipality=Municipality.objects.get(pk=municipality_id)
+
+        invoice=Invoices.objects.create(
+            email=user.email,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            phone_number=request.POST.get("phone_number",user.phone_number),
+            province=province.name,
+            municipality=municipality.name,
+            address=request.POST.get("address",""),
+            delivery_details=request.POST.get("delivery_details",""),
+            delivery_price=municipality.price,
+        )
+
+        for item in cart_items:
+            item.product.stock=item.product.stock-item.quantity
+            item.product.save()
+            InvoiceProducts.objects.create(
+                invoice=invoice,
+                product_id=item.product.id,
+                product_name=item.product.name,
+                product_price=item.product.price,
+                product_discount=item.product.discount,
+                quantity=item.quantity
+            )
+        invoice.generate_pdf()
+        cart.delete()
+        Cart.objects.create(user=user)
+        return redirect("order-list")
     
 class AddCartView(LoginRequiredMixin, View):
 
@@ -69,3 +124,17 @@ class DeleteCartView(LoginRequiredMixin, View):
         if cart_item:
             cart_item.delete()
         return redirect("cart")
+
+class ListInvoicesView(LoginRequiredMixin, ListView):
+    template_name = "store/invoice.html"
+
+    def get_queryset(self):
+        user=self.request.user
+        invoices=Invoices.objects.filter(email=user.email).all()
+        return invoices
+    
+    def get_context_data(self, **kwargs):
+        context=super(ListInvoicesView, self).get_context_data(**kwargs)
+        invoices=self.get_queryset()
+        context["invoices"]=invoices
+        return context
