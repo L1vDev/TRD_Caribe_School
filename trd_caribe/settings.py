@@ -197,6 +197,7 @@ UNFOLD = {
                         "title": _("Quejas y Sugerencias"),
                         "icon": "person_alert",
                         "link": reverse_lazy("admin:app_config_contactrequest_changelist"),
+                        "badge": "app_auth.utils.badge_callback",
                     }
                 ],
             },

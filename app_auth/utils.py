@@ -24,6 +24,11 @@ def get_unique_filename(instance, filename):
     unique_filename = f"{uuid.uuid4()}.{ext}"
     return os.path.join(folder, unique_filename)
 
+def badge_callback(request):
+    from app_config.models import ContactRequest
+    request_count=ContactRequest.objects.filter(answered=False).all().count()
+    return request_count
+    
 def generate_token(user):
     exp = datetime.datetime.now() + datetime.timedelta(minutes=30)
     payload = {

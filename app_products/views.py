@@ -83,3 +83,6 @@ class CreateReviewView(LoginRequiredMixin,View):
                 rating=rating,
             )
             return redirect('product-details',pk=pk)
+
+def terms_and_conditions(request):
+    return render(request,"store/terms.html")

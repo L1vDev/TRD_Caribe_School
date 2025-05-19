@@ -13,6 +13,5 @@ urlpatterns=[
     path("reset-password-failed/",reset_password_email_failed,name="reset-password-failed"),
     path("reset-password/<str:token>/",ResetPasswordView.as_view(),name="reset-password"),
     path("profile/", ProfileView.as_view(), name="profile"), #add js validation
-    path("contact/",contact,name="contact"),
-    path("terms/",terms_and_conditions,name="terms-and-conditions"),
+    
 ]
