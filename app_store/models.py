@@ -54,6 +54,19 @@ class Invoices(models.Model):
         
         pdf_file = pisa.pisaDocument(io.BytesIO(html_ticket.encode("UTF-8")), result_pdf)
         self.invoice_file.save(f'{str(self.id)}.pdf', ContentFile(result_pdf.getvalue()))
+    
+    def cancel_invoice(self):
+        from app_products.models import Products
+        self.status="canceled"
+        for invoice_product in self.products.all():
+            product,created=Products.objects.get_or_create(
+                name=invoice_product.product_name,
+                price=invoice_product.price,
+                discount=invoice_product.product_discount
+            )
+            product.stock=product.stock+invoice_product.quantity
+            product.save()
+        self.save()
 
     class Meta:
         verbose_name = 'Factura'
