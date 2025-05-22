@@ -73,7 +73,7 @@
             <div class="overflow-auto">
                 <p class="card-text">{{ invoice.id }}</p>
             </div>
-            <a href="{{ invoice.id }}" class="btn btn-sm btn-primary w-100" target="_blank" title="Descargar PDF">
+            <a href="{% url 'download-invoice' pk=invoice.id %}" class="btn btn-sm btn-primary w-100" target="_blank" title="Descargar PDF">
                 Descargar Factura
             </a>
             </div>

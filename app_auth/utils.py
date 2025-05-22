@@ -61,8 +61,12 @@ def send_verification_email(user,url):
     
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, 'text/html')
-    email.send()
-    return True
+    try:
+        email.send()
+        return True
+    except Exception as e:
+        print(f"Error enviando email: {str(e)}")
+    return False
 
 def send_reset_password_email(user,url):
     subject = f'Reinicia tu contraseña en {settings.SITE_NAME}'
@@ -78,8 +82,12 @@ def send_reset_password_email(user,url):
     
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, 'text/html')
-    email.send()
-    return True
+    try:
+        email.send()
+        return True
+    except Exception as e:
+        print(f"Error enviando email: {str(e)}")
+    return False
 
 def send_invoice_email(invoice):
     try:

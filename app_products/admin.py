@@ -1,7 +1,10 @@
 from django.contrib import admin, messages
+from django.http import HttpRequest
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.decorators import display,action
-from unfold.contrib.filters.admin import ChoicesDropdownFilter
+from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from unfold.contrib.filters.admin import ChoicesDropdownFilter, MultipleRelatedDropdownFilter
 from django.utils.translation import gettext_lazy as _
 from app_products.models import Products, ProductImage, Category, Reviews
 
@@ -17,10 +20,12 @@ class ProductsAdmin(ModelAdmin):
     autocomplete_fields=["category"]
     exclude=["canon_name"]
     readonly_fields=["views","purchases"]
-    search_fields = ['name', 'description']
+    search_fields = ['name', 'about','details']
     search_help_text = _("Buscar Producto")
     inlines = [ProductImageInline]
-    list_filter = [('category', ChoicesDropdownFilter), 'available']
+    list_filter = [('category', MultipleRelatedDropdownFilter), 'available']
+    actions = ['hide_show_product']
+    list_filter_submit=True
     
     @display(
         description=_("Disponible"),
@@ -32,7 +37,24 @@ class ProductsAdmin(ModelAdmin):
     def display_available(self, obj):
         if obj.available:
             return True, "Disponible"
-        return False, "Disponible"
+        return False, "No Disponible"
+    
+    def hide_show_product(self, request, queryset):
+        for product in queryset:
+            if product.available:
+                product.available=False
+                messages.success(request, _(f"Se ha ocultado {product.name} correctamente."))
+            else:
+                if product.price>0:
+                    product.avaliable=True
+                    messages.success(request, _(f"Se ha publicado {product.name} correctamente."))
+                else:
+                    messages.error(request, _(f"No se ha podido publicar {product.name}. Revisa que el precio sea correcto"))
+            product.save()
+        return redirect(
+            reverse_lazy("admin:app_products_products_changelist")
+        )       
+    hide_show_product.short_description="Mostrar/Ocultar Productos"
     
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
@@ -45,6 +67,11 @@ class CategoryAdmin(ModelAdmin):
 class ReviewsAdmin(ModelAdmin):
     list_display = ['product', 'user', 'rating', 'created_at']
     list_display_links = ['product', 'user']
+    readonly_fields=['product','user','rating','comment']
     search_fields = ['product__name', 'user__email', 'comment']
     search_help_text = _("Buscar Reseña")
-    list_filter = [('product', ChoicesDropdownFilter), ('user', ChoicesDropdownFilter)]
+    list_filter = [('product', MultipleRelatedDropdownFilter), ('user', MultipleRelatedDropdownFilter)]
+    list_filter_submit=True
+
+    def has_add_permission(self, request, obj=None):
+        return False

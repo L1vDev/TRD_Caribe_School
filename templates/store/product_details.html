@@ -201,7 +201,7 @@
               <div class="text-muted small mt-1">Basado en {{product.reviews.count}} reseñas</div>
             </div>
             <div class="col-md-9">
-              {% for key,value in get_stars_percent.items %}
+              {% for key,value in stars_percent.items %}
               <div class="d-flex align-items-center mb-2">
                 <div class="text-muted me-2">{{key}}</div>
                 <div class="progress flex-grow-1" style="height: 8px;">
@@ -419,6 +419,7 @@
         </form>
     </div>
   </div>
+</div>
 </div>
 
 <div class="modal fade" id="writeReviewModal" tabindex="-1" aria-labelledby="writeReviewModalLabel" aria-hidden="true">

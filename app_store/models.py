@@ -35,6 +35,30 @@ class Invoices(models.Model):
     def __str__(self):
         return f"Factura {self.id} - {self.first_name} {self.last_name}"
     
+    def clean(self):
+        super().clean()
+        if not self.pk:
+            return
+
+        previous = Invoices.objects.get(pk=self.pk)
+        prev_status = previous.status
+        new_status = self.status
+
+        if prev_status==new_status:
+            return
+
+        if prev_status == 'pending':
+            return
+
+        if new_status == 'pending':
+            raise ValidationError("No se puede volver al estado 'Pendiente' desde otro estado.")
+
+        if prev_status in ['sended', 'completed'] and new_status == 'canceled':
+            raise ValidationError("No se puede cancelar una factura que ya fue enviada o completada.")
+
+        if prev_status == 'canceled' and new_status != 'canceled':
+            raise ValidationError("No se puede cambiar el estado de una factura cancelada.")
+    
     def get_total_amount(self):
         total=0
         for product in self.products.all():

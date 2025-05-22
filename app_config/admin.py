@@ -23,6 +23,7 @@ class ProvinceAdmin(ModelAdmin):
 class ContactRequestAdmin(ModelAdmin):
     list_display = ['display_name', 'email', 'phone_number', 'created_at','dispaly_answered']
     list_display_links = ['display_name','email']
+    readonly_fields=["first_name","last_name","email","phone_number","message"]
     search_fields = ['name', 'email', 'phone_number']
     search_help_text = _("Buscar Queja o Sugerencia")
     actions = ['mark_as_read']
