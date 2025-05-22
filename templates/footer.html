@@ -14,7 +14,9 @@
           <h5 class="mb-3">Enlaces</h5>
           <ul class="list-unstyled">
             <li class="mb-2"><a href="{% url 'index' %}" class="text-decoration-none text-light">Inicio</a></li>
+            {% if request.user.is_authenticated %}
             <li class="mb-2"><a href="{% url 'cart' %}" class="text-decoration-none text-light">Carrito</a></li>
+            {% endif %}
             <li class="mb-2"><a href="{% url 'terms-and-conditions' %}" class="text-decoration-none text-light">Términos y Condiciones</a></li>
           </ul>
         </div>

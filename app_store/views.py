@@ -33,6 +33,7 @@ class CartView(LoginRequiredMixin,View):
         context['municipalities']=json.dumps(municipalitites_by_province)
         context["provinces"]=provinces
         context["cart_items"]=cart_items
+        context["cart_count"]=cart_items.count()
         context["subtotal"]=cart.get_subtotal()
         return context 
 
@@ -147,8 +148,11 @@ class ListInvoicesView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context=super(ListInvoicesView, self).get_context_data(**kwargs)
+        user=self.request.user
         invoices=self.get_queryset()
+        cart, created=Cart.objects.get_or_create(user=user)
         context["invoices"]=invoices
+        context["cart_count"]=cart.products.count()
         return context
 
 @login_required

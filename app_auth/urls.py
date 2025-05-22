@@ -1,8 +1,7 @@
 from django.urls import path
-from app_auth.views import RegisterView,verify_email_alert,verify_email_failed,verify_email_view, LoginView,logout_view,reset_password_email_alert,reset_password_email_failed, ResetPasswordView,ProfileView, product_detail, cart, contact, invoice_list, terms_and_conditions, favorites
+from app_auth.views import RegisterView,verify_email_alert,verify_email_failed,verify_email_view, LoginView,logout_view,reset_password_email_alert,reset_password_email_failed, ResetPasswordView,ProfileView
 
 urlpatterns=[
-    #path("", initial_view,name="index"),
     path("register/",RegisterView.as_view(),name="register"),
     path("verify-email/",verify_email_alert,name="verify-email-alert"),
     path("verify-email-failed/",verify_email_failed,name="verify-email-failed"),

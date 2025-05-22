@@ -49,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.is_superuser:
             self.is_staff = True
         super().save(*args, **kwargs)
+        
     
     class Meta:
         verbose_name = "Cliente"

@@ -16,12 +16,7 @@ from app_auth.utils import generate_token,verify_token, send_verification_email,
 from django.urls import reverse
 from django.shortcuts import redirect
 from app_auth.models import User
-
-def initial_view(request):
-    return render(request,"index.html")
-
-def register_view(request):
-    return render(request,"auth/register.html")
+from app_store.models import Cart
 
 class RegisterView(CreateView):
     template_name = 'auth/register.html'
@@ -153,15 +148,22 @@ class ResetPasswordView(View):
 class ProfileView(LoginRequiredMixin, View):
     template_name="auth/profile.html"
 
-    def get(self, request, *args, **kwargs):
+    def get_context_data(self, request):
         user=request.user
+        cart, created=Cart.objects.get_or_create(user=user)
+        cart_count=cart.products.count()
         context={
             "first_name":user.first_name,
             "last_name":user.last_name,
             "email":user.email,
             "phone_number":user.phone_number,
-            "profile_picture":user.profile_picture.url if user.profile_picture else None
+            "profile_picture":user.profile_picture.url if user.profile_picture else None,
+            "cart_count":cart_count,
         }
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context=self.get_context_data(request)
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
@@ -206,33 +208,6 @@ class ProfileView(LoginRequiredMixin, View):
         else:
             context["success"]="Perfil actualizado correctamente"
         return render(request, self.template_name, context)
-
-def product_detail(request):
-    return render(request,"store/products.html")
-
-def cart(request):
-    return render(request,"store/cart.html")
-
-def profile(request):
-    return render(request,"auth/profile.html")
-
-def best_seller(request):
-    return render(request,"store/best_seller.html")
-
-def most_viewed(request):
-    return render(request,"store/most_viewed.html")
-
-def contact(request):
-    return render(request,"store/contact.html")
-
-def invoice_list(request):
-    return render(request,"store/invoice.html")
-
-def terms_and_conditions(request):
-    return render(request,"store/terms.html")
-
-def favorites(request):
-    return render(request,"store/favorites.html")
 
 def dashboard_callback(request, context):
     context.update(random_data())

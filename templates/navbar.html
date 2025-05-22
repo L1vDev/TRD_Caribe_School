@@ -5,6 +5,7 @@
         <img src="{% static 'img/logo.png' %}" alt="TRD-Caribe" style="height: 40px;">
         <h2 class="my-auto d-none d-sm-flex" style="margin-bottom:0"><b>TRD-Caribe</b></h2>
       </a>
+      {% if show_filters %}
       <div class="collapse navbar-collapse">
         {# Category Filter Select#}
         <div class="mx-2" style="max-width: 120px;">
@@ -22,6 +23,8 @@
           <button class="btn bg-white border border-0 text-black" type="submit"><i class="bi bi-search"></i></button>
         </form>
       </div>
+      {% endif %}
+
 
       <!-- Side Menu -->
       <div style="background-color: white; max-width:300px" class="offcanvas-xxl offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
@@ -70,10 +73,12 @@
         <li class="nav-item nav-link">
           <a href="{% url 'cart' %}" type="button" class="btn menu-button position-relative">
             <i class="bi bi-cart-fill h4"></i>
+            {% if cart_count > 0 %}
             <span class="position-absolute start-90 translate-middle badge rounded-pill bg-danger" style="top:7px;font-size:0.7rem">
-              99+
+              {% if cart_count < 99 %}{{cart_count}}{% else %}99+{% endif %}
               <span class="visually-hidden">unread messages</span>
             </span>
+            {% endif %}
           </a>
         </li>
         {% else %}
@@ -87,6 +92,7 @@
       </ul>
   </nav>
 
+  {% if show_filters %}
   <!-- Nuevo contenedor para el selector y el formulario de búsqueda -->
   <div class="p-2 d-lg-none under-nav" style="background-color: white;" data-bs-theme="dark">
     <div class="container-fluid">
@@ -103,11 +109,12 @@
 
         <!-- Search Bar -->
         <form class="d-flex input-group flex-grow-1" role="search">
-          <input class="form-control custom-form bg-white border border-end-0 text-dark" type="search" placeholder="Search" aria-label="Search">
+          <input class="form-control custom-form bg-white border border-end-0 text-dark" type="search" placeholder="Buscar" aria-label="Search">
           <button class="btn btn-outline-secondary border border-start-0" type="submit"><i class="bi bi-search"></i></button>
         </form>
       </div>
     </div>
   </div>
+  {% endif %}
 </header>
 

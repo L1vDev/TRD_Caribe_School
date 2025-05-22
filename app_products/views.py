@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render
 from app_products.models import Products, Reviews
 from django.views.generic import CreateView, ListView
@@ -8,25 +9,52 @@ from django.utils import timezone
 from django.db.models.functions import Now
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from app_store.models import Cart
 
 class ProductsView(ListView):
     """
     AÑADIR PAGINACION A LOS PRODUCTOS
     """
-
     queryset = Products.objects.filter(available=True).all()
     template_name = "index.html"
-    context_object_name = "products"
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        user=self.request.user
+        if user.is_authenticated:
+            cart, created=Cart.objects.get_or_create(user=user)
+            context["cart_count"]=cart.products.count()
+        context["products"]=self.queryset
+        context["show_filters"]=True
+        return context
 
 class MostViewedProductsView(ListView):
     queryset = Products.objects.filter(available=True).order_by("-views").all()[:10]
     template_name="store/most_viewed.html"
-    context_object_name="products"
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        user=self.request.user
+        if user.is_authenticated:
+            cart, created=Cart.objects.get_or_create(user=user)
+            context["cart_count"]=cart.products.count()
+        context["products"]=self.queryset
+        context["show_filters"]=True
+        return context
 
 class MostPurchasedProductsView(ListView):
     queryset = Products.objects.filter(available=True).order_by("-purchases").all()[:10]
     template_name="store/best_seller.html"
-    context_object_name="products"
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        user=self.request.user
+        if user.is_authenticated:
+            cart, created=Cart.objects.get_or_create(user=user)
+            context["cart_count"]=cart.products.count()
+        context["products"]=self.queryset
+        context["show_filters"]=True
+        return context
 
 class ProductDetailsView(ListView):
     model=Products
@@ -38,6 +66,10 @@ class ProductDetailsView(ListView):
         AÑADIR PAGINACION A REVIEW Y RELATED PRODUCTS
         """
         context=super(ProductDetailsView, self).get_context_data(**kwargs)
+        user=self.request.user
+        if user.is_authenticated:
+            cart, created=Cart.objects.get_or_create(user=user)
+            context["cart_count"]=cart.products.count()
         product= Products.objects.filter(id=self.kwargs.get('pk'), available=True).first()
         product.views=product.views+1
         product.save()
@@ -85,4 +117,9 @@ class CreateReviewView(LoginRequiredMixin,View):
             return redirect('product-details',pk=pk)
 
 def terms_and_conditions(request):
-    return render(request,"store/terms.html")
+    context={}
+    user=request.user
+    if user.is_authenticated:
+        cart,created=Cart.objects.get_or_create(user=user)
+        context["cart_count"]=cart.products.count()
+    return render(request,"store/terms.html",context)

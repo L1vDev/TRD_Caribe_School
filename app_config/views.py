@@ -2,12 +2,22 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import ContactRequest
+from app_store.models import Cart
 
 class ContactRequestView(View):
     template_name = 'store/contact.html'
 
+    def get_context_data(self, request):
+        context={}
+        user=request.user
+        if user.is_authenticated:
+            cart, created=Cart.objects.get_or_create(user=user)
+            context["cart_count"]=cart.products.count()
+        return context
+
     def get(self, request):
-        return render(request, self.template_name)
+        context=self.get_context_data(request)
+        return render(request, self.template_name,context)
 
     def post(self, request):
         first_name = request.POST.get('first_name')
