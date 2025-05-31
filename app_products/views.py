@@ -10,6 +10,7 @@ from django.db.models.functions import Now
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from app_store.models import Cart
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 class ProductsView(ListView):
     """
@@ -17,6 +18,7 @@ class ProductsView(ListView):
     """
     queryset = Products.objects.filter(available=True).all()
     template_name = "index.html"
+    paginate_by=16
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -29,8 +31,9 @@ class ProductsView(ListView):
         return context
 
 class MostViewedProductsView(ListView):
-    queryset = Products.objects.filter(available=True).order_by("-views").all()[:10]
+    queryset = Products.objects.filter(available=True).order_by("-views").all()
     template_name="store/most_viewed.html"
+    paginate_by=16
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -43,8 +46,9 @@ class MostViewedProductsView(ListView):
         return context
 
 class MostPurchasedProductsView(ListView):
-    queryset = Products.objects.filter(available=True).order_by("-purchases").all()[:10]
+    queryset = Products.objects.filter(available=True).order_by("-purchases").all()
     template_name="store/best_seller.html"
+    paginate_by=16
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -73,8 +77,18 @@ class ProductDetailsView(ListView):
         product= Products.objects.filter(id=self.kwargs.get('pk'), available=True).first()
         product.views=product.views+1
         product.save()
-        reviews=Reviews.objects.filter(product=product).all()
-        stars_count_qs = reviews.values('rating').annotate(count=Count('id'))
+        reviews_qs=Reviews.objects.filter(product=product).all()
+
+        page = self.request.GET.get('page')
+        paginator = Paginator(reviews_qs, 10)
+        try:
+            reviews = paginator.page(page)
+        except PageNotAnInteger:
+            reviews = paginator.page(1)
+        except EmptyPage:
+            reviews = paginator.page(paginator.num_pages)
+
+        stars_count_qs = reviews_qs.values('rating').annotate(count=Count('id'))
         total_reviews = stars_count_qs.aggregate(total=Coalesce(Sum('count'), Value(0)))['total'] or 1
 
         stars_count = {str(i): 0 for i in range(1, 6)}
@@ -92,12 +106,13 @@ class ProductDetailsView(ListView):
         related_products = Products.objects.filter(
             available=True,
             category__in=product.category.all()
-        ).exclude(id=product.id).distinct()[:4]
+        ).exclude(id=product.id).distinct()
 
         context["stars_percent"] = stars_percent
         context["related_products"] = related_products
         context["product"]=product
         context["reviews"]=reviews
+        context["paginator"] = paginator
         return context
 
 class CreateReviewView(LoginRequiredMixin,View):

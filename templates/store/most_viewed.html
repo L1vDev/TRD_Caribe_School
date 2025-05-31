@@ -39,9 +39,9 @@
   </div>
   <p class="res-text" style="margin-left: 5vw;">PRODUCTOS</p>
 
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2" style="padding: 0 5vw;">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2" style="padding: 0 5vw;" id="products-container">
 
-    {% for product in products %}
+    {% for product in object_list %}
     <div class="col">
       <div class="card h-100 shadow-sm rounded-3">
         <div class="product-img-container">
@@ -123,7 +123,14 @@
       </div>  
       {% endfor %}
 </div>
+{% if page_obj.has_next %}
+    <div class="row justify-content-center my-3" id="view-more-row">
+      <div class="col-12 d-flex justify-content-center">
+        <button class="btn btn-outline-primary w-50" id="view-more-btn" data-next-page="{{ page_obj.next_page_number }}">Ver más</button>
+      </div>
+    </div>
+  {% endif %}
 </div>
+<script src="{% static 'js/view_more.js' %}"></script>
 
-</div>
 {% endblock content %}

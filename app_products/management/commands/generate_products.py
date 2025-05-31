@@ -7,7 +7,7 @@ from decimal import Decimal
 import random
 
 class Command(BaseCommand):
-    help = 'Genera 30 productos de prueba'
+    help = 'Genera 100 productos de prueba'
 
     def handle(self, *args, **kwargs):
         fake = Faker('es_ES')  # Configura Faker para datos en español
@@ -18,7 +18,7 @@ class Command(BaseCommand):
         Category.objects.get_or_create(name="Hogar")
         categorias = Category.objects.all()
         
-        for _ in range(30):
+        for _ in range(100):
             nombre = fake.unique.company()
             canon = slugify(nombre)
             
