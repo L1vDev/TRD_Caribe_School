@@ -1,6 +1,6 @@
 from typing import Any
 from django.shortcuts import render
-from app_products.models import Products, Reviews
+from app_products.models import Products, Reviews, Category
 from django.views.generic import CreateView, ListView
 from django.views import View
 from django.db.models import F, Avg, Count, Value, ExpressionWrapper, DecimalField, Q, Sum
@@ -16,48 +16,83 @@ class ProductsView(ListView):
     """
     AÑADIR PAGINACION A LOS PRODUCTOS
     """
-    queryset = Products.objects.filter(available=True).all()
     template_name = "index.html"
-    paginate_by=16
+    paginate_by = 16
+
+    def get_queryset(self):
+        queryset = Products.objects.filter(available=True)
+        search = self.request.GET.get('search', '')
+        category = self.request.GET.get('category', '')
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+        if category:
+            queryset = queryset.filter(category__id=category)
+        return queryset.distinct()
 
     def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        user=self.request.user
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
         if user.is_authenticated:
-            cart, created=Cart.objects.get_or_create(user=user)
-            context["cart_count"]=cart.products.count()
-        context["products"]=self.queryset
-        context["show_filters"]=True
+            cart, created = Cart.objects.get_or_create(user=user)
+            context["cart_count"] = cart.products.count()
+        # Mantener valores de búsqueda y categoría seleccionados
+        context["search"] = self.request.GET.get('search', '')
+        context["category"] = self.request.GET.get('category', '')
+        # Si necesitas pasar todas las categorías al template:
+        context["categories"] = Category.objects.all()
+        context["show_filters"] = True
         return context
 
 class MostViewedProductsView(ListView):
-    queryset = Products.objects.filter(available=True).order_by("-views").all()
-    template_name="store/most_viewed.html"
-    paginate_by=16
+    template_name = "store/most_viewed.html"
+    paginate_by = 16
+
+    def get_queryset(self):
+        queryset = Products.objects.filter(available=True).order_by("-views")
+        search = self.request.GET.get('search', '')
+        category = self.request.GET.get('category', '')
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+        if category:
+            queryset = queryset.filter(category__id=category)
+        return queryset.distinct()
 
     def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        user=self.request.user
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
         if user.is_authenticated:
-            cart, created=Cart.objects.get_or_create(user=user)
-            context["cart_count"]=cart.products.count()
-        context["products"]=self.queryset
-        context["show_filters"]=True
+            cart, created = Cart.objects.get_or_create(user=user)
+            context["cart_count"] = cart.products.count()
+        context["search"] = self.request.GET.get('search', '')
+        context["category"] = self.request.GET.get('category', '')
+        context["categories"] = Category.objects.all()
+        context["show_filters"] = True
         return context
 
 class MostPurchasedProductsView(ListView):
-    queryset = Products.objects.filter(available=True).order_by("-purchases").all()
-    template_name="store/best_seller.html"
-    paginate_by=16
+    template_name = "store/best_seller.html"
+    paginate_by = 16
+
+    def get_queryset(self):
+        queryset = Products.objects.filter(available=True).order_by("-purchases")
+        search = self.request.GET.get('search', '')
+        category = self.request.GET.get('category', '')
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+        if category:
+            queryset = queryset.filter(category__id=category)
+        return queryset.distinct()
 
     def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        user=self.request.user
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
         if user.is_authenticated:
-            cart, created=Cart.objects.get_or_create(user=user)
-            context["cart_count"]=cart.products.count()
-        context["products"]=self.queryset
-        context["show_filters"]=True
+            cart, created = Cart.objects.get_or_create(user=user)
+            context["cart_count"] = cart.products.count()
+        context["search"] = self.request.GET.get('search', '')
+        context["category"] = self.request.GET.get('category', '')
+        context["categories"] = Category.objects.all()
+        context["show_filters"] = True
         return context
 
 class ProductDetailsView(ListView):

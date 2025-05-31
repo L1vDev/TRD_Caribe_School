@@ -7,21 +7,25 @@ from decimal import Decimal
 import random
 
 class Command(BaseCommand):
-    help = 'Genera 100 productos de prueba'
+    help = 'Genera 100 productos de prueba para una tienda virtual'
 
     def handle(self, *args, **kwargs):
         fake = Faker('es_ES')  # Configura Faker para datos en español
         Faker.seed(0)
-        
-        # Crear algunas categorías si no existen
-        Category.objects.get_or_create(name="Electrónica")
-        Category.objects.get_or_create(name="Hogar")
-        categorias = Category.objects.all()
-        
+
+        # Definir categorías típicas de una tienda virtual
+        categorias_nombres = [
+            "Electrónica", "Hogar", "Ropa", "Juguetes", "Deportes",
+            "Libros", "Belleza", "Automotriz", "Mascotas", "Jardín"
+        ]
+        # Crear categorías si no existen
+        for nombre in categorias_nombres:
+            Category.objects.get_or_create(name=nombre)
+        categorias = list(Category.objects.all())
+
         for _ in range(100):
-            nombre = fake.unique.company()
+            nombre = fake.unique.catch_phrase()
             canon = slugify(nombre)
-            
             producto = Products.objects.create(
                 name=nombre,
                 canon_name=canon,
@@ -32,10 +36,12 @@ class Command(BaseCommand):
                 stock=random.randint(0, 1000),
                 available=True
             )
-            
-            # Añadir categorías aleatorias
-            producto.category.add(*categorias)
-            
+
+            # Asignar entre 1 y 3 categorías aleatorias
+            num_categorias = random.randint(1, 3)
+            categorias_aleatorias = random.sample(categorias, num_categorias)
+            producto.category.add(*categorias_aleatorias)
+
             self.stdout.write(self.style.SUCCESS(f'Producto creado: {nombre}'))
 
-        self.stdout.write(self.style.SUCCESS('\n¡30 productos creados exitosamente!'))
+        self.stdout.write(self.style.SUCCESS('\n¡100 productos creados exitosamente!'))

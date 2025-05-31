@@ -6,21 +6,22 @@
         <h2 class="my-auto d-none d-sm-flex" style="margin-bottom:0"><b>TRD-Caribe</b></h2>
       </a>
       {% if show_filters %}
-      <div class="collapse navbar-collapse">
-        {# Category Filter Select#}
-        <div class="mx-2" style="max-width: 120px;">
-          <select class="form-select text-truncate custom-form" style="background-color: rgb(78, 78, 78);" id="floatingSelect">
-            <option value="all_categories" selected>Todas</option>
-            <option value="1">Alimentos</option>
-            <option value="2">Bebidas</option>
-            <option value="3">Electrodomésticos</option>
-          </select>
-        </div>
-
-        {# Search Bar #}
-        <form class="d-flex input-group flex-grow-1" role="search">
-          <input class="form-control bg-white border border-0 text-black custom-form" style="max-width: 600px;" type="search" placeholder="Buscar Producto" aria-label="Buscar Producto">
-          <button class="btn bg-white border border-0 text-black" type="submit"><i class="bi bi-search"></i></button>
+      <div class="collapse navbar-collapse d-none d-lg-flex">
+        <form class="d-flex w-100" role="search" method="get" action="">
+          <!-- Category Filter Select -->
+          <div class="mx-2" style="max-width: 120px;">
+            <select class="form-select text-truncate custom-form" style="background-color: rgb(78, 78, 78); min-width:100px;" id="categorySelectDesktop" name="category" onchange="this.form.submit()">
+              <option value="" {% if not category %}selected{% endif %}>Todas</option>
+              {% for cat in categories %}
+              <option value="{{ cat.id }}" {% if category|add:""|stringformat:"s" == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <!-- Search Bar -->
+           <div class="input-group">
+             <input class="form-control bg-white border border-0 text-black custom-form" style="max-width: 600px;" type="search" placeholder="Buscar Producto" aria-label="Buscar Producto" name="search" id="searchInputDesktop" value="{{ search }}">
+             <button class="btn bg-white border border-0 text-black" type="submit"><i class="bi bi-search"></i></button>
+            </div>
         </form>
       </div>
       {% endif %}
@@ -93,28 +94,44 @@
   </nav>
 
   {% if show_filters %}
-  <!-- Nuevo contenedor para el selector y el formulario de búsqueda -->
   <div class="p-2 d-lg-none under-nav" style="background-color: white;" data-bs-theme="dark">
     <div class="container-fluid">
-      <div class="d-flex align-items-center gap-2">
+      <form class="d-flex align-items-center gap-2 w-100" role="search" method="get" action="">
         <!-- Category Filter Select -->
         <div class="mx-2" style="max-width: 120px;">
-          <select class="form-select text-truncate bg-white text-dark custom-form border border-0" id="floatingSelect">
-            <option value="all_categories" selected>Todas</option>
-            <option value="1">Alimentos</option>
-            <option value="2">Bebidas</option>
-            <option value="3">Electrodomésticos</option>
+          <select class="form-select text-truncate bg-white text-dark custom-form border border-0" id="categorySelectMobile" name="category"
+          onchange="this.form.submit()">
+            <option value="" {% if not category %}selected{% endif %}>Todas</option>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}" {% if category|add:""|stringformat:"s" == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
           </select>
         </div>
-
         <!-- Search Bar -->
-        <form class="d-flex input-group flex-grow-1" role="search">
-          <input class="form-control custom-form bg-white border border-end-0 text-dark" type="search" placeholder="Buscar" aria-label="Search">
-          <button class="btn btn-outline-secondary border border-start-0" type="submit"><i class="bi bi-search"></i></button>
+         <div class="input-group">
+           <input class="form-control custom-form bg-white border border-end-0 text-dark" type="search" placeholder="Buscar" aria-label="Search" name="search" id="searchInputMobile" value="{{ search }}">
+           <button class="btn btn-outline-secondary border border-start-0" type="submit"><i class="bi bi-search"></i></button>
+          </div>
         </form>
-      </div>
     </div>
   </div>
   {% endif %}
 </header>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function syncInputs(fromId, toId) {
+      const from = document.getElementById(fromId);
+      const to = document.getElementById(toId);
+      if (from && to) {
+        from.addEventListener('input', function() {
+          to.value = from.value;
+        });
+      }
+    }
+    syncInputs('categorySelectDesktop', 'categorySelectMobile');
+    syncInputs('categorySelectMobile', 'categorySelectDesktop');
+    syncInputs('searchInputDesktop', 'searchInputMobile');
+    syncInputs('searchInputMobile', 'searchInputDesktop');
+  });
+</script>
