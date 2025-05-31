@@ -51,4 +51,7 @@ class ContactRequestAdmin(ModelAdmin):
         if obj.answered:
             return True,"Atendida"
         return False,"No Atendida"
+    
+    def has_add_permission(self, request, obj=None):
+        return False
 

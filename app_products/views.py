@@ -11,6 +11,17 @@ from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from app_store.models import Cart
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+import re
+import unicodedata
+from nltk.stem.snowball import SnowballStemmer
+
+stemmer = SnowballStemmer("spanish")
+
+def stem_text(text):
+    normalized_term = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore').decode('utf-8').lower()
+    words = normalized_term.split()
+    stemmed_words = [stemmer.stem(word) for word in words]
+    return stemmed_words
 
 class ProductsView(ListView):
     """
@@ -20,11 +31,15 @@ class ProductsView(ListView):
     paginate_by = 16
 
     def get_queryset(self):
-        queryset = Products.objects.filter(available=True)
+        queryset = Products.objects.filter(available=True).order_by("id")
         search = self.request.GET.get('search', '')
         category = self.request.GET.get('category', '')
         if search:
-            queryset = queryset.filter(name__icontains=search)
+            stemmed_words = stem_text(search)
+            query = Q()
+            for word in stemmed_words:
+                query &= Q(canon_name__icontains=word)
+            queryset = queryset.filter(query)
         if category:
             queryset = queryset.filter(category__id=category)
         return queryset.distinct()
@@ -52,7 +67,11 @@ class MostViewedProductsView(ListView):
         search = self.request.GET.get('search', '')
         category = self.request.GET.get('category', '')
         if search:
-            queryset = queryset.filter(name__icontains=search)
+            stemmed_words = stem_text(search)
+            query = Q()
+            for word in stemmed_words:
+                query &= Q(canon_name__icontains=word)
+            queryset = queryset.filter(query)
         if category:
             queryset = queryset.filter(category__id=category)
         return queryset.distinct()
@@ -78,7 +97,11 @@ class MostPurchasedProductsView(ListView):
         search = self.request.GET.get('search', '')
         category = self.request.GET.get('category', '')
         if search:
-            queryset = queryset.filter(name__icontains=search)
+            stemmed_words = stem_text(search)
+            query = Q()
+            for word in stemmed_words:
+                query &= Q(canon_name__icontains=word)
+            queryset = queryset.filter(query)
         if category:
             queryset = queryset.filter(category__id=category)
         return queryset.distinct()

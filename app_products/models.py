@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from app_auth.utils import get_unique_filename
 from django.utils import timezone
+import unicodedata
 
 class Category(models.Model):
     name= models.CharField(verbose_name="Nombre de la Categoría", unique=True)
@@ -45,6 +46,11 @@ class Products(models.Model):
     
     def get_is_new(self):
         return self.created_at >= timezone.now() - timezone.timedelta(days=3)
+    
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.canon_name = unicodedata.normalize('NFKD', self.name).encode('ASCII', 'ignore').decode('utf-8').lower()
+        super().save(*args, **kwargs)
     
     class Meta:
         verbose_name = 'Producto'
