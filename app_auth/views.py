@@ -195,7 +195,10 @@ class ProfileView(LoginRequiredMixin, View):
             if "profile_picture" in request.FILES:
                 profile_picture = request.FILES["profile_picture"]
                 user.profile_picture.save(profile_picture.name, profile_picture, save=False)
-        user.save()
+        try:
+            user.save()
+        except Exception as e:
+            error="No se pudo guardar los cambios, revise la información introducida."
         context={
             "first_name":user.first_name,
             "last_name":user.last_name,

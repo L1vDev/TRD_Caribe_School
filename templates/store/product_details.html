@@ -15,7 +15,7 @@
           <span class="badge bg-danger discount-badge fs-6 p-2" id="discount-badge">-{{product.discount}}%</span>
           {% endif %}
           
-          <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}https://placehold.co/600x600{% endif %}" alt="Product image" class="img-fluid rounded border mb-3" id="main-product-image">
+          <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}{% static 'img/no-image.jpg' %}{% endif %}" alt="Product image" class="img-fluid rounded border mb-3" style="max-height: 350px;width: 100%;object-fit: cover;" id="main-product-image">
         </div>
         <div class="position-relative px-4">
           <!-- Slider controls -->
@@ -26,7 +26,7 @@
           <!-- Thumbnail slider -->
            <!-- Ajustar tamaño de imagenes-->
           <div class="thumbnail-slider py-2 gap-2">
-            <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}https://placehold.co/600x600{% endif %}" alt="Product thumbnail 1" class="rounded border p-1 product-thumbnail border-primary">
+            <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}{% static 'img/no-image.jpg' %}{% endif %}" alt="Product thumbnail 1" class="rounded border p-1 product-thumbnail border-primary">
             {% for image in product.images.all %}
               <img src="{{image.image.url}}" alt="Product thumbnail {{ forloop.counter }}" class="rounded border p-1 product-thumbnail">
             {% endfor %}
@@ -322,7 +322,7 @@
       {% for related in related_products %}
       <div class="col">
         <div class="card h-100 product-card">
-          <img src="{% if related.main_image %}{{related.main_image.url}}{% else %}https://placehold.co/400x400{% endif %}" class="card-img-top {% if related.stock == 0 %}opacity-50{% endif %}" alt="Producto {{relate.id}}">
+          <img src="{% if related.main_image %}{{related.main_image.url}}{% else %}{% static 'img/no-image.jpg' %}{% endif %}" class="card-img-top {% if related.stock == 0 %}opacity-50{% endif %}" alt="Producto {{relate.id}}">
           <div class="card-body p-2">
             <h5 class="card-title fs-6 text-truncate">{{ related.name }}</h5>
             <div class="d-flex align-items-center mb-1">
@@ -406,7 +406,7 @@
         <div class="d-flex mb-3">
           <!-- Imagen del producto -->
           <div class="me-3">
-            <img src="https://placehold.co/600x600" alt="Product image" class="modal-product-img rounded border" id="modal-product-image">
+            <img src="{% static 'img/no-image.jpg' %}" alt="Product image" class="modal-product-img rounded border" id="modal-product-image">
           </div>
           <!-- Información del producto -->
           <div>
@@ -433,7 +433,7 @@
               <button class="btn btn-outline-secondary" type="button" id="modal-btn-minus">
                 <i class="bi bi-dash"></i>
               </button>
-              <input type="number" name="quantity" class="form-control text-center quantity-input" value="1" id="modal-quantity" min="1" max="{{ product.stock }}">
+              <input type="number" name="quantity" class="form-control text-center quantity-input" value="{{product_quantity}}" id="modal-quantity" min="1" max="{{ product.stock }}">
               <button class="btn btn-outline-secondary" type="button" id="modal-btn-plus">
                 <i class="bi bi-plus"></i>
               </button>

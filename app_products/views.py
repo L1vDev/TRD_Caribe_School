@@ -7,9 +7,9 @@ from django.db.models import F, Avg, Count, Value, ExpressionWrapper, DecimalFie
 from django.db.models.functions import Coalesce, Round
 from django.utils import timezone
 from django.db.models.functions import Now
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from app_store.models import Cart
+from app_store.models import Cart, CartItem
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import re
 import unicodedata
@@ -127,12 +127,12 @@ class ProductDetailsView(ListView):
         AJUSTAR IMAGENES EN EL INDICE
         AÑADIR PAGINACION A REVIEW Y RELATED PRODUCTS
         """
+        product= get_object_or_404(Products,id=self.kwargs.get('pk'), available=True)
         context=super(ProductDetailsView, self).get_context_data(**kwargs)
         user=self.request.user
         if user.is_authenticated:
             cart, created=Cart.objects.get_or_create(user=user)
             context["cart_count"]=cart.products.count()
-        product= Products.objects.filter(id=self.kwargs.get('pk'), available=True).first()
         product.views=product.views+1
         product.save()
         reviews_qs=Reviews.objects.filter(product=product).all()
@@ -171,6 +171,8 @@ class ProductDetailsView(ListView):
         context["product"]=product
         context["reviews"]=reviews
         context["paginator"] = paginator
+        item=CartItem.objects.filter(cart=cart,product=product)
+        context["product_quantity"]=(item.first().quantity if item.exists() else 1)
         return context
 
 class CreateReviewView(LoginRequiredMixin,View):

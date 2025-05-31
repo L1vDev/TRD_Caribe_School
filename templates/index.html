@@ -51,7 +51,7 @@
           {% elif product.get_is_new %}
           <span class="product-badge badge bg-success small py-1 px-2">Nuevo</span>
           {% endif %}
-          <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}{% static 'img/logo.png' %}{% endif %}" class="card-img-top {% if product.stock == 0 %}opacity-50{% endif %}" alt="Producto {{product.id}}">
+          <img src="{% if product.main_image %}{{product.main_image.url}}{% else %}{% static 'img/no-image.jpg' %}{% endif %}" class="card-img-top {% if product.stock == 0 %}opacity-50{% endif %}" alt="Producto {{product.id}}">
           </div>
           <div class="card-body p-2">
             <h6 class="card-title fw-bold mb-1 text-truncate">{{product.name}}</h6>

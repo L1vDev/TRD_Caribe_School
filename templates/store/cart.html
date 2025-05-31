@@ -69,7 +69,8 @@
                             <div>
                                 <p class="card-text mb-1">Total: <span class="product-total fw-bold">${{cart_item.get_total}}</span></p>
                                 <div class="btn-group">
-                                    <button class="btn btn-sm btn-outline-primary buy-more-btn" data-bs-toggle="modal" data-bs-target="#quantityModal" data-product-id="{{cart_item.product.id}}" data-product-name="{{cart_item.product.name}}" data-product-price="{{cart_item.product.get_discount_price}}" data-product-image="{% if cart_item.product.main_image %}{{cart_item.product.main_image.url}}{% else %}https://placehold.co/600x600{% endif %}">
+                                    <button class="btn btn-sm btn-outline-primary buy-more-btn" data-bs-toggle="modal" data-bs-target="#quantityModal" data-product-id="{{cart_item.product.id}}" data-product-name="{{cart_item.product.name}}" data-product-price="{{cart_item.product.get_discount_price}}" data-product-image="{% if cart_item.product.main_image %}{{cart_item.product.main_image.url}}{% else %}https://placehold.co/600x600{% endif %}"
+                                    data-product-quantity="{{cart_item.quantity}}">
                                         <i class="bi bi-plus-circle"></i> Comprar más
                                     </button>
                                     <button class="btn btn-sm btn-outline-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-product-id="{{cart_item.id}}" data-product-name="{{cart_item.product.name}}">
@@ -179,7 +180,7 @@
             <button class="btn btn-outline-secondary" type="button" id="decreaseQuantity">
               <i class="bi bi-dash"></i>
             </button>
-            <input type="number" class="form-control text-center quantity-input" id="productQuantity" name="quantity" value="1" min="1" required>
+            <input type="number" class="form-control text-center quantity-input" id="productQuantity" name="quantity" value="" min="1" required>
             <button class="btn btn-outline-secondary" type="button" id="increaseQuantity">
               <i class="bi bi-plus"></i>
             </button>
@@ -223,7 +224,7 @@
               </div>
               <div class="col-md-6">
                 <label for="phone" class="form-label">Teléfono</label>
-                <input type="tel" class="form-control custom-form" id="phone" name="phone_number" value="{{request.user.phone_number}}" required>
+                <input type="tel" class="form-control custom-form" id="phone" name="phone_number" value="{{request.user.phone_number}}" required disabled>
               </div>
             </div>
             

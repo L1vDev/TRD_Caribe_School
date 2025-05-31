@@ -28,12 +28,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const productName = button.getAttribute('data-product-name');
         const productPrice = button.getAttribute('data-product-price');
         const productImage = button.getAttribute('data-product-image');
+        const productCartQuantity = button.getAttribute('data-product-quantity');
 
         quantityInput.value = currentProductId;
         quantityProductName.textContent = productName;
         quantityProductPrice.textContent = productPrice;
         quantityProductImage.src = productImage;
-        productQuantity.value = 1;
+        productQuantity.value = productCartQuantity;
     });
 
     decreaseQuantity.addEventListener('click', function () {
@@ -79,4 +80,35 @@ document.addEventListener("DOMContentLoaded", function () {
             total_price.textContent = `$${(subtotal + delivery).toFixed(2)}`;
         });
     }
-})
+
+    // Validación del formulario de checkout
+    const checkoutForm = document.getElementById('checkoutForm');
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', function (e) {
+            let valid = true;
+            let phoneInput = document.getElementById('phone');
+            let provinceInput = document.getElementById('province');
+            let municipalityInput = document.getElementById('municipality');
+
+            // Validar provincia seleccionada
+            if (!provinceInput.value || provinceInput.value === "0") {
+                provinceInput.classList.add('is-invalid');
+                valid = false;
+            } else {
+                provinceInput.classList.remove('is-invalid');
+            }
+
+            // Validar municipio seleccionado
+            if (!municipalityInput.value) {
+                municipalityInput.classList.add('is-invalid');
+                valid = false;
+            } else {
+                municipalityInput.classList.remove('is-invalid');
+            }
+
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+    }
+});

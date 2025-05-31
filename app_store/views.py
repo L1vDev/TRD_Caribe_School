@@ -44,6 +44,16 @@ class CartView(LoginRequiredMixin,View):
     def post(self, request, *args, **kwargs):
         user=request.user
         context=self.get_context_data()
+
+        try:
+            province_id=request.POST.get("province")
+            municipality_id=request.POST.get("municipality")
+            province=Province.objects.get(pk=province_id)
+            municipality=Municipality.objects.get(pk=municipality_id)
+        except Exception as e:
+            context["error"]="Por favor, seleccione provincia y municipio correctamente."
+            return render(request, self.template_name,context)
+
         cart=Cart.objects.filter(user=user).first()
         cart_items=CartItem.objects.filter(cart=cart).all()
         over_stock=False
@@ -60,11 +70,6 @@ class CartView(LoginRequiredMixin,View):
         elif over_stock:
             context["error"]="Algunos productos no tienen stock suficiente. Modifique las cantidades."
             return render(request, self.template_name,context)
-
-        province_id=request.POST.get("province")
-        municipality_id=request.POST.get("municipality")
-        province=Province.objects.get(pk=province_id)
-        municipality=Municipality.objects.get(pk=municipality_id)
         
         try:
             with transaction.atomic():
@@ -72,7 +77,7 @@ class CartView(LoginRequiredMixin,View):
                     email=user.email,
                     first_name=user.first_name,
                     last_name=user.last_name,
-                    phone_number=request.POST.get("phone_number", user.phone_number),
+                    phone_number=user.phone_number,
                     province=province.name,
                     municipality=municipality.name,
                     address=request.POST.get("address", ""),
@@ -82,6 +87,7 @@ class CartView(LoginRequiredMixin,View):
 
                 for item in cart_items:
                     item.product.stock = item.product.stock - item.quantity
+                    item.product.purchases=item.product.purchases+1
                     item.product.save()
                     InvoiceProducts.objects.create(
                     invoice=invoice,

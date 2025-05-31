@@ -13,7 +13,7 @@
                 {% csrf_token %}
                 <div class="profile-picture d-flex justify-content-center align-items-center mx-auto mb-4 position-relative">
                     <img id="profileImage" 
-                        src="{% if profile_picture %}{{profile_picture}}{% else %}{% static 'img/logo.png' %}{% endif %}" 
+                        src="{% if profile_picture %}{{profile_picture}}{% else %}{% static 'img/no-image.jpg' %}{% endif %}" 
                         alt="Profile Picture" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
                     <label for="profilePictureInput" class="edit-badge rounded-circle d-flex justify-content-center align-items-center position-absolute" style="bottom: 0; right: 0px; width: 30px; height: 30px; cursor: pointer;">
                         <i class="bi bi-pencil-fill text-white" style="font-size: 12px;"></i>

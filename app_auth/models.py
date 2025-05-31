@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from django.core.validators import RegexValidator
 from app_auth.utils import get_unique_filename
 import uuid
+from django.core.exceptions import ValidationError
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -45,7 +46,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
     
+    def clean(self):
+        if not self.first_name or not self.first_name.strip():
+            raise ValidationError({'first_name':"El nombre no puede estar vacío."})
+        if not self.last_name or not self.last_name.strip():
+            raise ValidationError({'first_name':"El apellido no puede estar vacío."})
+    
     def save(self, *args, **kwargs):
+        self.full_clean()
         if self.is_superuser:
             self.is_staff = True
         super().save(*args, **kwargs)
