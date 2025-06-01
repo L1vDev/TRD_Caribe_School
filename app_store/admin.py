@@ -10,6 +10,7 @@ from app_store.models import Invoices, InvoiceProducts
 from django.core.exceptions import ValidationError
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
+from app_statistics.models import SaleStatistics
 
 class InvoiceProductsInline(TabularInline):
     model = InvoiceProducts
@@ -22,11 +23,11 @@ class InvoiceProductsInline(TabularInline):
 
 @admin.register(Invoices)
 class InvoicesAdmin(ModelAdmin):
-    list_display = ['display_id','display_name','email','display_status','created_at','pdf_link']
-    #add view to download invoice file
+    list_display = ['display_id','display_name','email','display_status','created_at','display_processed','pdf_link']
     list_display_links = ['display_id', 'display_name', 'email']
     exclude=["invoice_file"]
-    readonly_fields=['id','email','first_name','last_name','phone_number','province','municipality','address','delivery_details','delivery_price']
+    readonly_fields=['id','processed','email','first_name','last_name','phone_number','province','municipality','address','delivery_details','delivery_price']
+    actions_list=["sync_stats", "reset_stats"]
     actions_detail=["generate_pdf"]
     fieldsets = (
         (
@@ -67,6 +68,18 @@ class InvoicesAdmin(ModelAdmin):
     def display_status(self, obj):
         return obj.status, obj.get_status_display()
     
+    @display(
+        description=_("Estadística"),
+        label={
+            True: "success",
+            False: "danger"
+        }
+    )
+    def display_processed(self, obj):
+        if obj.processed:
+            return True, "Procesada"
+        return False, "No Procesada"
+    
     @display(description=_("Nombre Completo"))
     def display_name(self, obj):
         return f"{obj.first_name} {obj.last_name}"
@@ -75,6 +88,26 @@ class InvoicesAdmin(ModelAdmin):
     def display_id(self, obj):
         return str(obj.id)[:18]
     
+    @action(description=_("Actualizar Estadísticas"))
+    def sync_stats(self, request):
+        invoices=Invoices.objects.filter(processed=False, status="completed").all()
+        for invoice in invoices:
+            invoice.generate_statistics()
+
+        return redirect(
+          reverse_lazy("admin:app_store_invoices_changelist")
+        )
+    
+    @action(description=_("Reiniciar Estadísticas"))
+    def reset_stats(self, request):
+        invoices=Invoices.objects.filter(processed=True, status="completed").all()
+        invoices.update(processed=False)
+        SaleStatistics.objects.all().delete()
+
+        return redirect(
+          reverse_lazy("admin:app_store_invoices_changelist")
+        )
+
     def has_add_permission(self, request, obj=None):
         return False
     

@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'app_config',
     'app_products',
     'app_store',
+    'app_statistics',
 ]
 
 MIDDLEWARE = [
@@ -170,8 +171,11 @@ SITE_NAME = "TRD Caribe"
 UNFOLD = {
     "SITE_TITLE": "TRD Caribe",
     "SITE_HEADER": "TRD Caribe",
+    "SITE_SUBHEADER": _("Proyecto Escolar"),
+    "SITE_SYMBOL":"local_mall",
     "SITE_URL": "/",
-    "DASHBOARD_CALLBACK": "app_auth.views.dashboard_callback",
+    "SHOW_BACK_BUTTON": True,
+    "DASHBOARD_CALLBACK": "app_statistics.views.dashboard_callback",
     "THEME": "light",
     "SIDEBAR": {
         "navigation": [
@@ -181,7 +185,7 @@ UNFOLD = {
                          "title": _("Dashboard"),
                          "icon": "dashboard", 
                          "link": reverse_lazy("admin:index"),
-                    },
+                    }
                 ],
             },
             {

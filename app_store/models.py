@@ -10,6 +10,8 @@ import io
 import uuid
 from django.contrib.staticfiles import finders
 from private_storage.fields import PrivateFileField
+from app_statistics.models import SaleStatistics
+from app_products.models import Products
 
 class Invoices(models.Model):
     STATUS_CHOICES = [
@@ -29,8 +31,9 @@ class Invoices(models.Model):
     delivery_details=models.TextField(verbose_name="Detalles de Entrega", null=True, blank=True)
     delivery_price=models.DecimalField(verbose_name="Precio de Entrega",max_digits=10, decimal_places=2, default=0.00, validators=[MinValueValidator(0.00)])
     status=models.CharField(verbose_name="Estado",max_length=50,default='pending',choices=STATUS_CHOICES)
+    processed=models.BooleanField(verbose_name="Estadística Procesada", default=False)
     invoice_file=PrivateFileField(verbose_name="Factura", upload_to="invoices/")
-    created_at=models.DateTimeField(auto_now_add=True,verbose_name="Fecha de Creación")
+    created_at=models.DateTimeField(auto_now_add=True,verbose_name="Fecha")
 
     def __str__(self):
         return f"Factura {self.id} - {self.first_name} {self.last_name}"
@@ -39,23 +42,17 @@ class Invoices(models.Model):
         super().clean()
         if not self.pk:
             return
-
         previous = Invoices.objects.get(pk=self.pk)
         prev_status = previous.status
         new_status = self.status
-
         if prev_status==new_status:
             return
-
         if prev_status == 'pending':
             return
-
         if new_status == 'pending':
             raise ValidationError("No se puede volver al estado 'Pendiente' desde otro estado.")
-
         if prev_status in ['sended', 'completed'] and new_status == 'canceled':
             raise ValidationError("No se puede cancelar una factura que ya fue enviada o completada.")
-
         if prev_status == 'canceled' and new_status != 'canceled':
             raise ValidationError("No se puede cambiar el estado de una factura cancelada.")
     
@@ -80,7 +77,6 @@ class Invoices(models.Model):
         self.invoice_file.save(f'{str(self.id)}.pdf', ContentFile(result_pdf.getvalue()))
     
     def cancel_invoice(self):
-        from app_products.models import Products
         self.status="canceled"
         for invoice_product in self.products.all():
             product,created=Products.objects.get_or_create(
@@ -91,6 +87,16 @@ class Invoices(models.Model):
             product.stock=product.stock+invoice_product.quantity
             product.save()
         self.save()
+
+    def generate_statistics(self):
+        if self.processed==False and self.status=="completed":
+            sale_date = self.created_at.date()
+            sale_amount = self.get_total_amount()
+            stat, created = SaleStatistics.objects.get_or_create(date=sale_date)
+            stat.amount += sale_amount
+            stat.save()
+            self.processed = True
+            self.save()
 
     class Meta:
         verbose_name = 'Factura'
