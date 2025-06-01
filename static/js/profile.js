@@ -32,9 +32,6 @@ document.addEventListener("DOMContentLoaded", function(){
             return;
         }
 
-        console.log('Contraseña actual:', currentPassword.value);
-        console.log('Nueva contraseña:', newPassword.value);
-
         const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
         modal.hide();
 

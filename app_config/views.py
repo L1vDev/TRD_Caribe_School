@@ -1,6 +1,5 @@
 from django.views import View
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from .models import ContactRequest
 from app_store.models import Cart
 

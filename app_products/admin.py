@@ -1,17 +1,15 @@
 from django.contrib import admin, messages
-from django.http import HttpRequest
 from unfold.admin import ModelAdmin, TabularInline
-from unfold.decorators import display,action
+from unfold.decorators import display
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from unfold.contrib.filters.admin import ChoicesDropdownFilter, MultipleRelatedDropdownFilter
+from unfold.contrib.filters.admin import MultipleRelatedDropdownFilter
 from django.utils.translation import gettext_lazy as _
 from app_products.models import Products, ProductImage, Category, Reviews
 
 class ProductImageInline(TabularInline):
     model = ProductImage
     extra = 0
-    #show_change_link = True
 
 @admin.register(Products)
 class ProductsAdmin(ModelAdmin):
@@ -26,6 +24,54 @@ class ProductsAdmin(ModelAdmin):
     list_filter = [('category', MultipleRelatedDropdownFilter), 'available']
     actions = ['hide_show_product']
     list_filter_submit=True
+    fieldsets = (
+        (
+            _("Información Principal"),
+            {
+                "fields": ("name", "price","discount", "category","stock","available"),
+                "classes": ["tab"],
+            },
+        ),
+        (
+            _("Detalles"),
+            {
+                "fields": ("about", "details","main_image"),
+                "classes": ["tab"],
+            },
+        ),
+        (
+            _("Información Ventas"),
+            {
+                "fields": ("purchases","views"
+                ),
+                "classes": ["tab"],
+            },
+        ),
+    )
+    add_fieldsets = (
+        (
+            _("Información Principal"),
+            {
+                "fields": ("name", "price","discount", "category","stock","available"),
+                "classes": ["tab"],
+            },
+        ),
+        (
+            _("Detalles"),
+            {
+                "fields": ("about", "details","main_image"),
+                "classes": ["tab"],
+            },
+        ),
+        (
+            _("Información Ventas"),
+            {
+                "fields": ("purchases","views"
+                ),
+                "classes": ["tab"],
+            },
+        ),
+    )
     
     @display(
         description=_("Disponible"),

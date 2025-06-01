@@ -1,8 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
-from app_auth.utils import get_unique_filename
-from django.conf import settings
 from xhtml2pdf import pisa
 from django.core.files.base import ContentFile
 from django.template.loader import render_to_string

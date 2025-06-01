@@ -1,11 +1,5 @@
 from django.shortcuts import render
-import json
-import random
-from functools import lru_cache
-
-from django.contrib.humanize.templatetags.humanize import intcomma
 from django.urls import reverse_lazy
-from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from app_auth.forms import RegisterForm, LoginForm, ResetPasswordForm
 from django.views.generic import CreateView
@@ -41,12 +35,10 @@ def verify_email_failed(request):
 def verify_email_view(request, token):
     payload, is_valid = verify_token(token)
     if is_valid:
-        print("is_valid")
         user_email = payload.get('user_email')
         user=User.objects.get(email=user_email) 
         if user is None:
             return redirect("verify-email-failed")
-        print(f"user:{user.email}")
         user.is_email_verified = True
         user.save()
         login(request, user)

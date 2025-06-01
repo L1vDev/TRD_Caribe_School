@@ -1,12 +1,7 @@
-from django.shortcuts import render
 import json
-import random
-from functools import lru_cache
 from django.utils.translation import gettext_lazy as _
-from django.contrib.humanize.templatetags.humanize import intcomma
-from django.utils.safestring import mark_safe
 from app_statistics.models import SaleStatistics
-from app_store.models import Invoices, InvoiceProducts
+from app_store.models import InvoiceProducts
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Sum, F, FloatField, ExpressionWrapper
@@ -42,7 +37,6 @@ def get_top_products():
         )
         .order_by('-total_quantity')[:10]
     )
-    print(top_products)
     return list(top_products)
 
 def statistics_top_products():

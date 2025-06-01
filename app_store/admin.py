@@ -1,10 +1,9 @@
 from django.contrib import admin, messages
-from django.http import HttpRequest
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.decorators import display,action
 from django.urls import reverse
 from django.utils.html import format_html
-from unfold.contrib.filters.admin import ChoicesDropdownFilter
+from unfold.contrib.filters.admin import MultipleChoicesDropdownFilter
 from django.utils.translation import gettext_lazy as _
 from app_store.models import Invoices, InvoiceProducts
 from django.core.exceptions import ValidationError
@@ -54,7 +53,10 @@ class InvoicesAdmin(ModelAdmin):
     search_fields = ['id', 'email', 'first_name', 'last_name']
     search_help_text = _("Buscar Factura")
     inlines = [InvoiceProductsInline]
-    list_filter = ['status']
+    list_filter = [
+        ('status', MultipleChoicesDropdownFilter), 
+        ]
+    list_filter_submit=True
 
     @display(
         description=_("Estado"),

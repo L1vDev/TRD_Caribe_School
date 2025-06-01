@@ -1,11 +1,10 @@
-from django.contrib import admin, messages
+from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from unfold.admin import ModelAdmin, TabularInline
+from unfold.admin import ModelAdmin
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 from unfold.decorators import display,action
-from unfold.contrib.filters.admin import ChoicesDropdownFilter
 from django.utils.translation import gettext_lazy as _
 from app_auth.models import User, Worker
 from django.contrib.auth.models import Group
@@ -26,6 +25,7 @@ class UsersAdmin(UserAdmin, ModelAdmin):
     change_password_form = AdminPasswordChangeForm
     list_display = ['email',"display_full_name","display_is_email_verified","created_at"]
     list_display_links = ["email"]
+    list_filter=[]
     readonly_fields=["is_email_verified"]
     search_fields = ['email','first_name','last_name']
     ordering=["email"]
@@ -56,7 +56,6 @@ class UsersAdmin(UserAdmin, ModelAdmin):
             "fields":(("first_name", "last_name"),"phone_number","is_staff","is_superuser"),
         })
     )
-    filter_horizontal = ('groups', 'user_permissions')
     search_help_text=_("Buscar Usuario")
     actions=["user_verify_action"]
     actions_detail=["user_verify_detail"]
@@ -138,6 +137,7 @@ class WorkerAdmin(UserAdmin, ModelAdmin):
     actions=["user_verify_action"]
     actions_detail=["user_verify_detail"]
     ordering=["email"]
+    list_filter_submit=True
 
     def user_verify_action(self, request, queryset):
         queryset.update(is_email_verified=True)

@@ -1,6 +1,5 @@
 // Form validation script
 document.addEventListener('DOMContentLoaded', function () {
-  console.log("login");
   'use strict';
 
   // Fetch all forms we want to apply validation styles to

@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("register")
     'use strict';
 
     // Form validation and step navigation

@@ -4,8 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from app_store.models import Cart, CartItem, Invoices, InvoiceProducts
 from django.views import View
 from django.views.generic import ListView
-from django.db.models import F, ExpressionWrapper, FloatField
-from django.db.models.functions import Round
 from app_products.models import Products
 from app_config.models import Province, Municipality
 import json

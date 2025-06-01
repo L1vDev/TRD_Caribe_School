@@ -3,7 +3,6 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.decorators import display,action
-from unfold.contrib.filters.admin import ChoicesDropdownFilter
 from django.utils.translation import gettext_lazy as _
 from app_config.models import Province,Municipality,ContactRequest
 
@@ -26,6 +25,7 @@ class ContactRequestAdmin(ModelAdmin):
     readonly_fields=["first_name","last_name","email","phone_number","message"]
     search_fields = ['name', 'email', 'phone_number']
     search_help_text = _("Buscar Queja o Sugerencia")
+    list_filter=["answered"]
     actions = ['mark_as_read']
 
     @action(description=_("Marcar como atendida"))

@@ -1,17 +1,13 @@
-from typing import Any
 from django.shortcuts import render
 from app_products.models import Products, Reviews, Category
-from django.views.generic import CreateView, ListView
+from django.views.generic import ListView
 from django.views import View
-from django.db.models import F, Avg, Count, Value, ExpressionWrapper, DecimalField, Q, Sum
-from django.db.models.functions import Coalesce, Round
-from django.utils import timezone
-from django.db.models.functions import Now
+from django.db.models import F, Count, Value, Q, Sum
+from django.db.models.functions import Coalesce
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from app_store.models import Cart, CartItem
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-import re
 import unicodedata
 from nltk.stem.snowball import SnowballStemmer
 
@@ -24,9 +20,6 @@ def stem_text(text):
     return stemmed_words
 
 class ProductsView(ListView):
-    """
-    AÑADIR PAGINACION A LOS PRODUCTOS
-    """
     template_name = "index.html"
     paginate_by = 16
 
@@ -50,10 +43,10 @@ class ProductsView(ListView):
         if user.is_authenticated:
             cart, created = Cart.objects.get_or_create(user=user)
             context["cart_count"] = cart.products.count()
-        # Mantener valores de búsqueda y categoría seleccionados
+
         context["search"] = self.request.GET.get('search', '')
         context["category"] = self.request.GET.get('category', '')
-        # Si necesitas pasar todas las categorías al template:
+
         context["categories"] = Category.objects.all()
         context["show_filters"] = True
         return context
@@ -123,10 +116,6 @@ class ProductDetailsView(ListView):
     template_name = "store/product_details.html"
 
     def get_context_data(self,**kwargs):
-        """
-        AJUSTAR IMAGENES EN EL INDICE
-        AÑADIR PAGINACION A REVIEW Y RELATED PRODUCTS
-        """
         product= get_object_or_404(Products,id=self.kwargs.get('pk'), available=True)
         context=super(ProductDetailsView, self).get_context_data(**kwargs)
         user=self.request.user
