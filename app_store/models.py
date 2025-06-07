@@ -79,7 +79,7 @@ class Invoices(models.Model):
         for invoice_product in self.products.all():
             product,created=Products.objects.get_or_create(
                 name=invoice_product.product_name,
-                price=invoice_product.price,
+                price=invoice_product.product_price,
                 discount=invoice_product.product_discount
             )
             product.stock=product.stock+invoice_product.quantity

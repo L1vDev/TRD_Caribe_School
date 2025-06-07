@@ -124,7 +124,7 @@ class InvoicesAdmin(ModelAdmin):
                 from app_auth.utils import send_invoice_email
                 if old_obj.status != obj.status:
                     if obj.status=="canceled":
-                        obj.cancel_invoice
+                        obj.cancel_invoice()
                     send_invoice_email(obj)
             else:
                 super().save_model(request, obj, form, change)
