@@ -76,11 +76,10 @@ class Invoices(models.Model):
     
     def cancel_invoice(self):
         self.status="canceled"
-        print("Cancelando factura")
         for invoice_product in self.products.all():
             product,created=Products.objects.get_or_create(
                 name=invoice_product.product_name,
-                price=invoice_product.product_price,
+                price=invoice_product.price,
                 discount=invoice_product.product_discount
             )
             product.stock=product.stock+invoice_product.quantity
